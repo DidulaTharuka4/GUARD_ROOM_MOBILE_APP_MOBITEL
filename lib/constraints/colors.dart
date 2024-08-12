@@ -10,10 +10,11 @@ class ApplicationColors {
   static const Color BACKGROUND_BLUE = Color(0xFFD4E0FF);
   static const Color BG_LIGHT_BLUE = Color(0xFFEAF5FF);
   static const Color BORDER_BLUE = Color(0xFF6791BB);
-  static const Color RED_COLOR = Color(0xFFFF0606);
+  static const Color RED_COLOR = Color(0xFFFF3B30);
   static const Color BUTTON_OFF_COLOR = Color(0xFFE0E0E0);
   static const Color LOGIN_TEXT_COLOR = Color(0xFF2F2E41);
   static const Color CUSTOM_SUCCESS_ALERT_BOX = Color(0xFFF5FFF4);
-  static const Color CUSTOM_ERROR_ALERT_BOX = Color(0xFFfff5f5);
+  static const Color CUSTOM_ERROR_ALERT_BOX = Color(0xFFFFEFEE);
   static const Color TOGGLE_BUTTON_OFF_COLOR = Color(0xFFE0E0E0);
+  static const Color ALERT_BOX_TEXT_COLOR = Color(0xFF828282);
 }

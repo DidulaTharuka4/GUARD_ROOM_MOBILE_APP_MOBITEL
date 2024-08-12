@@ -37,10 +37,21 @@ class SuccessStatusAlertBox extends StatelessWidget {
       child: Column(children: <Widget>[
         Container(
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
+          child: SvgPicture.asset(
+            successStatus? 'assets/images/sucess.svg' : 'assets/images/warning.svg',
+              width: screenSize.width / 9.3506,
+              height: screenSize.width / 9.3506
+              // width: 44,
+              // height: 44
+            ),
+        ),
+        Container(
+          margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
           child: Text(
-            successStatus? 'Saved Successfully' : 'Not Saved !',
+            successStatus ? 'Saved Successfully' : 'Failed to Save',
+            textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: ApplicationTextSizes.FInalResponseAlertText,
+              fontSize: ApplicationTextSizes.FInalResponseAlertTextTitle,
               fontWeight: ApplicationTextWeights.PageTitleTextWeight,
               fontFamily: 'Poppins',
               color: successStatus
@@ -52,33 +63,17 @@ class SuccessStatusAlertBox extends StatelessWidget {
         Container(
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
           child: Text(
-            successStatus? 'Saved your item successfully' : 'Your item not saved !',
+            successStatus
+                ? 'Your items have been successfully saved. Please rest assured that all the necessary information has been securely stored.'
+                : 'We encountered an issue while attempting to save your items. Please try again, or contact support if the problem persists.',
+            textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: ApplicationTextSizes.FInalResponseAlertText,
-                fontWeight: ApplicationTextWeights.PageTitleTextWeight,
+                fontWeight: ApplicationTextWeights.UserInputsLabelWeight,
                 fontFamily: 'Poppins',
-                color: ApplicationColors.PURE_BLACK),
+                color: ApplicationColors.ALERT_BOX_TEXT_COLOR,),
           ),
         ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-          child: SvgPicture.asset('assets/images/sucess.svg',
-              width: screenSize.width / 9.3506,
-              height: screenSize.width / 9.3506
-              // width: 44,
-              // height: 44
-            ),
-        ),
-        // Container(
-        //   margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-        //   child: SvgPicture.asset(
-        //     successStatus? 'assets/images/sucess.svg' : 'assets/images/sucess.svg',
-        //       width: screenSize.width / 9.3506,
-        //       height: screenSize.width / 9.3506
-        //       // width: 44,
-        //       // height: 44
-        //     ),
-        // ),
       ]),
     );
   }

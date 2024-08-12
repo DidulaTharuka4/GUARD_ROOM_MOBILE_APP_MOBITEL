@@ -1,58 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:sample_flutter_application_1/components/custom_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sample_flutter_application_1/constraints/colors.dart';
 import 'package:sample_flutter_application_1/constraints/textSizes.dart';
 
 class AlertDialogBox extends StatelessWidget {
-  final String alertDialogText;
 
   const AlertDialogBox({
     Key? key,
-    required this.alertDialogText,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Container(
-      // height: 200.0,
-      height: screenSize.height / 4.4514,
+      width: screenSize.width / 1.0549,
+      height: screenSize.height / 4.9460,
+      // width: 390,
+      // height: 180,
       decoration: BoxDecoration(
-        color: ApplicationColors.BG_LIGHT_BLUE,
-        borderRadius: BorderRadius.circular(20.0),
+        color: ApplicationColors.CUSTOM_ERROR_ALERT_BOX,
+        borderRadius: BorderRadius.circular(4.0),
+        border: Border.all(
+          color: ApplicationColors.RED_COLOR,
+          width: 1,
+        ),
       ),
       child: Column(children: <Widget>[
         Container(
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
+          child: SvgPicture.asset('assets/images/warning.svg',
+              width: screenSize.width / 9.3506,
+              height: screenSize.width / 9.3506
+              // width: 44,
+              // height: 44
+              ),
+        ),
+        Container(
+          margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
           child: Text(
-            alertDialogText,
+            'Error',
+            textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: ApplicationTextSizes.customAlertDialog,
-                fontWeight: FontWeight.bold,
-                color: ApplicationColors.PURE_BLACK),
+              fontSize: ApplicationTextSizes.FInalResponseAlertTextTitle,
+              fontWeight: ApplicationTextWeights.PageTitleTextWeight,
+              fontFamily: 'Poppins',
+              color: ApplicationColors.RED_COLOR,
+            ),
           ),
         ),
         Container(
-              margin: const EdgeInsets.fromLTRB(25.0, 15.0, 25.0, 0.0),
-              child: CustomButton(
-                onPress: () {
-                  Navigator.of(context).pop(); 
-                },
-                innerText: 'Okay',
-                backgroundColor: ApplicationColors.PURE_WHITE,
-                borderColor: ApplicationColors.MAIN_COLOR_BLUE,
-                  borderWidth: 0.0,
-                borderRadius: 10,
-                // buttonWidth: 150,
-                // buttonHeight: 40,
-                buttonWidth: screenSize.width / 2.7432,
-                buttonHeight: screenSize.height / 22.2571,
-                textStyles: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins',
-                    color: ApplicationColors.PURE_BLACK),
-              ),
+          margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
+          child: Text(
+            'Unable to continue due to invalid inputs. Kindly review and correct the information before attempting to proceed.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: ApplicationTextSizes.FInalResponseAlertText,
+              fontWeight: ApplicationTextWeights.UserInputsLabelWeight,
+              fontFamily: 'Poppins',
+              color: ApplicationColors.ALERT_BOX_TEXT_COLOR,
             ),
+          ),
+        ),
       ]),
     );
   }

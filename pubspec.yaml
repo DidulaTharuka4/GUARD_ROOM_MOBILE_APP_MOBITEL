@@ -86,6 +86,7 @@ flutter:
     - assets/images/Calender.svg
     - assets/images/logout-box-line.svg
     - assets/images/sucess.svg
+    - assets/images/warning.svg
 
     # - assets/fonts/Poppins-Regular.ttf
 

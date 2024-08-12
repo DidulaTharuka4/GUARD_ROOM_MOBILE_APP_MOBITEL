@@ -179,8 +179,9 @@ class _DailyTrip extends State<DailyTrip> {
         return AlertDialog(
           contentPadding: EdgeInsets.all(0.0),
           content: AlertDialogBox(
-              alertDialogText:
-                  'Cannot proceed with invalid inputs! Please try again.'),
+              // alertDialogText:
+              //     'Cannot proceed with invalid inputs! Please try again.'
+          ),
         );
       },
     );
@@ -194,8 +195,9 @@ class _DailyTrip extends State<DailyTrip> {
         return AlertDialog(
           contentPadding: EdgeInsets.all(0.0),
           content: AlertDialogBox(
-              alertDialogText:
-                  '“Mandatory fields (*) cannot be empty! Please try again.'),
+              // alertDialogText:
+              //     '“Mandatory fields (*) cannot be empty! Please try again.'
+          ),
         );
       },
     );

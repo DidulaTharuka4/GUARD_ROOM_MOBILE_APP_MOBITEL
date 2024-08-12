@@ -60,8 +60,9 @@ class _TestPage extends State<TestPage> {
         return AlertDialog(
           contentPadding: EdgeInsets.all(0.0),
           content: AlertDialogBox(
-              alertDialogText:
-                  'Cannot proceed with invalid inputs! Please try again.'),
+              // alertDialogText:
+              //     'Cannot proceed with invalid inputs! Please try again.'
+          ),
           // minimumSize: Size(buttonWidth, buttonHeight),
         );
       },

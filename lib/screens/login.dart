@@ -67,8 +67,9 @@ class _LoginPageState extends State<LoginPage> {
         return AlertDialog(
           contentPadding: EdgeInsets.all(0.0),
           content: AlertDialogBox(
-              alertDialogText:
-                  'Cannot proceed with invalid inputs! Please try again.'),
+              // alertDialogText:
+              //     'Cannot proceed with invalid inputs! Please try again.'
+          ),
         );
       },
     );

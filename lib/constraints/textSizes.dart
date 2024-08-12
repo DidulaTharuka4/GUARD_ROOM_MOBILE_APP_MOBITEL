@@ -15,7 +15,8 @@ class ApplicationTextSizes {
 
   static const TypeSelectotPageTitle = 23.0;
   static const SelectorButtonTitleValue = 24.0;
-  static const FInalResponseAlertText = 20.0;
+  static const FInalResponseAlertTextTitle = 20.0;
+  static const FInalResponseAlertText = 12.0;
 }
 
 class ApplicationTextWeights {
