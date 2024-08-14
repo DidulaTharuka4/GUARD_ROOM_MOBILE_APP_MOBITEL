@@ -5,12 +5,11 @@ import 'package:Guard_Room_Application/constraints/token.dart';
 import 'package:Guard_Room_Application/models/vehicle_out_with_temp_model.dart';
 import 'package:Guard_Room_Application/models/vehicle_out_without_temp_model.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:sample_flutter_application_1/constraints/api_services.dart';
 // import 'package:sample_flutter_application_1/constraints/serviceURL.dart';
 // import 'dart:convert';
-import 'package:logger/logger.dart';
-
 // import 'package:sample_flutter_application_1/constraints/token.dart';
 // import 'package:sample_flutter_application_1/models/vehicle_out_with_temp_model.dart';
 // import 'package:sample_flutter_application_1/models/vehicle_out_without_temp_model.dart';
@@ -54,17 +53,7 @@ class VehicleOutProvider with ChangeNotifier {
       vehicleOutWithTemp =
           VehicleOutWithTempResponse.fromJson(withTempResponseBody);
 
-      // print(withTempResponse.statusCode);
-      // logger.i(withTempResponse.statusCode);
-      // print(withTempRequestBody);
-      // logger.i(withTempRequestBody);
-      // print('awasanaya');
-      logger.i('wewewewew');
-      // print(withTempResponse.body);
-      // logger.i(withTempResponse.body);
-      logger.i(withTempResponseBody);
-      logger.i('awasanaya');
-
+      logger.i('vehicle out with temp response : ${withTempResponseBody}');
 
       // if (withTempResponse.statusCode == 200) {
       //   final withTempResponseData = json.decode(withTempResponse.body);
@@ -76,8 +65,7 @@ class VehicleOutProvider with ChangeNotifier {
       //   throw Exception('Failed to VehicleOutWithTempProvider');
       // }
     } catch (error) {
-      print(
-          'Error occurred in VehicleOutWithTempProvider providerrrrr: $error');
+      logger.i('Error occurred in Vehicle Out With Temp Provider : $error');
       rethrow;
     } finally {
       _isLoading = false;
@@ -109,17 +97,7 @@ class VehicleOutProvider with ChangeNotifier {
       vehicleOutWithoutTemp =
             VehicleOutWithoutTempResponse.fromJson(withoutTempResponseBody);
 
-      // print('ok ok ok');
-      logger.i('ok ok ok');
-      // print(withoutTempRequestBody);
-      // logger.i(withoutTempRequestBody);
-      // print(withoutTempResponse.body);
-      // logger.i(withoutTempResponse.body);
-      // print(withoutTempResponse.statusCode);
-      // logger.i(withoutTempResponse.statusCode);
-      logger.i(withoutTempResponseBody);
-      // print('ko ko ko');
-      logger.i('ko ko ko');
+      logger.i('vehicle out without temp response : ${withoutTempResponseBody}');
 
       // if (withoutTempResponse.statusCode == 200) {
       //   final withoutTempResponseData = json.decode(withoutTempResponse.body);
@@ -134,7 +112,7 @@ class VehicleOutProvider with ChangeNotifier {
       //   throw Exception('Failed to VehicleOutWithTempProvider');
       // }
     } catch (error) {
-      print('Error occurred in VehicleOutWithoutTempProvider provider: $error');
+      logger.i('Error occurred in Vehicle Out Without Temp Provider : $error');
       rethrow;
     } finally {
       _isLoading = false;

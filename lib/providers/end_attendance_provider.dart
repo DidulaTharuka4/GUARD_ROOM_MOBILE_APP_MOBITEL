@@ -5,12 +5,11 @@ import 'package:Guard_Room_Application/constraints/token.dart';
 import 'package:Guard_Room_Application/models/end_attendance_with_temp_model.dart';
 import 'package:Guard_Room_Application/models/end_attendance_without_temp_model.dart';
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+// import 'package:http/http.dart' as http;
 // import 'package:sample_flutter_application_1/constraints/api_services.dart';
 // import 'package:sample_flutter_application_1/constraints/serviceURL.dart';
 // import 'dart:convert';
-
 // import 'package:sample_flutter_application_1/constraints/token.dart';
 // import 'package:sample_flutter_application_1/models/end_attendance_with_temp_model.dart';
 // import 'package:sample_flutter_application_1/models/end_attendance_without_temp_model.dart';
@@ -55,11 +54,7 @@ class EndAttendanceProvider with ChangeNotifier {
             EndAttendanceWithTempResponse.fromJson(withTempResponseBody);
 
 
-      // logger.i('kikikik');
-      logger.i(withTempResponseBody);
-      // logger.i('ererererere');
-      // print(withTempResponse.statusCode);
-      // print('iiiiiii');
+      logger.i('end attendance with temp response : ${withTempResponseBody}');
 
       // if (withTempResponse.statusCode == 200) {
       //   final withTempResponseData = json.decode(withTempResponse.body);
@@ -71,7 +66,7 @@ class EndAttendanceProvider with ChangeNotifier {
       //   throw Exception('Failed to EndAttendanceWithTempProvider');
       // }
     } catch (error) {
-      print('Eror occurred in EndAttendanceWithTempProvider provider: $error');
+      print('Eror occurred in End Attendance With Temp Provider : $error');
       rethrow;
     } finally {
       _isLoading = false;
@@ -103,13 +98,7 @@ class EndAttendanceProvider with ChangeNotifier {
       endPostAttendanceWithoutTemp =
             EndAttendanceWithoutTempResponse.fromJson(withoutTempResponseBody);
 
-      // print('aaaaaaaa');
-      logger.i('aaaaaaaa');
-      // print(withoutTempRequestBody);
-      logger.i(withoutTempResponseBody);
-      // print(withoutTempResponse.statusCode);
-      // print('llllll');
-      logger.i('llllll');
+      logger.i('end attendance without temp response : ${withoutTempResponseBody}');
 
       // if (withoutTempResponse.statusCode == 200) {
       //   final withoutTempResponseData = json.decode(withoutTempResponse.body);
@@ -121,7 +110,7 @@ class EndAttendanceProvider with ChangeNotifier {
       //   throw Exception('Failed to EndAttendanceWithTempProvider');
       // }
     } catch (error) {
-      print('Error occurred in EndAttendanceWithTempProvider provider: $error');
+      logger.i('Error occurred in End Attendance Without Temp Provider : $error');
       rethrow;
     } finally {
       _isLoading = false;

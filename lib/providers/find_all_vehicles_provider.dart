@@ -4,16 +4,17 @@ import 'package:Guard_Room_Application/constraints/serviceURL.dart';
 import 'package:Guard_Room_Application/constraints/token.dart';
 import 'package:Guard_Room_Application/models/find_all_vehicles_model.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:sample_flutter_application_1/constraints/api_services.dart';
 // import 'package:sample_flutter_application_1/constraints/serviceURL.dart';
 // import 'dart:convert';
-
 // import 'package:sample_flutter_application_1/constraints/token.dart';
 // import 'package:sample_flutter_application_1/models/find_all_vehicles_model.dart';
 // import 'package:sample_flutter_application_1/constraints/headers.dart';
 
 class FindAllVehiclesProvider with ChangeNotifier {
+  var logger = Logger();
   String? _token;
   bool _isLoading = false;
   FindAllVehiclesResponse? getAllVehicles;
@@ -52,6 +53,8 @@ class FindAllVehiclesProvider with ChangeNotifier {
       getAllVehicles =
             FindAllVehiclesResponse.fromJson(responseBody);
 
+      logger.i('all vehicle details : ${responseBody}');
+
       // if (response.statusCode == 200) {
       //   final responseData = json.decode(response.body);
       //   getAllVehicles =
@@ -60,7 +63,7 @@ class FindAllVehiclesProvider with ChangeNotifier {
       //   throw Exception('Failed to FindAllVehiclesProvider');
       // }
     } catch (error) {
-      // print('Error occurred in FindAllVehiclesProvider provider: $error');
+      logger.i('Error occurred in Find All Vehicles Provider provider: $error');
       rethrow;
     } finally {
       _isLoading = false;

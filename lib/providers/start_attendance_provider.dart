@@ -5,12 +5,11 @@ import 'package:Guard_Room_Application/constraints/token.dart';
 import 'package:Guard_Room_Application/models/start_attendance_with_temp_model.dart';
 import 'package:Guard_Room_Application/models/start_attendance_without_temp_model.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:sample_flutter_application_1/constraints/api_services.dart';
 // import 'package:sample_flutter_application_1/constraints/serviceURL.dart';
 // import 'dart:convert';
-import 'package:logger/logger.dart';
-
 // import 'package:sample_flutter_application_1/constraints/token.dart';
 // import 'package:sample_flutter_application_1/models/start_attendance_with_temp_model.dart';
 // import 'package:sample_flutter_application_1/models/start_attendance_without_temp_model.dart';
@@ -46,10 +45,7 @@ class StartAttendanceProvider with ChangeNotifier {
       //   body: json.encode(withTempRequestBody),
       // );
 
-      // logger.i(url);
-      // logger.i(withTempHeaders);
-      logger.i(withTempRequestBody);
-      // logger.i('oooooo');
+      // logger.i(withTempRequestBody);
 
       final withTempResponseBody =
           await apiService.postRequest(url, withTempHeaders, withTempRequestBody);
@@ -57,14 +53,7 @@ class StartAttendanceProvider with ChangeNotifier {
       startPostAttendanceWithTemp =
             StartAttendanceWithTempResponse.fromJson(withTempResponseBody);
 
-      // print(withTempResponse.statusCode);
-      // print(withTempResponseBody);
-      logger.i(withTempResponseBody);
-      // logger.i(withTempResponse.statusCode);
-      // print(withTempResponse.body);
-      // logger.i(withTempResponse.body);
-      // print('oooooo');
-      // logger.i('oooooo');
+      logger.i('start attendance with temp response : ${withTempResponseBody}');
 
       // if (withTempResponse.statusCode == 200) {
       //   final withTempResponseData = json.decode(withTempResponse.body);
@@ -74,6 +63,7 @@ class StartAttendanceProvider with ChangeNotifier {
       //   throw Exception('Failed to AttendanceWithTempProvider');
       // }
     } catch (error) {
+      logger.i('Error occurred in start Attendance With Temp provider : $error');
       rethrow;
     } finally {
       _isLoading = false;
@@ -106,14 +96,7 @@ class StartAttendanceProvider with ChangeNotifier {
             StartAttendanceWithoutTempResponse.fromJson(
                 withoutTempResponseBody);
 
-      logger.i('veeee');
-
-      // print(withoutTempResponse.statusCode);
-      // logger.i(withoutTempResponse.statusCode);
-      logger.i(withoutTempResponseBody);
-      logger.i('this is att');
-      // print(withoutTempResponse.body);
-      // logger.i(withoutTempResponse.body);
+      logger.i('start attendance without temp response : ${withoutTempResponseBody}');
 
       // if (withoutTempResponse.statusCode == 200) {
       //   final withoutTempResponseData = json.decode(withoutTempResponse.body);
@@ -124,6 +107,7 @@ class StartAttendanceProvider with ChangeNotifier {
       //   throw Exception('Failed to AttendanceWithTempProvider');
       // }
     } catch (error) {
+      logger.i('Error occurred in start attendance without temp provider : $error');
       rethrow;
     } finally {
       _isLoading = false;

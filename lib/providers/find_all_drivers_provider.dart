@@ -4,16 +4,17 @@ import 'package:Guard_Room_Application/constraints/serviceURL.dart';
 import 'package:Guard_Room_Application/constraints/token.dart';
 import 'package:Guard_Room_Application/models/find_all_drivers_model.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:sample_flutter_application_1/constraints/api_services.dart';
 // import 'package:sample_flutter_application_1/constraints/serviceURL.dart';
 // import 'dart:convert';
-
 // import 'package:sample_flutter_application_1/constraints/token.dart';
 // import 'package:sample_flutter_application_1/models/find_all_drivers_model.dart';
 // import 'package:sample_flutter_application_1/constraints/headers.dart';
 
 class FindAllDriversProvider with ChangeNotifier {
+  var logger = Logger();
   String? _token;
   bool _isLoading = false;
   FindAllDriversResponse? getAllDrivers;
@@ -52,6 +53,8 @@ class FindAllDriversProvider with ChangeNotifier {
 
       getAllDrivers = FindAllDriversResponse.fromJson(responseBody);
 
+      logger.i('all driver details : ${responseBody}');
+
       // if (response.statusCode == 200) {
       //   final responseData = json.decode(response.body);
       //   getAllDrivers = FindAllDriversResponse.fromJson(responseData);
@@ -59,7 +62,7 @@ class FindAllDriversProvider with ChangeNotifier {
       //   throw Exception('Failed to FindAllDriversProvider');
       // }
     } catch (error) {
-      // print('Error occurred in FindAllDriversProvider provider: $error');
+      logger.i('Error occurred in Find All Drivers Provider: $error');
       rethrow;
     } finally {
       _isLoading = false;
