@@ -1,18 +1,28 @@
+import 'package:Guard_Room_Application/components/selector_button.dart';
+import 'package:Guard_Room_Application/constraints/colors.dart';
+import 'package:Guard_Room_Application/constraints/marginValues.dart';
+import 'package:Guard_Room_Application/constraints/textSizes.dart';
+import 'package:Guard_Room_Application/constraints/token.dart';
+import 'package:Guard_Room_Application/providers/find_all_drivers_provider.dart';
+import 'package:Guard_Room_Application/providers/find_all_vehicles_provider.dart';
+import 'package:Guard_Room_Application/screens/daily_attendance.dart';
+import 'package:Guard_Room_Application/screens/daily_trip.dart';
+import 'package:Guard_Room_Application/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sample_flutter_application_1/components/selector_button.dart';
-import 'package:sample_flutter_application_1/constraints/textSizes.dart';
-import 'package:sample_flutter_application_1/constraints/token.dart';
-import 'package:sample_flutter_application_1/providers/find_all_drivers_provider.dart';
-import 'package:sample_flutter_application_1/providers/find_all_vehicles_provider.dart';
-// import 'package:sample_flutter_application_1/providers/login_provider.dart';
-import 'package:sample_flutter_application_1/screens/daily_attendance.dart';
-import 'package:sample_flutter_application_1/screens/daily_trip.dart';
-import 'package:sample_flutter_application_1/screens/login.dart';
-// import 'package:sample_flutter_application_1/screens/test_page.dart';
-import 'package:sample_flutter_application_1/constraints/colors.dart';
-import 'package:sample_flutter_application_1/constraints/marginValues.dart';
+// import 'package:sample_flutter_application_1/components/selector_button.dart';
+// import 'package:sample_flutter_application_1/constraints/textSizes.dart';
+// import 'package:sample_flutter_application_1/constraints/token.dart';
+// import 'package:sample_flutter_application_1/providers/find_all_drivers_provider.dart';
+// import 'package:sample_flutter_application_1/providers/find_all_vehicles_provider.dart';
+// // import 'package:sample_flutter_application_1/providers/login_provider.dart';
+// import 'package:sample_flutter_application_1/screens/daily_attendance.dart';
+// import 'package:sample_flutter_application_1/screens/daily_trip.dart';
+// import 'package:sample_flutter_application_1/screens/login.dart';
+// // import 'package:sample_flutter_application_1/screens/test_page.dart';
+// import 'package:sample_flutter_application_1/constraints/colors.dart';
+// import 'package:sample_flutter_application_1/constraints/marginValues.dart';
 import 'package:logger/logger.dart';
 
 class TypeSelector extends StatefulWidget {
@@ -112,7 +122,7 @@ class _TypeSelector extends State<TypeSelector> {
                     bottom: 5,
                     left: 20.5,
                     child: SvgPicture.asset(
-                        'assets/images/SLTMobitel_Logo_OnLight.svg',
+                        'assets/images/SLTMobitel_Logo.svg',
                         // width: 90.7214,
                         // height: 46.1455,
                         width: screenSize.width / 4.5350,

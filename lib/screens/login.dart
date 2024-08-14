@@ -1,16 +1,25 @@
+import 'package:Guard_Room_Application/components/custom_button.dart';
+import 'package:Guard_Room_Application/constraints/colors.dart';
+import 'package:Guard_Room_Application/constraints/marginValues.dart';
+import 'package:Guard_Room_Application/constraints/textSizes.dart';
+import 'package:Guard_Room_Application/constraints/token.dart';
+import 'package:Guard_Room_Application/providers/login_provider.dart';
+import 'package:Guard_Room_Application/screens/type_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sample_flutter_application_1/constraints/marginValues.dart';
-import 'package:sample_flutter_application_1/constraints/textSizes.dart';
-import 'package:sample_flutter_application_1/constraints/token.dart';
-import 'package:sample_flutter_application_1/providers/login_provider.dart';
+// import 'package:sample_flutter_application_1/constraints/marginValues.dart';
+// import 'package:sample_flutter_application_1/constraints/textSizes.dart';
+// import 'package:sample_flutter_application_1/constraints/token.dart';
+// import 'package:sample_flutter_application_1/providers/login_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sample_flutter_application_1/screens/type_selector.dart';
-import 'package:sample_flutter_application_1/components/custom_alert_dialog.dart';
-import 'package:sample_flutter_application_1/components/custom_button.dart';
-import 'package:sample_flutter_application_1/constraints/colors.dart';
+// import 'package:sample_flutter_application_1/screens/type_selector.dart';
+// import 'package:sample_flutter_application_1/components/custom_alert_dialog.dart';
+// import 'package:sample_flutter_application_1/components/custom_button.dart';
+// import 'package:sample_flutter_application_1/constraints/colors.dart';
+
+import '../components/custom_alert_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -135,9 +144,7 @@ class _LoginPageState extends State<LoginPage> {
     if (token == null) {
       showError(context);
       logger.i('Login Failed !');
-      // print(token);
     } else {
-      // print(token);
       logger.i('Login Successfully !');
       Navigator.push(
         context,
@@ -297,7 +304,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                   margin: ApplicationMarginValues.loginPageLogoMargin,
                   child: SvgPicture.asset(
-                      'assets/images/SLTMobitel_Logo_OnLight.svg',
+                      'assets/images/SLTMobitel_Logo.svg',
                       // width: 90.7214,
                       // height: 46.1455,
                       width: screenSize.width / 4.5350,

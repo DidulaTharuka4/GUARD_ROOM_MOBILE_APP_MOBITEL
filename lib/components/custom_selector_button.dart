@@ -1,6 +1,8 @@
+import 'package:Guard_Room_Application/constraints/colors.dart';
+import 'package:Guard_Room_Application/constraints/textSizes.dart';
 import 'package:flutter/material.dart';
-import 'package:sample_flutter_application_1/constraints/colors.dart';
-import 'package:sample_flutter_application_1/constraints/textSizes.dart';
+// import 'package:sample_flutter_application_1/constraints/colors.dart';
+// import 'package:sample_flutter_application_1/constraints/textSizes.dart';
 
 class CustomSelectorButton extends StatefulWidget {
   final VoidCallback changeToggleAction;

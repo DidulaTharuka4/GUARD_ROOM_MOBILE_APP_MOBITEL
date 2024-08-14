@@ -1,7 +1,9 @@
+import 'package:Guard_Room_Application/constraints/colors.dart';
+import 'package:Guard_Room_Application/constraints/textSizes.dart';
 import 'package:flutter/material.dart';
-import 'package:sample_flutter_application_1/constraints/colors.dart';
+// import 'package:sample_flutter_application_1/constraints/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sample_flutter_application_1/constraints/textSizes.dart';
+// import 'package:sample_flutter_application_1/constraints/textSizes.dart';
 
 class SelectorButton extends StatelessWidget {
   final String innerText;

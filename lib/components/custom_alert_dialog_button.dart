@@ -1,7 +1,10 @@
+import 'package:Guard_Room_Application/components/custom_button.dart';
+import 'package:Guard_Room_Application/constraints/colors.dart';
+import 'package:Guard_Room_Application/constraints/textSizes.dart';
 import 'package:flutter/material.dart';
-import 'package:sample_flutter_application_1/components/custom_button.dart';
-import 'package:sample_flutter_application_1/constraints/colors.dart';
-import 'package:sample_flutter_application_1/constraints/textSizes.dart';
+// import 'package:sample_flutter_application_1/components/custom_button.dart';
+// import 'package:sample_flutter_application_1/constraints/colors.dart';
+// import 'package:sample_flutter_application_1/constraints/textSizes.dart';
 
 class AlertDialogBoxSelector extends StatelessWidget {
   final String alertDialogText;

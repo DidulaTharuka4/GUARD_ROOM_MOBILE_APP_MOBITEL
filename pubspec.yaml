@@ -1,5 +1,5 @@
-name: sample_flutter_application_1
-description: "A new Flutter project."
+name: Guard_Room_Application
+description: "A new Flutter project for Guard Room Mobile Application."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -56,6 +56,12 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
   json_serializable: ^6.8.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/SLTMobitel_Logo.svg"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -64,19 +70,8 @@ dev_dependencies:
 flutter:
 
   assets: 
-    # - lib/Images/logo.png
-    # - lib/Images/calendarTransparent.png
-    # - lib/Images/circle_cross.png
-    # - assets/images/circle_cross.png
-    # - assets/images/logo.png
-    # - assets/images/calendarTransparent.png
-    # - assets/images/clockIcon.png
-    # - assets/images/cancel.png
-    # - assets/images/Footer.png
-    # - assets/images/SLTMobitel_Logo_OnLight.png
-
     - assets/images/Footer.svg
-    - assets/images/SLTMobitel_Logo_OnLight.svg          
+    - assets/images/SLTMobitel_Logo.svg          
     - assets/images/Attendance.svg
     - assets/images/Trips.svg
     - assets/images/Menu_dots.svg
