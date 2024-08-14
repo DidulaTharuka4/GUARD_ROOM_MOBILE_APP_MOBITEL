@@ -17,8 +17,6 @@ class CustomSelectorButton extends StatefulWidget {
 
 class _CustomSelectorButtonState extends State<CustomSelectorButton> {
   bool isSelected = true;
-  // isNotSelected =! isSelected
-  // bool isNotSelected = false;
 
   late VoidCallback _changeToggleAction;
 
@@ -26,14 +24,6 @@ class _CustomSelectorButtonState extends State<CustomSelectorButton> {
     super.initState();
     _changeToggleAction = widget.changeToggleAction;
   }
-
-  // void _toggleSelected() {
-  //   print(isSelected);
-  //   setState(() {
-  //     isSelected = !isSelected;
-  //   });
-  //   print(isSelected);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +34,6 @@ class _CustomSelectorButtonState extends State<CustomSelectorButton> {
             setState(() {
               isSelected = !isSelected;
             });
-            // _toggleSelected();
             _changeToggleAction();
           },
           child: Container(
@@ -81,8 +70,6 @@ class _CustomSelectorButtonState extends State<CustomSelectorButton> {
       SizedBox(width: 5),
       Text(
         'km',
-        // mileageUnit,
-        // Provider.of<MileageUnit>(context).unit,
         style: TextStyle(
             fontSize: ApplicationTextSizes.userInputFieldLabelValue,
             fontFamily: 'Poppins',
@@ -97,7 +84,6 @@ class _CustomSelectorButtonState extends State<CustomSelectorButton> {
             setState(() {
               isSelected = !isSelected;
             });
-            // _toggleSelected();
             _changeToggleAction();
           },
           child: Container(
@@ -134,8 +120,6 @@ class _CustomSelectorButtonState extends State<CustomSelectorButton> {
       SizedBox(width: 5),
       Text(
         'Miles',
-        // mileageUnit,
-        // Provider.of<MileageUnit>(context).unit,
         style: TextStyle(
             fontSize: ApplicationTextSizes.userInputFieldLabelValue,
             fontFamily: 'Poppins',

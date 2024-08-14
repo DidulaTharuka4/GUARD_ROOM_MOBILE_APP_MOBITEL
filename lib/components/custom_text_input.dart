@@ -1,6 +1,5 @@
 import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:flutter/material.dart';
-// import 'package:sample_flutter_application_1/constraints/colors.dart';
 
 class CustomTextInput extends StatelessWidget {
   final String titleText;

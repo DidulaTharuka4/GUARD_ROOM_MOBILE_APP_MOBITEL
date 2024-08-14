@@ -16,11 +16,10 @@ class AlertDialogBoxSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Container(
-      // height: 240.0,
-      // height: screenSize.height / 3.6142,
-      width: 390,
-      height: 180,
-      // height: screenSize.height / 4.0467,
+      // width: 390,
+      // height: 180,
+      width: screenSize.width / 1.0549,
+      height: screenSize.height / 4.9460,
       decoration: BoxDecoration(
         color: ApplicationColors.PURE_WHITE,
         borderRadius: BorderRadius.circular(4.0),

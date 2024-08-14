@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> saveToken(String token) async {
@@ -11,7 +12,8 @@ Future<String?> getToken() async {
 }
 
 void clearToken() async {
+  var logger = Logger();
   final prefs = await SharedPreferences.getInstance();
   await prefs.remove('token');
-  // print('Token cleared');
+  logger.i('Token cleared');
 }
