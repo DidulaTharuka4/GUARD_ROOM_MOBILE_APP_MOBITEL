@@ -6,14 +6,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:sample_flutter_application_1/constraints/textSizes.dart';
 
 class SuccessStatusAlertBox extends StatelessWidget {
-  final String successAlertMainText;
-  final String successAlertSubText;
+  // final String successAlertMainText;
+  // final String successAlertSubText;
   final bool successStatus;
 
   const SuccessStatusAlertBox({
     Key? key,
-    required this.successAlertMainText,
-    required this.successAlertSubText,
+    // required this.successAlertMainText,
+    // required this.successAlertSubText,
     required this.successStatus,
   }) : super(key: key);
   @override

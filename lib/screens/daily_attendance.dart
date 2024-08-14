@@ -320,21 +320,26 @@ class _DailyAttendance extends State<DailyAttendance> {
       } else if (vehicleID != null && driverID == null) {
         logger.i('invalid driver license number !');
       } else {
-        print('all are okay');
-        print(vehicleID);
+        logger.i('all are okay');
+        logger.i('Vehicle ID - ${vehicleID}');
         workInButtonDialogBox(context);
       }
     } else if (isRequiredFilled == false && isAllFilled == true) {
-      print('errors with required fields');
+      // print('errors with required fields');
+      logger.i('errors with required fields');
+
       invalidFieldAlertDialogBox(context);
     } else if (isRequiredFilled == true && isAllFilled == false) {
-      print('errors with all fields');
+      // print('errors with all fields');
+      logger.i('errors with all fields');
+
       invalidFieldAlertDialogBox(context);
     } else if (isRequiredFilled == false && isAllFilled == false) {
-      print('errors with required and all inputs');
+      // print('errors with required and all inputs');
+      logger.i('errors with required and all inputs');
       invalidFieldAlertDialogBox(context);
       getCurrentDate();
-      print(combinedDateTime);
+      logger.i(combinedDateTime);
     }
   }
 
@@ -355,7 +360,7 @@ class _DailyAttendance extends State<DailyAttendance> {
       } else if (vehicleID != null && driverID == null) {
         logger.i('invalid driver license number !');
       } else {
-        print('all are okay');
+        logger.i('all are okay');
         workOutButtonDialogBox(context);
       }
     } else if (isRequiredFilled == false && isAllFilled == true) {
@@ -368,7 +373,6 @@ class _DailyAttendance extends State<DailyAttendance> {
       print('errors with required and all inputs');
       invalidFieldAlertDialogBox(context);
       getCurrentDate();
-      // print(combinedDateTime);
     }
   }
 
@@ -400,7 +404,6 @@ class _DailyAttendance extends State<DailyAttendance> {
           contentPadding: EdgeInsets.all(0.0),
           content: AlertDialogBoxSelector(
               pressForYesButton: () {
-                // print('@#@#@#@');
                 endWithWithoutSelector();
                 Navigator.of(context).pop();
               },
@@ -424,10 +427,8 @@ class _DailyAttendance extends State<DailyAttendance> {
   void endWithWithoutSelector() {
     if (_replaceDriverNICController.text.isEmpty == true &&
         _replaceVehicleNumberController.text.isEmpty == true) {
-      print('cccccccccc');
       endAttendanceWithoutTempFunc();
     } else {
-      print('dddddddddd');
       endAttendanceWithTempFunc();
     }
   }
@@ -455,11 +456,8 @@ class _DailyAttendance extends State<DailyAttendance> {
       await Provider.of<StartAttendanceProvider>(context, listen: false)
           .startAttendanceWithTemp(startWithTempRequestBody);
 
-      // successCall();
     } catch (error) {
-      // print('Error occurred: $error');
       logger.i('Error occurred 67: $error');
-      // successCall();
     }
     logger.i('ephe');
     successCall();
@@ -486,17 +484,10 @@ class _DailyAttendance extends State<DailyAttendance> {
     try {
       await Provider.of<StartAttendanceProvider>(context, listen: false)
           .startAttendanceWithoutTemp(startWithoutTempRequestBody);
-
-      // successCall();
-
-      logger.i('finally done');
     } catch (error) {
-      // print('Error occurred 67: $error');
       logger.i('Error occurred 67: $error');
-      // successCall();
     }
     logger.i('fphe');
-
     successCall();
     setState(() {
       vehicleID = null;
@@ -525,9 +516,7 @@ class _DailyAttendance extends State<DailyAttendance> {
 
       // successCall();
     } catch (error) {
-      // print('Error occurred: $error');
       logger.i('Error occurred 67: $error');
-      // successCall();
     }
 
     logger.i('gphe');
@@ -551,27 +540,19 @@ class _DailyAttendance extends State<DailyAttendance> {
       'vehicleAttendanceDto': vehicleAttendanceDto
     };
     try {
-      // await Provider.of<EndAttendanceProvider>(context, listen: false)
-      //     .EndAttendanceWithoutTemp(vehicleID, driverID,
-      //         _currentMileageController.text, userName, combinedDateTime);
-
       await Provider.of<EndAttendanceProvider>(context, listen: false)
           .EndAttendanceWithoutTemp(endWithoutTempRequestBody);
 
       // successCall();
     } catch (error) {
-      // print('Error occurred: $error');
       logger.i('Error occurred 67: $error');
-      // successCall();
     }
-    // logger.i('hphe');
+    logger.i('hphe');
     successCall();
     setState(() {
       vehicleID = null;
     });
   }
-
-  // final bool successStatus;
 
   bool? successStatusStartWithoutTemp;
   bool? successStatusStartWithTemp;
@@ -586,10 +567,7 @@ class _DailyAttendance extends State<DailyAttendance> {
     final endAttendanceProvider =
         Provider.of<EndAttendanceProvider>(context, listen: false);
 
-    // logger.i(startAttendanceProvider.startAttendanceWithoutTempResponse!.success);
     logger.i('1 ');
-    // logger.i(successStatus);
-    logger.i('2');
 
     setState(() {
       successStatusStartWithoutTemp =
@@ -605,27 +583,17 @@ class _DailyAttendance extends State<DailyAttendance> {
           endAttendanceProvider.endAttendanceWithTempResponse?.success;
     });
 
-    // bool? successStatus;
-    logger.i('ao');
-
     if (successStatusStartWithoutTemp == true ||
         successStatusStartWithTemp == true ||
         successStatusEndWithoutTemp == true ||
         successStatusEndWithTemp == true) {
-      // setState(() {
-      //   successStatus = true;
-      // });
       successStatus = true;
     } else {
-      // setState(() {
-      //   successStatus = false;
-      // });
       successStatus = false;
     }
 
-    logger.i('wait stop here');
-    logger.i(successStatus);
-    logger.i('wait go ');
+    logger.i('Success Status : ${successStatus}');
+
     finalResponseStatusDialogBox(context);
   }
 
@@ -639,8 +607,9 @@ class _DailyAttendance extends State<DailyAttendance> {
           content: SuccessStatusAlertBox(
               // successAlertMainText: '${finalResponseStatus}',
               successStatus: successStatus!,
-              successAlertMainText: 'Saved Successfully',
-              successAlertSubText: 'Saved your item successfully'),
+              // successAlertMainText: 'Saved Successfully',
+              // successAlertSubText: 'Saved your item successfully'
+          ),
         );
       },
     );
@@ -655,7 +624,6 @@ class _DailyAttendance extends State<DailyAttendance> {
   void toggleExpansion() {
     isToggled = !isToggled;
     setState(() {
-      // isToggled = !isToggled;
       if (isToggled == false) {
         controller.collapse();
       } else {
@@ -672,9 +640,6 @@ class _DailyAttendance extends State<DailyAttendance> {
     final findAllVehiclesProvider =
         Provider.of<FindAllVehiclesProvider>(context);
     final findAllDriversProvider = Provider.of<FindAllDriversProvider>(context);
-    // final startAttendanceProvider =
-    //     Provider.of<StartAttendanceProvider>(context);
-    // final endAttendanceProvider = Provider.of<EndAttendanceProvider>(context);
     final loginProvider = Provider.of<LoginProvider>(context);
     return Scaffold(
         backgroundColor: ApplicationColors.PURE_WHITE,
@@ -822,42 +787,42 @@ class _DailyAttendance extends State<DailyAttendance> {
                       // flex: 6,
                       child: Row(
                         children: <Widget>[
+                          // Expanded(
+                          //   flex: 3,
+                          //   child: Column(
+                          //     children: [
+                          //       Text(
+                          //         'Province',
+                          //         style: TextStyle(
+                          //             fontSize: ApplicationTextSizes
+                          //                 .provinceDropdownTitle,
+                          //             fontWeight: FontWeight.bold),
+                          //       ),
+                          //       DropdownButton<String>(
+                          //         dropdownColor: ApplicationColors.PURE_WHITE,
+                          //         iconEnabledColor:
+                          //             ApplicationColors.PURE_BLACK,
+                          //         value: _selectedVehicleProvince,
+                          //         onChanged: (String? newValue) {
+                          //           setState(() {
+                          //             _selectedVehicleProvince = newValue;
+                          //           });
+                          //         },
+                          //         items: _provinceDropdownItems
+                          //             .map<DropdownMenuItem<String>>(
+                          //                 (String value) {
+                          //           return DropdownMenuItem<String>(
+                          //             value: value,
+                          //             child: Text(value),
+                          //           );
+                          //         }).toList(),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          // SizedBox(width: 10),
                           Expanded(
-                            flex: 3,
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Province',
-                                  style: TextStyle(
-                                      fontSize: ApplicationTextSizes
-                                          .provinceDropdownTitle,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                DropdownButton<String>(
-                                  dropdownColor: ApplicationColors.PURE_WHITE,
-                                  iconEnabledColor:
-                                      ApplicationColors.PURE_BLACK,
-                                  value: _selectedVehicleProvince,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _selectedVehicleProvince = newValue;
-                                    });
-                                  },
-                                  items: _provinceDropdownItems
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            flex: 7,
+                            // flex: 7,
                             child: TextField(
                               controller: _vehicleNumberController,
                               enabled:
@@ -889,7 +854,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      // flex: 4,
                       child: Row(
                         children: [
                           Text(
@@ -912,7 +876,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                         ],
                       ),
                     ),
-                    // SizedBox(height: 10),
                     Container(
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
                       child: TextFormField(
@@ -948,7 +911,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      // flex: 4,
                       child: Row(
                         children: [
                           Text(
@@ -971,7 +933,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                         ],
                       ),
                     ),
-                    // SizedBox(height: 10),
                     Container(
                         margin:
                             ApplicationMarginValues.textInputFieldInnerMargin,
@@ -1020,8 +981,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                             ),
                           ),
                         )
-                        // flex: 6,
-
                         ),
                   ],
                 ),
@@ -1065,7 +1024,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            // flex: 4,
                             child: Row(
                               children: [
                                 Text(
@@ -1088,64 +1046,54 @@ class _DailyAttendance extends State<DailyAttendance> {
                               ],
                             ),
                           ),
-                          // SizedBox(height: 10),
                           Container(
                             margin: ApplicationMarginValues
                                 .textInputFieldInnerMargin,
-                            // flex: 6,
                             child: Row(
                               children: <Widget>[
+                                // Expanded(
+                                //   flex: 4,
+                                //   child: Column(
+                                //     children: [
+                                //       Text(
+                                //         'Province',
+                                //         style: TextStyle(
+                                //             fontSize: 12.0,
+                                //             fontWeight: FontWeight.bold),
+                                //       ),
+                                //       DropdownButton<String>(
+                                //         dropdownColor:
+                                //             ApplicationColors.PURE_WHITE,
+                                //         iconEnabledColor:
+                                //             ApplicationColors.PURE_BLACK,
+                                //         value: _selectedReplaceVehicleProvince,
+                                //         onChanged: (String? newValue) {
+                                //           setState(() {
+                                //             _selectedReplaceVehicleProvince =
+                                //                 newValue;
+                                //           });
+                                //         },
+                                //         items: _replaceProvinceDropdownItems
+                                //             .map<DropdownMenuItem<String>>(
+                                //                 (String value) {
+                                //           return DropdownMenuItem<String>(
+                                //             value: value,
+                                //             child: Text(value),
+                                //           );
+                                //         }).toList(),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                // SizedBox(width: 10),
                                 Expanded(
-                                  flex: 4,
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        'Province',
-                                        style: TextStyle(
-                                            fontSize: 12.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      DropdownButton<String>(
-                                        dropdownColor:
-                                            ApplicationColors.PURE_WHITE,
-                                        iconEnabledColor:
-                                            ApplicationColors.PURE_BLACK,
-                                        value: _selectedReplaceVehicleProvince,
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            _selectedReplaceVehicleProvince =
-                                                newValue;
-                                          });
-                                        },
-                                        items: _replaceProvinceDropdownItems
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                Expanded(
-                                  flex: 6,
+                                  // flex: 6,
                                   child: TextFormField(
-                                    // enabled: _vehicleNumberController.text == null ? true : false,
-                                    // enabled: (if ( _vehicleNumberController.text == null) {
-                                    //   true;
-                                    // } else {
-                                    //   false;
-                                    // } ),
-                                    // _vehicleNumberController.text.isEmpty ? enabled : true : enabled : false
                                     enabled:
                                         _vehicleNumberController.text.isEmpty
                                             ? true
                                             : false,
                                     controller: _replaceVehicleNumberController,
-                                    // enabled: false,
                                     inputFormatters: [
                                       VehicleNumberTextInputFormatter()
                                     ],
@@ -1169,7 +1117,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            // flex: 4,
                             child: Row(
                               children: [
                                 Text(
@@ -1192,11 +1139,9 @@ class _DailyAttendance extends State<DailyAttendance> {
                               ],
                             ),
                           ),
-                          // SizedBox(height: 10),
                           Container(
                             margin: ApplicationMarginValues
                                 .textInputFieldInnerMargin,
-                            // flex: 6,
                             child: TextFormField(
                               controller: _replaceDriverNICController,
                               enabled: _driverLicenseController.text.isEmpty
@@ -1223,7 +1168,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            // flex: 4,
                             child: Row(
                               children: [
                                 Text(
@@ -1248,7 +1192,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                           ),
                           SizedBox(height: 10),
                           Container(
-                            // flex: 6,
                             child: TextFormField(
                               controller: _replaceCommentController,
                               maxLength: 100,
@@ -1272,7 +1215,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      // flex: 4,
                       child: Row(
                         children: [
                           Text(
@@ -1295,14 +1237,11 @@ class _DailyAttendance extends State<DailyAttendance> {
                         ],
                       ),
                     ),
-                    // SizedBox(height: 10),
                     Container(
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
-                      // flex: 6,
                       child: Column(
                         children: <Widget>[
                           Container(
-                            // flex: 6,
                             child: TextFormField(
                               // enabled: false,
                               controller: _currentMileageController,
@@ -1319,11 +1258,9 @@ class _DailyAttendance extends State<DailyAttendance> {
                               ),
                             ),
                           ),
-                          // SizedBox(height: 10),
                           Container(
                               margin:
                                   ApplicationMarginValues.mileageMarginValue,
-                              // flex: 4,
                               child: Row(
                                 children: [
                                   CustomSelectorButton(
@@ -1348,7 +1285,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      // flex: 4,
                       child: Row(
                         children: [
                           Text(
@@ -1371,7 +1307,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                         ],
                       ),
                     ),
-                    // SizedBox(height: 10),
                     Container(
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
                       // flex: 6,
@@ -1488,16 +1423,10 @@ class _DailyAttendance extends State<DailyAttendance> {
                             userName = loginProvider
                                 .loginresponse!.loginDetailsDto.userName;
                           });
-                          // print('${loginProvider.loginresponse!.loginDetailsDto.mobileNo}');
 
                           checkFilledRequiredFields();
                           checkFIlledAllFields();
                           workInButton();
-                          // vehicleID = null;
-                          setState(() {
-                            // _vehicleNumberController.clear();
-                            // vehicleID = null;
-                          });
                         },
                         innerText: 'Work-In',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_GREEN,
@@ -1523,10 +1452,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                       flex: 1,
                       child: CustomButton(
                         onPress: () {
-                          // setState(() {
-                          //   vehicleID = null;
-                          //   driverID = null;
-                          // });
                           print(_vehicleNumberController.text);
                           print('Work-Out Button Pressed!');
                           Provider.of<MileageUnit>(context, listen: false)
@@ -1602,11 +1527,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                           checkFilledRequiredFields();
                           checkFIlledAllFields();
                           workOutButton();
-
-                          setState(() {
-                            // _vehicleNumberController.clear();
-                            // vehicleID = null;
-                          });
                         },
                         innerText: 'Work-Out',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_BLUE,
@@ -1664,13 +1584,6 @@ class _DailyAttendance extends State<DailyAttendance> {
           ),
         ));
   }
-
-  void handleUserData() {
-    // Function to handle the user data
-    // logger.i(
-    //     'success - ${startAttendanceProvider.startAttendanceWithoutTempResponse!.errorDetailsList}');
-    print('Data fetched');
-  }
 }
 
 class VehicleNumberTextInputFormatter extends TextInputFormatter {
@@ -1704,80 +1617,3 @@ class DriverLicenseTextInputFormatter extends TextInputFormatter {
     );
   }
 }
-
-//------------------------------------------------------------------------------
-
-// class SuccessAlert extends StatefulWidget {
-//   @override
-//   _SuccessAlert createState() => _SuccessAlert();
-// }
-
-// class _SuccessAlert extends State<SuccessAlert> {
-//   var logger = Logger();
-//   void finalResponseStatusDialogBox(BuildContext context) {
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           contentPadding: EdgeInsets.all(0.0),
-//           content: SuccessStatusAlertBox(
-//               // successAlertMainText: '${finalResponseStatus}',
-//               successAlertMainText: 'Saved Successfully',
-//               successAlertSubText: 'Saved your item successfully'),
-//         );
-//       },
-//     );
-//   }
-//   @override
-//   Widget build(BuildContext context) {
-//     final startAttendanceProvider =
-//         Provider.of<StartAttendanceProvider>(context);
-//     return Scaffold(
-//       backgroundColor: ApplicationColors.PURE_WHITE,
-//         body: Container(
-//           child: SingleChildScrollView(
-//             padding: EdgeInsets.only(top: 0.0),
-//             child: Column(children: <Widget>[
-//               Container(margin: ApplicationMarginValues.bottomButtonMargin,
-//                 child:  CustomButton(
-//                         onPress: () {
-//                           // handleUserData();
-//                           finalResponseStatusDialogBox(context);
-//                           // hhhh
-//                           print('Work-In Button Pressed!');
-
-//                           logger.i('me uyane unath mal 6');
-//                           Future<void> fetchData() async {
-//                             await Future.delayed(Duration(seconds: 5));
-//                             logger.i(
-//                                 'success - ${startAttendanceProvider.startAttendanceWithoutTempResponse!.errorDetailsList}');
-//                             print('Data fetched');
-//                           }
-
-//                           logger.i(
-//                               'success - ${startAttendanceProvider.startAttendanceWithoutTempResponse!.errorDetailsList}');
-//                           logger.i('me uyane unath mal 7');
-//                         },
-//                         innerText: 'Work-In',
-//                         backgroundColor: ApplicationColors.BUTTON_COLOR_GREEN,
-//                         borderColor: ApplicationColors.BUTTON_COLOR_GREEN,
-//                         borderWidth: 0.0,
-//                         borderRadius: 4,
-//                         // buttonWidth: 200,
-//                         // buttonHeight: 45,
-//                         buttonWidth:200,
-//                         buttonHeight: 100,
-//                         textStyles: TextStyle(
-//                           fontSize:
-//                               ApplicationTextSizes.userInputFieldLabelValue,
-//                           fontFamily: 'Poppins',
-//                           fontWeight:
-//                               ApplicationTextWeights.UserInputsLabelWeight,
-//                           color: ApplicationColors.PURE_WHITE,
-//                         ),
-//                       ),
-//                     ), ]        
-//                 )))
-//         );
-//   }
-// }

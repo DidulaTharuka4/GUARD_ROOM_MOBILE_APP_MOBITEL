@@ -9,16 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:sample_flutter_application_1/constraints/marginValues.dart';
-// import 'package:sample_flutter_application_1/constraints/textSizes.dart';
-// import 'package:sample_flutter_application_1/constraints/token.dart';
-// import 'package:sample_flutter_application_1/providers/login_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:sample_flutter_application_1/screens/type_selector.dart';
-// import 'package:sample_flutter_application_1/components/custom_alert_dialog.dart';
-// import 'package:sample_flutter_application_1/components/custom_button.dart';
-// import 'package:sample_flutter_application_1/constraints/colors.dart';
-
 import '../components/custom_alert_dialog.dart';
 
 class LoginPage extends StatefulWidget {
@@ -97,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (_usernameController.text.isEmpty == false &&
         _passwordController.text.isEmpty == false) {
-      // print('password, usename filled');
+      // logger.i('password, usename filled');
       submitLogin();
     } else if (_usernameController.text.isEmpty == true &&
         _passwordController.text.isEmpty == true) {
@@ -110,10 +101,6 @@ class _LoginPageState extends State<LoginPage> {
       showCustomDialog(context);
     }
   }
-
-  // final token = getToken();
-
-  // final _formKey = GlobalKey<FormState>();
 
   Map<String, dynamic> getLoginRequestBody(String? username, String? password) {
     return {
@@ -132,7 +119,6 @@ class _LoginPageState extends State<LoginPage> {
               _usernameController.text, _passwordController.text));
     } catch (error) {
       logger.i(error);
-      // print(error);
     }
 
     LoginToMyAccount();
@@ -278,7 +264,6 @@ class _LoginPageState extends State<LoginPage> {
                     clearToken();
                     checkFilled();
                     _saveCredentials();
-                    // submitLogin();
                     // logger.i(screenSize.height);
                     // logger.i(screenSize.width);
                   },
