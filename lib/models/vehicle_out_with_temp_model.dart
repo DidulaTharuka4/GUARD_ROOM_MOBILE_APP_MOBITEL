@@ -1,22 +1,22 @@
 class VehicleOutWithTempResponse {
-  List<ErrorDetails> errorDetailsList;
-  bool success;
-  List<dynamic>? vehicleInOutRecordDtoList;
-  List<dynamic>? vehicleAttendanceDtoList;
-  List<dynamic>? guardRoomUserDtoList;
-  List<dynamic>? vehicleAttendanceDto;
-  List<dynamic>? appDriverMobileDtoList;
-  List<dynamic>? appVehicleMobileDtoList;
+  final List<ErrorDetails> errorDetailsList;
+  final bool success;
+  final List<dynamic>? vehicleInOutRecordDtoList;
+  final List<dynamic>? vehicleAttendanceDtoList;
+  final List<dynamic>? guardRoomUserDtoList;
+  final List<dynamic>? vehicleAttendanceDto;
+  final List<dynamic>? appDriverMobileDtoList;
+  final List<dynamic>? appVehicleMobileDtoList;
 
   VehicleOutWithTempResponse({
     required this.errorDetailsList,
     required this.success,
-    required this.vehicleInOutRecordDtoList,
-    required this.vehicleAttendanceDtoList,
-    required this.guardRoomUserDtoList,
-    required this.vehicleAttendanceDto,
-    required this.appDriverMobileDtoList,
-    required this.appVehicleMobileDtoList,
+    this.vehicleInOutRecordDtoList,
+    this.vehicleAttendanceDtoList,
+    this.guardRoomUserDtoList,
+    this.vehicleAttendanceDto,
+    this.appDriverMobileDtoList,
+    this.appVehicleMobileDtoList,
   });
 
   factory VehicleOutWithTempResponse.fromJson(Map<String, dynamic> json) {

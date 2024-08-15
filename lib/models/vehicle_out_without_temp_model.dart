@@ -1,12 +1,12 @@
 class VehicleOutWithoutTempResponse {
-  List<ErrorDetails> errorDetailsList;
-  bool success;
-  List<dynamic>? vehicleInOutRecordDtoList;
-  List<dynamic>? vehicleAttendanceDtoList;
-  List<dynamic>? guardRoomUserDtoList;
-  dynamic vehicleAttendanceDto;
-  List<dynamic>? appDriverMobileDtoList;
-  List<dynamic>? appVehicleMobileDtoList;
+  final List<ErrorDetails> errorDetailsList;
+  final bool success;
+  final List<dynamic>? vehicleInOutRecordDtoList;
+  final List<dynamic>? vehicleAttendanceDtoList;
+  final List<dynamic>? guardRoomUserDtoList;
+  final List<dynamic>? vehicleAttendanceDto;
+  final List<dynamic>? appDriverMobileDtoList;
+  final List<dynamic>? appVehicleMobileDtoList;
 
   VehicleOutWithoutTempResponse({
     required this.errorDetailsList,
