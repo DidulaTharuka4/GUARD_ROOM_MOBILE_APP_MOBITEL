@@ -11,12 +11,12 @@ class EndAttendanceWithTempResponse {
   EndAttendanceWithTempResponse({
     required this.errorDetailsList,
     required this.success,
-    required this.vehicleInOutRecordDtoList,
-    required this.vehicleAttendanceDtoList,
-    required this.guardRoomUserDtoList,
-    required this.vehicleAttendanceDto,
-    required this.appDriverMobileDtoList,
-    required this.appVehicleMobileDtoList,
+    this.vehicleInOutRecordDtoList,
+    this.vehicleAttendanceDtoList,
+    this.guardRoomUserDtoList,
+    this.vehicleAttendanceDto,
+    this.appDriverMobileDtoList,
+    this.appVehicleMobileDtoList,
   });
 
   factory EndAttendanceWithTempResponse.fromJson(Map<String, dynamic> json) {
@@ -59,7 +59,7 @@ class ErrorDetails {
     required this.timeStamp,
     required this.message,
     required this.code,
-    required this.details,
+    this.details,
     required this.success,
   });
 

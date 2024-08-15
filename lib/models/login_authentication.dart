@@ -30,8 +30,8 @@ class LoginDetailsDto {
   final String? companyId;
   final String? roleCode;
   final String? designation;
-  final String fullName;
-  final String mobileNo;
+  final String? fullName;
+  final String? mobileNo;
   final String? division;
   final String? empNo;
 
@@ -41,8 +41,8 @@ class LoginDetailsDto {
     this.companyId,
     this.roleCode,
     this.designation,
-    required this.fullName,
-    required this.mobileNo,
+    this.fullName,
+    this.mobileNo,
     this.division,
     this.empNo,
   });

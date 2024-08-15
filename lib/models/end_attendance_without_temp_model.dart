@@ -4,19 +4,20 @@ class EndAttendanceWithoutTempResponse {
   final List<dynamic>? vehicleInOutRecordDtoList;
   final List<dynamic>? vehicleAttendanceDtoList;
   final List<dynamic>? guardRoomUserDtoList;
-  final dynamic vehicleAttendanceDto;
+  final List<dynamic>? vehicleAttendanceDto;
+  // final <dynamic> vehicleAttendanceDto;
   final List<dynamic>? appDriverMobileDtoList;
   final List<dynamic>? appVehicleMobileDtoList;
 
   EndAttendanceWithoutTempResponse({
     required this.errorDetailsList,
     required this.success,
-    required this.vehicleInOutRecordDtoList,
-    required this.vehicleAttendanceDtoList,
-    required this.guardRoomUserDtoList,
+    this.vehicleInOutRecordDtoList,
+    this.vehicleAttendanceDtoList,
+    this.guardRoomUserDtoList,
     this.vehicleAttendanceDto,
-    required this.appDriverMobileDtoList,
-    required this.appVehicleMobileDtoList,
+    this.appDriverMobileDtoList,
+    this.appVehicleMobileDtoList,
   });
 
   factory EndAttendanceWithoutTempResponse.fromJson(Map<String, dynamic> json) {
@@ -59,7 +60,7 @@ class ErrorDetails {
     required this.timeStamp,
     required this.message,
     required this.code,
-    required this.details,
+    this.details,
     required this.success,
   });
 

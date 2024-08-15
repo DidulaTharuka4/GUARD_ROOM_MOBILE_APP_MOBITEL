@@ -1,32 +1,33 @@
 class FindAllDriversResponse {
-    // final List<ErrorDetailsList> errorDetailsList;
-    // final bool success;
-    // final dynamic vehicleInOutRecordDtoList;
-    // final dynamic vehicleAttendanceDtoList;
-    // final dynamic guardRoomUserDtoList;
-    // final dynamic vehicleAttendanceDto;
-    // final dynamic appDriverMobileDtoList;
-    // final List<AppVehicleMobileDtoList> appVehicleMobileDtoList;
+  // final List<ErrorDetailsList> errorDetailsList;
+  // final bool success;
+  // final dynamic vehicleInOutRecordDtoList;
+  // final dynamic vehicleAttendanceDtoList;
+  // final dynamic guardRoomUserDtoList;
+  // final dynamic vehicleAttendanceDto;
+  // final dynamic appDriverMobileDtoList;
+  // final List<AppVehicleMobileDtoList> appVehicleMobileDtoList;
 
-    final List<ErrorDetailsList> errorDetailsList;
-    final bool success;
-    final List<dynamic>? vehicleInOutRecordDtoList;
-    final List<dynamic>? vehicleAttendanceDtoList;
-    final List<dynamic>? guardRoomUserDtoList;
-    final dynamic vehicleAttendanceDto;
-    final List<AppDriverMobileDtoList> appDriverMobileDtoList;
-    final List<dynamic>? appVehicleMobileDtoList;
+  final List<ErrorDetailsList> errorDetailsList;
+  final bool success;
+  final List<dynamic>? vehicleInOutRecordDtoList;
+  final List<dynamic>? vehicleAttendanceDtoList;
+  final List<dynamic>? guardRoomUserDtoList;
+  // final List<dynamic>? vehicleAttendanceDto;
+  final dynamic vehicleAttendanceDto;
+  final List<AppDriverMobileDtoList> appDriverMobileDtoList;
+  final List<dynamic>? appVehicleMobileDtoList;
 
-    FindAllDriversResponse({
-        required this.errorDetailsList,
-        required this.success,
-        required this.vehicleInOutRecordDtoList,
-        required this.vehicleAttendanceDtoList,
-        required this.guardRoomUserDtoList,
-        required this.vehicleAttendanceDto,
-        required this.appDriverMobileDtoList,
-        required this.appVehicleMobileDtoList,
-    });
+  FindAllDriversResponse({
+    required this.errorDetailsList,
+    required this.success,
+    required this.vehicleInOutRecordDtoList,
+    required this.vehicleAttendanceDtoList,
+    required this.guardRoomUserDtoList,
+    required this.vehicleAttendanceDto,
+    required this.appDriverMobileDtoList,
+    required this.appVehicleMobileDtoList,
+  });
 
   factory FindAllDriversResponse.fromJson(Map<String, dynamic> json) {
     return FindAllDriversResponse(
@@ -45,7 +46,6 @@ class FindAllDriversResponse {
           .toList(),
       // appDriverMobileDtoList: AppDriverMobileDtoList.fromJson(json['appDriverMobileDtoList']),
       appVehicleMobileDtoList: json['appVehicleMobileDtoList'],
-      
     );
   }
 
@@ -57,28 +57,27 @@ class FindAllDriversResponse {
       'vehicleAttendanceDtoList': vehicleAttendanceDtoList,
       'guardRoomUserDtoList': guardRoomUserDtoList,
       'vehicleAttendanceDto': vehicleAttendanceDto,
-      'appDriverMobileDtoList': appDriverMobileDtoList.map((e) => e.toJson()).toList(),
+      'appDriverMobileDtoList':
+          appDriverMobileDtoList.map((e) => e.toJson()).toList(),
       'appVehicleMobileDtoList': appVehicleMobileDtoList,
     };
   }
-
 }
 
 class AppDriverMobileDtoList {
-    final int? id;
-    final String? nic;
-    final String? licenseNum;
-    final String? cname;
+  final int? id;
+  final String? nic;
+  final String? licenseNum;
+  final String? cname;
 
+  AppDriverMobileDtoList({
+    this.id,
+    this.nic,
+    this.licenseNum,
+    this.cname,
+  });
 
-    AppDriverMobileDtoList({
-        required this.id,
-        required this.nic,
-        required this.licenseNum,
-        required this.cname,
-    });
-
-    factory AppDriverMobileDtoList.fromJson(Map<String, dynamic> json) {
+  factory AppDriverMobileDtoList.fromJson(Map<String, dynamic> json) {
     return AppDriverMobileDtoList(
       id: json['id'],
       nic: json['nic'],
@@ -95,25 +94,24 @@ class AppDriverMobileDtoList {
       'cname': cname,
     };
   }
-
 }
 
 class ErrorDetailsList {
-    final String? timeStamp;
-    final String? message;
-    final String? code;
-    final dynamic details;
-    final bool? success;
+  String timeStamp;
+  String message;
+  String code;
+  String? details;
+  bool success;
 
-    ErrorDetailsList({
-        required this.timeStamp,
-        required this.message,
-        required this.code,
-        required this.details,
-        required this.success,
-    });
+  ErrorDetailsList({
+    required this.timeStamp,
+    required this.message,
+    required this.code,
+    this.details,
+    required this.success,
+  });
 
-    factory ErrorDetailsList.fromJson(Map<String, dynamic> json) {
+  factory ErrorDetailsList.fromJson(Map<String, dynamic> json) {
     return ErrorDetailsList(
       timeStamp: json['timeStamp'],
       message: json['message'],
@@ -132,5 +130,4 @@ class ErrorDetailsList {
       'success': success,
     };
   }
-
 }
