@@ -21,22 +21,6 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:sample_flutter_application_1/components/custom_alert_dialog_button.dart';
-// import 'package:sample_flutter_application_1/components/custom_selector_button.dart';
-// import 'package:sample_flutter_application_1/components/custom_toggle_button.dart';
-// import 'package:sample_flutter_application_1/components/success_alert_box.dart';
-// import 'package:sample_flutter_application_1/constraints/textSizes.dart';
-// import 'package:sample_flutter_application_1/notifiers/mileage_unit.dart';
-// import 'package:sample_flutter_application_1/providers/end_attendance_provider.dart';
-// import 'package:sample_flutter_application_1/providers/find_all_drivers_provider.dart';
-// import 'package:sample_flutter_application_1/providers/find_all_vehicles_provider.dart';
-// import 'package:sample_flutter_application_1/providers/login_provider.dart';
-// import 'package:sample_flutter_application_1/providers/start_attendance_provider.dart';
-// import 'package:sample_flutter_application_1/screens/type_selector.dart';
-// import 'package:sample_flutter_application_1/components/custom_alert_dialog.dart';
-// import 'package:sample_flutter_application_1/components/custom_button.dart';
-// import 'package:sample_flutter_application_1/constraints/colors.dart';
-// import 'package:sample_flutter_application_1/constraints/marginValues.dart';
 
 class DailyAttendance extends StatefulWidget {
   @override

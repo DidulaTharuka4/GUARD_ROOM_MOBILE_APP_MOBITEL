@@ -20,23 +20,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-// import 'package:sample_flutter_application_1/components/custom_alert_dialog.dart';
-// import 'package:sample_flutter_application_1/components/custom_alert_dialog_button.dart';
-// import 'package:sample_flutter_application_1/components/custom_selector_button.dart';
-// import 'package:sample_flutter_application_1/components/custom_toggle_button.dart';
-// import 'package:sample_flutter_application_1/components/success_alert_box.dart';
-// import 'package:sample_flutter_application_1/constraints/textSizes.dart';
-// import 'package:sample_flutter_application_1/notifiers/mileage_unit.dart';
-// import 'package:sample_flutter_application_1/providers/find_all_drivers_provider.dart';
-// import 'package:sample_flutter_application_1/providers/find_all_vehicles_provider.dart';
-// import 'package:sample_flutter_application_1/providers/login_provider.dart';
-// import 'package:sample_flutter_application_1/providers/vehicle_in_provider.dart';
-// import 'package:sample_flutter_application_1/providers/vehicle_out_provider.dart';
-// import 'package:sample_flutter_application_1/screens/type_selector.dart';
-// import 'package:sample_flutter_application_1/components/custom_button.dart';
-// import 'package:sample_flutter_application_1/constraints/colors.dart';
-// import 'package:sample_flutter_application_1/constraints/marginValues.dart';
-
 import 'dart:async';
 
 class DailyTrip extends StatefulWidget {
@@ -184,7 +167,7 @@ class _DailyTrip extends State<DailyTrip> {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd').format(now);
     _dateController.text = formattedDate;
-    print(formattedDate); // Output: 2024-07-29 – 14:15
+    // logger.i(formattedDate);
   }
 
   // Invalid field error message
@@ -250,11 +233,6 @@ class _DailyTrip extends State<DailyTrip> {
       _tripIdError = _tripIDController.text.isEmpty ? 'TIme is empty' : null;
     });
 
-    // print(_dateError);
-    // print(_driverNameError);
-    // print(_timeError);
-    // print(_tripIdError);
-
     if (_tripIDController.text.isEmpty == false) {
       isAllFilled = true;
       print('A');
@@ -298,10 +276,6 @@ class _DailyTrip extends State<DailyTrip> {
       requiredDriverDetailFilled = false;
       print('driver details not okay');
     }
-
-    // print(_vehicleNumberError);
-    // print(_licenseNumberError);
-    // print(_currentMileageError);
 
     if (requiredVehicleNumberFilled == true &&
         requiredDriverDetailFilled == true) {
@@ -621,8 +595,9 @@ class _DailyTrip extends State<DailyTrip> {
           contentPadding: EdgeInsets.all(0.0),
           content: SuccessStatusAlertBox(
               successStatus: successStatus!,
-              successAlertMainText: 'Saved Successfully',
-              successAlertSubText: 'Saved your item successfully'),
+              // successAlertMainText: 'Saved Successfully',
+              // successAlertSubText: 'Saved your item successfully'
+          ),
         );
       },
     );
@@ -781,7 +756,6 @@ class _DailyTrip extends State<DailyTrip> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      // flex: 4,
                       child: Row(
                         children: [
                           Text(
@@ -804,10 +778,8 @@ class _DailyTrip extends State<DailyTrip> {
                         ],
                       ),
                     ),
-                    // SizedBox(height: 10),
                     Container(
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
-                      // flex: 6,
                       child: TextFormField(
                         controller: _tripIDController,
                         decoration: InputDecoration(
@@ -856,40 +828,40 @@ class _DailyTrip extends State<DailyTrip> {
                       // flex: 6,
                       child: Row(
                         children: <Widget>[
-                          Expanded(
-                            flex: 3,
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Province',
-                                  style: TextStyle(
-                                      fontSize: ApplicationTextSizes
-                                          .provinceDropdownTitle,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                DropdownButton<String>(
-                                  dropdownColor: ApplicationColors.PURE_WHITE,
-                                  iconEnabledColor:
-                                      ApplicationColors.PURE_BLACK,
-                                  value: _selectedVehicleProvince,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _selectedVehicleProvince = newValue;
-                                    });
-                                  },
-                                  items: _provinceDropdownItems
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: 10),
+                          // Expanded(
+                          //   flex: 3,
+                          //   child: Column(
+                          //     children: [
+                          //       Text(
+                          //         'Province',
+                          //         style: TextStyle(
+                          //             fontSize: ApplicationTextSizes
+                          //                 .provinceDropdownTitle,
+                          //             fontWeight: FontWeight.bold),
+                          //       ),
+                          //       DropdownButton<String>(
+                          //         dropdownColor: ApplicationColors.PURE_WHITE,
+                          //         iconEnabledColor:
+                          //             ApplicationColors.PURE_BLACK,
+                          //         value: _selectedVehicleProvince,
+                          //         onChanged: (String? newValue) {
+                          //           setState(() {
+                          //             _selectedVehicleProvince = newValue;
+                          //           });
+                          //         },
+                          //         items: _provinceDropdownItems
+                          //             .map<DropdownMenuItem<String>>(
+                          //                 (String value) {
+                          //           return DropdownMenuItem<String>(
+                          //             value: value,
+                          //             child: Text(value),
+                          //           );
+                          //         }).toList(),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          // SizedBox(width: 10),
                           Expanded(
                             flex: 7,
                             child: TextField(
@@ -906,7 +878,7 @@ class _DailyTrip extends State<DailyTrip> {
                                 filled: true,
                                 fillColor: ApplicationColors.PURE_WHITE,
                                 border: OutlineInputBorder(),
-                                // errorText: _vehicleNumberError
+                                errorText: _vehicleNumberError
                               ),
                             ),
                           ),
@@ -923,7 +895,6 @@ class _DailyTrip extends State<DailyTrip> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      // flex: 4,
                       child: Row(
                         children: [
                           Text(
@@ -946,10 +917,8 @@ class _DailyTrip extends State<DailyTrip> {
                         ],
                       ),
                     ),
-                    // SizedBox(height: 10),
                     Container(
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
-                      // flex: 6,
                       child: TextFormField(
                         controller: _driverLicenseController,
                         enabled: _replaceDriverNICController.text.isEmpty
@@ -969,7 +938,7 @@ class _DailyTrip extends State<DailyTrip> {
                           filled: true,
                           fillColor: ApplicationColors.PURE_WHITE,
                           border: OutlineInputBorder(),
-                          // errorText: _licenseNumberError
+                          errorText: _licenseNumberError
                         ),
                       ),
                     ),
@@ -983,7 +952,6 @@ class _DailyTrip extends State<DailyTrip> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      // flex: 4,
                       child: Row(
                         children: [
                           Text(
@@ -1006,7 +974,6 @@ class _DailyTrip extends State<DailyTrip> {
                         ],
                       ),
                     ),
-                    // SizedBox(height: 10),
                     Container(
                         margin:
                             ApplicationMarginValues.textInputFieldInnerMargin,
@@ -1055,8 +1022,6 @@ class _DailyTrip extends State<DailyTrip> {
                             ),
                           ),
                         )
-                        // flex: 6,
-
                         ),
                   ],
                 ),
@@ -1098,7 +1063,6 @@ class _DailyTrip extends State<DailyTrip> {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            // flex: 4,
                             child: Row(
                               children: [
                                 Text("Vehicle Number  :  ",
@@ -1119,49 +1083,48 @@ class _DailyTrip extends State<DailyTrip> {
                               ],
                             ),
                           ),
-                          // SizedBox(height: 10),
                           Container(
                             margin: ApplicationMarginValues
                                 .textInputFieldInnerMargin,
                             // flex: 6,
                             child: Row(
                               children: <Widget>[
-                                Expanded(
-                                  flex: 4,
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        'Province',
-                                        style: TextStyle(
-                                            fontSize: ApplicationTextSizes
-                                                .provinceDropdownTitle,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      DropdownButton<String>(
-                                        dropdownColor:
-                                            ApplicationColors.PURE_WHITE,
-                                        iconEnabledColor:
-                                            ApplicationColors.PURE_BLACK,
-                                        value: _selectedReplaceVehicleProvince,
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            _selectedReplaceVehicleProvince =
-                                                newValue;
-                                          });
-                                        },
-                                        items: _replaceProvinceDropdownItems
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: 10),
+                                // Expanded(
+                                //   flex: 4,
+                                //   child: Column(
+                                //     children: [
+                                //       Text(
+                                //         'Province',
+                                //         style: TextStyle(
+                                //             fontSize: ApplicationTextSizes
+                                //                 .provinceDropdownTitle,
+                                //             fontWeight: FontWeight.bold),
+                                //       ),
+                                //       DropdownButton<String>(
+                                //         dropdownColor:
+                                //             ApplicationColors.PURE_WHITE,
+                                //         iconEnabledColor:
+                                //             ApplicationColors.PURE_BLACK,
+                                //         value: _selectedReplaceVehicleProvince,
+                                //         onChanged: (String? newValue) {
+                                //           setState(() {
+                                //             _selectedReplaceVehicleProvince =
+                                //                 newValue;
+                                //           });
+                                //         },
+                                //         items: _replaceProvinceDropdownItems
+                                //             .map<DropdownMenuItem<String>>(
+                                //                 (String value) {
+                                //           return DropdownMenuItem<String>(
+                                //             value: value,
+                                //             child: Text(value),
+                                //           );
+                                //         }).toList(),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                // SizedBox(width: 10),
                                 Expanded(
                                   flex: 6,
                                   child: TextFormField(
@@ -1178,6 +1141,7 @@ class _DailyTrip extends State<DailyTrip> {
                                       filled: true,
                                       fillColor: ApplicationColors.PURE_WHITE,
                                       border: OutlineInputBorder(),
+                                      // errorText: _vehicleNumberError
                                     ),
                                   ),
                                 ),
@@ -1195,7 +1159,6 @@ class _DailyTrip extends State<DailyTrip> {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            // flex: 4,
                             child: Row(
                               children: [
                                 Text("Driver's NIC Number  :  ",
@@ -1216,11 +1179,9 @@ class _DailyTrip extends State<DailyTrip> {
                               ],
                             ),
                           ),
-                          // SizedBox(height: 10),
                           Container(
                             margin: ApplicationMarginValues
                                 .textInputFieldInnerMargin,
-                            // flex: 6,
                             child: TextFormField(
                               controller: _replaceDriverNICController,
                               enabled: _driverLicenseController.text.isEmpty
@@ -1248,7 +1209,6 @@ class _DailyTrip extends State<DailyTrip> {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            // flex: 4,
                             child: Row(
                               children: [
                                 Text("Comments  :  ",
@@ -1272,7 +1232,6 @@ class _DailyTrip extends State<DailyTrip> {
                           Container(
                             margin: ApplicationMarginValues
                                 .textInputFieldInnerMargin,
-                            // flex: 6,
                             child: TextFormField(
                               controller: _replaceCommentController,
                               maxLength: 100,
@@ -1296,7 +1255,6 @@ class _DailyTrip extends State<DailyTrip> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      // flex: 4,
                       child: Row(
                         children: [
                           Text(
@@ -1319,14 +1277,11 @@ class _DailyTrip extends State<DailyTrip> {
                         ],
                       ),
                     ),
-                    // SizedBox(height: 10),
                     Container(
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
-                      // flex: 6,
                       child: Column(
                         children: <Widget>[
                           Container(
-                            // flex: 6,
                             child: TextFormField(
                               controller: _currentMileageController,
                               keyboardType: TextInputType.number,
@@ -1342,11 +1297,9 @@ class _DailyTrip extends State<DailyTrip> {
                               ),
                             ),
                           ),
-                          // SizedBox(height: 10),
                           Container(
                               margin:
                                   ApplicationMarginValues.mileageMarginValue,
-                              // flex: 4,
                               child: Row(
                                 children: [
                                   // CustomSelectorButton(),
@@ -1395,7 +1348,6 @@ class _DailyTrip extends State<DailyTrip> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      // flex: 4,
                       child: Row(
                         children: [
                           Text(
@@ -1418,7 +1370,6 @@ class _DailyTrip extends State<DailyTrip> {
                         ],
                       ),
                     ),
-                    // SizedBox(height: 10),
                     Container(
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
                       // flex: 6,
@@ -1518,11 +1469,6 @@ class _DailyTrip extends State<DailyTrip> {
                           checkFilledRequiredFields();
                           checkFIlledAllFields();
                           startButton();
-
-                          setState(() {
-                            // _vehicleNumberController.clear();
-                            // vehicleID = null;
-                          });
                         },
                         innerText: 'Start',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_GREEN,
@@ -1546,7 +1492,7 @@ class _DailyTrip extends State<DailyTrip> {
                       flex: 1,
                       child: CustomButton(
                         onPress: () {
-                          // print('End Button Pressed!');
+                          logger.i('End Button Pressed!');
                           Provider.of<MileageUnit>(context, listen: false)
                               .mileageToggleButton(
                                   _currentMileageController.text);
@@ -1609,11 +1555,6 @@ class _DailyTrip extends State<DailyTrip> {
                           checkFilledRequiredFields();
                           checkFIlledAllFields();
                           endButton();
-
-                          setState(() {
-                            // _vehicleNumberController.clear();
-                            // vehicleID = null;
-                          });
                         },
                         innerText: 'End',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_BLUE,
