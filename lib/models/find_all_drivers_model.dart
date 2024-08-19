@@ -1,3 +1,5 @@
+import 'package:Guard_Room_Application/models/error_details_list.dart';
+
 class FindAllDriversResponse {
   // final List<ErrorDetailsList> errorDetailsList;
   // final bool success;
@@ -8,7 +10,7 @@ class FindAllDriversResponse {
   // final dynamic appDriverMobileDtoList;
   // final List<AppVehicleMobileDtoList> appVehicleMobileDtoList;
 
-  final List<ErrorDetailsList> errorDetailsList;
+  final List<ErrorDetails> errorDetailsList;
   final bool success;
   final List<dynamic>? vehicleInOutRecordDtoList;
   final List<dynamic>? vehicleAttendanceDtoList;
@@ -32,7 +34,7 @@ class FindAllDriversResponse {
   factory FindAllDriversResponse.fromJson(Map<String, dynamic> json) {
     return FindAllDriversResponse(
       errorDetailsList: (json['errorDetailsList'] as List)
-          .map((i) => ErrorDetailsList.fromJson(i))
+          .map((i) => ErrorDetails.fromJson(i))
           .toList(),
       // errorDetailsList: ErrorDetailsList.fromJson(json['errorDetailsList']),
       success: json['success'],
@@ -96,38 +98,38 @@ class AppDriverMobileDtoList {
   }
 }
 
-class ErrorDetailsList {
-  String timeStamp;
-  String message;
-  String code;
-  String? details;
-  bool success;
+// class ErrorDetails {
+//   String timeStamp;
+//   String message;
+//   String code;
+//   String? details;
+//   bool success;
 
-  ErrorDetailsList({
-    required this.timeStamp,
-    required this.message,
-    required this.code,
-    this.details,
-    required this.success,
-  });
+//   ErrorDetails({
+//     required this.timeStamp,
+//     required this.message,
+//     required this.code,
+//     this.details,
+//     required this.success,
+//   });
 
-  factory ErrorDetailsList.fromJson(Map<String, dynamic> json) {
-    return ErrorDetailsList(
-      timeStamp: json['timeStamp'],
-      message: json['message'],
-      code: json['code'],
-      details: json['details'],
-      success: json['success'],
-    );
-  }
+//   factory ErrorDetails.fromJson(Map<String, dynamic> json) {
+//     return ErrorDetails(
+//       timeStamp: json['timeStamp'],
+//       message: json['message'],
+//       code: json['code'],
+//       details: json['details'],
+//       success: json['success'],
+//     );
+//   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'timeStamp': timeStamp,
-      'message': message,
-      'code': code,
-      'details': details,
-      'success': success,
-    };
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'timeStamp': timeStamp,
+//       'message': message,
+//       'code': code,
+//       'details': details,
+//       'success': success,
+//     };
+//   }
+// }
