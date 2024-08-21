@@ -1,40 +1,32 @@
-import 'package:Guard_Room_Application/models/error_details_list.dart';
+// import 'dart:convert';
 
-class FindAllVehiclesResponse {
-  // final List<ErrorDetailsList> errorDetailsList;
-  // final bool success;
-  // final dynamic vehicleInOutRecordDtoList;
-  // final dynamic vehicleAttendanceDtoList;
-  // final dynamic guardRoomUserDtoList;
-  // final dynamic vehicleAttendanceDto;
-  // final dynamic appDriverMobileDtoList;
-  // final List<AppVehicleMobileDtoList> appVehicleMobileDtoList;
-
-  final List<ErrorDetails> errorDetailsList;
-  final bool success;
+class FindAllVehiclesResponse  {
+  List<ErrorDetails>? errorDetailsList;
+  bool? success;
   final List<dynamic>? vehicleInOutRecordDtoList;
   final List<dynamic>? vehicleAttendanceDtoList;
   final List<dynamic>? guardRoomUserDtoList;
   // final List<dynamic>? vehicleAttendanceDto;
   final dynamic vehicleAttendanceDto;
   final List<dynamic>? appDriverMobileDtoList;
-  final List<AppVehicleMobileDtoList> appVehicleMobileDtoList;
+  List<AppVehicleMobileDto>? appVehicleMobileDtoList;
 
-  FindAllVehiclesResponse({
-    required this.errorDetailsList,
-    required this.success,
+  FindAllVehiclesResponse ({
+    this.errorDetailsList,
+    this.success,
     required this.vehicleInOutRecordDtoList,
     required this.vehicleAttendanceDtoList,
     required this.guardRoomUserDtoList,
     required this.vehicleAttendanceDto,
     required this.appDriverMobileDtoList,
-    required this.appVehicleMobileDtoList,
+    this.appVehicleMobileDtoList,
   });
 
-  factory FindAllVehiclesResponse.fromJson(Map<String, dynamic> json) {
-    return FindAllVehiclesResponse(
-      errorDetailsList: (json['errorDetailsList'] as List)
-          .map((i) => ErrorDetails.fromJson(i))
+  // Factory constructor to create an instance of ApiResponse from JSON
+  factory FindAllVehiclesResponse .fromJson(Map<String, dynamic> json) {
+    return FindAllVehiclesResponse (
+      errorDetailsList: (json['errorDetailsList'] as List<dynamic>?)
+          ?.map((e) => ErrorDetails.fromJson(e))
           .toList(),
       success: json['success'],
       vehicleInOutRecordDtoList: json['vehicleInOutRecordDtoList'],
@@ -43,83 +35,125 @@ class FindAllVehiclesResponse {
       vehicleAttendanceDto: json['vehicleAttendanceDto'],
       appDriverMobileDtoList: json['appDriverMobileDtoList'],
       // appVehicleMobileDtoList: json['appVehicleMobileDtoList'],
-      appVehicleMobileDtoList: (json['appVehicleMobileDtoList'] as List)
-          .map((i) => AppVehicleMobileDtoList.fromJson(i))
+      appVehicleMobileDtoList: (json['appVehicleMobileDtoList'] as List<dynamic>?)
+          ?.map((e) => AppVehicleMobileDto.fromJson(e))
           .toList(),
     );
   }
 
+  // Method to convert the model back to JSON
   Map<String, dynamic> toJson() {
     return {
-      'errorDetailsList': errorDetailsList.map((e) => e.toJson()).toList(),
+      'errorDetailsList': errorDetailsList?.map((e) => e.toJson()).toList(),
       'success': success,
       'vehicleInOutRecordDtoList': vehicleInOutRecordDtoList,
       'vehicleAttendanceDtoList': vehicleAttendanceDtoList,
       'guardRoomUserDtoList': guardRoomUserDtoList,
       'vehicleAttendanceDto': vehicleAttendanceDto,
       'appDriverMobileDtoList': appDriverMobileDtoList,
-      'appVehicleMobileDtoList':
-          appVehicleMobileDtoList.map((e) => e.toJson()).toList(),
+      'appVehicleMobileDtoList': appVehicleMobileDtoList?.map((e) => e.toJson()).toList(),
     };
   }
 }
 
-class AppVehicleMobileDtoList {
-  final int? id;
-  final String? vehicleRegNumber;
+class ErrorDetails {
+  String? timeStamp;
+  String? message;
+  String? code;
+  String? details;
+  bool? success;
 
-  AppVehicleMobileDtoList({
-    this.id,
-    this.vehicleRegNumber,
+  ErrorDetails({
+    this.timeStamp,
+    this.message,
+    this.code,
+    this.details,
+    this.success,
   });
 
-  factory AppVehicleMobileDtoList.fromJson(Map<String, dynamic> json) {
-    return AppVehicleMobileDtoList(
-      id: json['id'],
-      vehicleRegNumber: json['vehicleRegNumber'],
+  // Factory constructor to create an instance of ErrorDetails from JSON
+  factory ErrorDetails.fromJson(Map<String, dynamic> json) {
+    return ErrorDetails(
+      timeStamp: json['timeStamp'],
+      message: json['message'],
+      code: json['code'],
+      details: json['details'],
+      success: json['success'],
     );
   }
 
+  // Method to convert the model back to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'timeStamp': timeStamp,
+      'message': message,
+      'code': code,
+      'details': details,
+      'success': success,
+    };
+  }
+}
+
+class AppVehicleMobileDto {
+  int? id;
+  String? vehicleRegNumber;
+  DriverDto? driverDto;
+
+  AppVehicleMobileDto({
+    this.id,
+    this.vehicleRegNumber,
+    this.driverDto,
+  });
+
+  // Factory constructor to create an instance of AppVehicleMobileDto from JSON
+  factory AppVehicleMobileDto.fromJson(Map<String, dynamic> json) {
+    return AppVehicleMobileDto(
+      id: json['id'],
+      vehicleRegNumber: json['vehicleRegNumber'],
+      driverDto: json['driverDto'] != null ? DriverDto.fromJson(json['driverDto']) : null,
+    );
+  }
+
+  // Method to convert the model back to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'vehicleRegNumber': vehicleRegNumber,
+      'driverDto': driverDto?.toJson(),
     };
   }
 }
 
-// class ErrorDetails {
-//   String timeStamp;
-//   String message;
-//   String code;
-//   String? details;
-//   bool success;
+class DriverDto {
+  int? id;
+  String? nic;
+  String? licenseNum;
+  String? cname;
 
-//   ErrorDetails({
-//     required this.timeStamp,
-//     required this.message,
-//     required this.code,
-//     this.details,
-//     required this.success,
-//   });
+  DriverDto({
+    this.id,
+    this.nic,
+    this.licenseNum,
+    this.cname,
+  });
 
-//   factory ErrorDetails.fromJson(Map<String, dynamic> json) {
-//     return ErrorDetails(
-//       timeStamp: json['timeStamp'],
-//       message: json['message'],
-//       code: json['code'],
-//       details: json['details'],
-//       success: json['success'],
-//     );
-//   }
+  // Factory constructor to create an instance of DriverDto from JSON
+  factory DriverDto.fromJson(Map<String, dynamic> json) {
+    return DriverDto(
+      id: json['id'],
+      nic: json['nic'],
+      licenseNum: json['licenseNum'],
+      cname: json['cname'],
+    );
+  }
 
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'timeStamp': timeStamp,
-//       'message': message,
-//       'code': code,
-//       'details': details,
-//       'success': success,
-//     };
-//   }
-// }
+  // Method to convert the model back to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nic': nic,
+      'licenseNum': licenseNum,
+      'cname': cname,
+    };
+  }
+}

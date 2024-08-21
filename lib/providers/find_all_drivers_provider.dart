@@ -69,6 +69,4 @@ class FindAllDriversProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
-  void fetchData() {}
 }

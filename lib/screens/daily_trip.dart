@@ -7,6 +7,7 @@ import 'package:Guard_Room_Application/components/success_alert_box.dart';
 import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:Guard_Room_Application/constraints/marginValues.dart';
 import 'package:Guard_Room_Application/constraints/textSizes.dart';
+import 'package:Guard_Room_Application/models/find_all_vehicles_model.dart';
 import 'package:Guard_Room_Application/notifiers/mileage_unit.dart';
 import 'package:Guard_Room_Application/providers/find_all_drivers_provider.dart';
 import 'package:Guard_Room_Application/providers/find_all_vehicles_provider.dart';
@@ -134,14 +135,15 @@ class _DailyTrip extends State<DailyTrip> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
   late Timer timer;
 
-  @override
-  void initState() {
-    super.initState();
-    startClock();
-    getCurrentDate();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   startClock();
+  //   getCurrentDate();
+  // }
 
   @override
   void dispose() {
@@ -159,6 +161,8 @@ class _DailyTrip extends State<DailyTrip> {
   void startClock() {
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       _timeController.text = getCurrentTime();
+      _dateTimeController.text =
+          "${_dateController.text} ${_timeController.text}";
     });
   }
 
@@ -180,7 +184,7 @@ class _DailyTrip extends State<DailyTrip> {
           content: AlertDialogBox(
               // alertDialogText:
               //     'Cannot proceed with invalid inputs! Please try again.'
-          ),
+              ),
         );
       },
     );
@@ -196,7 +200,7 @@ class _DailyTrip extends State<DailyTrip> {
           content: AlertDialogBox(
               // alertDialogText:
               //     '“Mandatory fields (*) cannot be empty! Please try again.'
-          ),
+              ),
         );
       },
     );
@@ -215,6 +219,8 @@ class _DailyTrip extends State<DailyTrip> {
   int? userID;
   String? userName;
   String? combinedDateTime;
+  String? driverName;
+  String? driverLicenseNum;
 
   bool isAllFilled = false;
   bool isRequiredFilled = false;
@@ -229,7 +235,7 @@ class _DailyTrip extends State<DailyTrip> {
       _dateError = _currentDateController.text.isEmpty ? 'Date is empty' : null;
       _driverNameError =
           _driverNameController.text.isEmpty ? 'Driver Name is empty' : null;
-      _timeError = _currentTimeController.text.isEmpty ? 'TIme is empty' : null;
+      // _timeError = _currentTimeController.text.isEmpty ? 'TIme is empty' : null;
       _tripIdError = _tripIDController.text.isEmpty ? 'TIme is empty' : null;
     });
 
@@ -561,7 +567,6 @@ class _DailyTrip extends State<DailyTrip> {
 
       successStatusVehicleOutWithTemp =
           vehicleOutProvider.vehicleOutWithoutTempResponse?.success;
-
     });
 
     logger.i('ao');
@@ -577,7 +582,8 @@ class _DailyTrip extends State<DailyTrip> {
       setState(() {
         successStatus = false;
       });
-      errorCode = vehicleInProvider.vehicleInWithTempResponse?.errorDetailsList.first.code;
+      errorCode = vehicleInProvider
+          .vehicleInWithTempResponse?.errorDetailsList.first.code;
     }
 
     logger.i('wait stop here');
@@ -594,9 +600,9 @@ class _DailyTrip extends State<DailyTrip> {
         return AlertDialog(
           contentPadding: EdgeInsets.all(0.0),
           content: SuccessStatusAlertBox(
-              successStatus: successStatus!,
-              // successAlertMainText: 'Saved Successfully',
-              // successAlertSubText: 'Saved your item successfully'
+            successStatus: successStatus!,
+            // successAlertMainText: 'Saved Successfully',
+            // successAlertSubText: 'Saved your item successfully'
           ),
         );
       },
@@ -619,6 +625,74 @@ class _DailyTrip extends State<DailyTrip> {
       }
     });
   }
+
+  // --------------------------------------------------------------------
+  @override
+  void initState() {
+    super.initState();
+    startClock();
+    getCurrentDate();
+    final findAllVehicles =
+        Provider.of<FindAllVehiclesProvider>(context, listen: false)
+            .findAllVehiclesResponse;
+  }
+
+  List<String> allVehicleNumbers = [
+    'ND-1290',
+    'ND-1090',
+    'ND-1618',
+    'NA-9345',
+    'NA-9347',
+    'NB-6152',
+    'NB-6153'
+  ];
+  // List<String> allVehicleNumbers = [];
+  List<String> filteredVehicleNumbers = [];
+
+  // void showVehicleNumberList() {
+  //   final findAllVehicles =
+  //       Provider.of<FindAllVehiclesProvider>(context, listen: false).findAllVehiclesResponse!.appVehicleMobileDtoList;
+
+  //   allVehicleNumbers = findAllVehicles
+  //       .map<String>((vehicle) => vehicle["vehicleRegNumber"].toString().trim())
+  //       .toList();
+  // }
+
+  void filterItems() {
+    List<String> results = [];
+    if (_vehicleNumberController.text.isEmpty) {
+      logger.i('21');
+      results = allVehicleNumbers; // If search is empty, show all items
+    } else {
+      logger.i('31');
+      results = allVehicleNumbers
+          .where((item) => item
+              .toLowerCase()
+              .contains(_vehicleNumberController.text.toLowerCase()))
+          .toList(); // Filter items based on search input
+    }
+
+    setState(() {
+      filteredVehicleNumbers = results;
+    });
+  }
+
+  // FindAllVehiclesProvider? vId;
+  // bool _isDropdownVisible = false;
+
+  // void _filterVehicleNumbers() {
+  //   final query = _controller.text.toUpperCase();
+  //   final allVehicles = Provider.of<FindAllVehiclesProvider>(context, listen: false);
+  //   String? allv;
+  //   allv = allVehicles.
+
+  //   setState(() {
+  //     _filteredVehicles = allVehicles
+  //         .where((vehicle) => vehicle.contains(query))
+  //         .toList();
+  //     _isDropdownVisible = _filteredVehicles.isNotEmpty && query.isNotEmpty;
+  //   });
+  // }
 
   // content design------------------------------------------------------
 
@@ -727,8 +801,12 @@ class _DailyTrip extends State<DailyTrip> {
                       //   onTap: () => _selectDate(context),
                       child: TextFormField(
                         readOnly: true,
-                        controller: _dateController,
+                        // controller: _dateController,
+                        controller: _dateTimeController,
                         enabled: false,
+                        style: TextStyle(
+                          color: ApplicationColors.PURE_BLACK,
+                        ),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: ApplicationColors.PURE_WHITE,
@@ -782,6 +860,11 @@ class _DailyTrip extends State<DailyTrip> {
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
                       child: TextFormField(
                         controller: _tripIDController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(10)
+                        ],
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: ApplicationColors.PURE_WHITE,
@@ -828,40 +911,6 @@ class _DailyTrip extends State<DailyTrip> {
                       // flex: 6,
                       child: Row(
                         children: <Widget>[
-                          // Expanded(
-                          //   flex: 3,
-                          //   child: Column(
-                          //     children: [
-                          //       Text(
-                          //         'Province',
-                          //         style: TextStyle(
-                          //             fontSize: ApplicationTextSizes
-                          //                 .provinceDropdownTitle,
-                          //             fontWeight: FontWeight.bold),
-                          //       ),
-                          //       DropdownButton<String>(
-                          //         dropdownColor: ApplicationColors.PURE_WHITE,
-                          //         iconEnabledColor:
-                          //             ApplicationColors.PURE_BLACK,
-                          //         value: _selectedVehicleProvince,
-                          //         onChanged: (String? newValue) {
-                          //           setState(() {
-                          //             _selectedVehicleProvince = newValue;
-                          //           });
-                          //         },
-                          //         items: _provinceDropdownItems
-                          //             .map<DropdownMenuItem<String>>(
-                          //                 (String value) {
-                          //           return DropdownMenuItem<String>(
-                          //             value: value,
-                          //             child: Text(value),
-                          //           );
-                          //         }).toList(),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // SizedBox(width: 10),
                           Expanded(
                             flex: 7,
                             child: TextField(
@@ -875,19 +924,79 @@ class _DailyTrip extends State<DailyTrip> {
                                 LengthLimitingTextInputFormatter(8)
                               ],
                               decoration: InputDecoration(
-                                filled: true,
-                                fillColor: ApplicationColors.PURE_WHITE,
-                                border: OutlineInputBorder(),
-                                errorText: _vehicleNumberError
-                              ),
+                                  filled: true,
+                                  fillColor: ApplicationColors.PURE_WHITE,
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Icon(Icons.search),
+                                  errorText: _vehicleNumberError),
+                              onChanged: (text) {
+                                filterItems();
+                                logger.i('12');
+                                if (text.isEmpty) {
+                                  _driverNameController.text = '';
+                                  _driverLicenseController.text = '';
+                                } else {
+                                  for (int i = 0;
+                                      i <
+                                          findAllVehiclesProvider
+                                              .findAllVehiclesResponse!
+                                              .appVehicleMobileDtoList!
+                                              .length;
+                                      i++) {
+                                    final vehicle = findAllVehiclesProvider
+                                        .findAllVehiclesResponse
+                                        ?.appVehicleMobileDtoList![i];
+                                    if (vehicle?.vehicleRegNumber ==
+                                        _vehicleNumberController.text) {
+                                      // vehicleID = vehicle?.id;
+                                      driverName = vehicle!.driverDto!.cname;
+                                      _driverNameController.text =
+                                          '${vehicle!.driverDto!.cname}';
+                                      _driverLicenseController.text =
+                                          '${vehicle!.driverDto!.licenseNum}';
+                                    } else if (vehicle?.vehicleRegNumber ==
+                                        _replaceVehicleNumberController.text) {
+                                      vehicleID = vehicle?.id;
+                                    }
+                                  }
+                                }
+                              },
                             ),
                           ),
+                          // Flexible(
+                          //   child: ListView.builder(
+                          //     itemCount: filteredVehicleNumbers.length,
+                          //     itemBuilder: (context, index) {
+                          //       return ListTile(
+                          //         title:
+                          //             Text(filteredVehicleNumbers[index]),
+                          //       );
+                          //     },
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
+
+              // Container(
+              //   child: Column(
+              //     children: [
+              //       Expanded(
+              //               child: ListView.builder(
+              //                 itemCount: filteredVehicleNumbers.length,
+              //                 itemBuilder: (context, index) {
+              //                   return ListTile(
+              //                     title:
+              //                         Text(filteredVehicleNumbers[index]),
+              //                   );
+              //                 },
+              //               ),
+              //             )
+              //     ],),
+              // ),
 
               // Driver's License Number----------------------------------------
               Container(
@@ -920,27 +1029,84 @@ class _DailyTrip extends State<DailyTrip> {
                     Container(
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
                       child: TextFormField(
-                        controller: _driverLicenseController,
-                        enabled: _replaceDriverNICController.text.isEmpty
-                            ? true
-                            : false,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'This field is required';
-                          }
-                          return null;
-                        },
-                        inputFormatters: [
-                          DriverLicenseTextInputFormatter(),
-                          LengthLimitingTextInputFormatter(10)
-                        ],
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: ApplicationColors.PURE_WHITE,
-                          border: OutlineInputBorder(),
-                          errorText: _licenseNumberError
-                        ),
-                      ),
+                          controller: _driverLicenseController,
+                          enabled: _replaceDriverNICController.text.isEmpty
+                              ? true
+                              : false,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'This field is required';
+                            }
+                            return null;
+                          },
+                          inputFormatters: [
+                            DriverLicenseTextInputFormatter(),
+                            LengthLimitingTextInputFormatter(10)
+                          ],
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: ApplicationColors.PURE_WHITE,
+                              border: OutlineInputBorder(),
+                              errorText: _licenseNumberError),
+                          onChanged: (text) {
+                            if (text.isEmpty) {
+                              _driverNameController.text = '';
+                            } else {
+                              for (int i = 0;
+                                  i <
+                                      findAllDriversProvider
+                                          .findAllDriversResponse!
+                                          .appDriverMobileDtoList
+                                          .length;
+                                  i++) {
+                                final driver = findAllDriversProvider
+                                    .findAllDriversResponse
+                                    ?.appDriverMobileDtoList[i];
+                                print('${driver?.cname}' +
+                                    ' - ' +
+                                    '${driver?.licenseNum}' +
+                                    ' - ' +
+                                    '${driver?.nic}' +
+                                    ' - ' +
+                                    '${driver?.id}');
+                                if (driver?.licenseNum ==
+                                    _driverLicenseController.text) {
+                                  driverID = driver?.id;
+                                  _driverNameController.text =
+                                      '${driver?.cname}';
+                                }
+                              }
+                            }
+
+                            if (text.isEmpty) {
+                              _driverNameController.text = '';
+                              _vehicleNumberController.text = '';
+                            } else {
+                              for (int i = 0;
+                                  i <
+                                      findAllVehiclesProvider
+                                          .findAllVehiclesResponse!
+                                          .appVehicleMobileDtoList!
+                                          .length;
+                                  i++) {
+                                final vehicle = findAllVehiclesProvider
+                                    .findAllVehiclesResponse
+                                    ?.appVehicleMobileDtoList![i];
+                                if (vehicle?.driverDto!.licenseNum ==
+                                    _driverLicenseController.text) {
+                                  // driverName = vehicle!.driverDto!.cname;
+                                  _vehicleNumberController.text =
+                                      '${vehicle!.vehicleRegNumber}';
+                                  _driverNameController.text =
+                                      '${vehicle!.driverDto!.cname}';
+                                }
+                                // else if (vehicle?.vehicleRegNumber ==
+                                //     _replaceVehicleNumberController.text) {
+                                //   vehicleID = vehicle?.id;
+                                // }
+                              }
+                            }
+                          }),
                     ),
                   ],
                 ),
@@ -979,34 +1145,37 @@ class _DailyTrip extends State<DailyTrip> {
                             ApplicationMarginValues.textInputFieldInnerMargin,
                         child: GestureDetector(
                           onTap: () {
-                            for (int i = 0;
-                                i <
-                                    findAllDriversProvider
-                                        .findAllDriversResponse!
-                                        .appDriverMobileDtoList
-                                        .length;
-                                i++) {
-                              final driver = findAllDriversProvider
-                                  .findAllDriversResponse
-                                  ?.appDriverMobileDtoList[i];
-                              print('${driver?.cname}' +
-                                  ' - ' +
-                                  '${driver?.licenseNum}' +
-                                  ' - ' +
-                                  '${driver?.nic}' +
-                                  ' - ' +
-                                  '${driver?.id}');
-                              if (driver?.licenseNum ==
-                                  _driverLicenseController.text) {
-                                driverID = driver?.id;
-                                _driverNameController.text = '${driver?.cname}';
-                                // driverName = driver?.cname;
-                              }
-                            }
+                            // for (int i = 0;
+                            //     i <
+                            //         findAllDriversProvider
+                            //             .findAllDriversResponse!
+                            //             .appDriverMobileDtoList
+                            //             .length;
+                            //     i++) {
+                            //   final driver = findAllDriversProvider
+                            //       .findAllDriversResponse
+                            //       ?.appDriverMobileDtoList[i];
+                            //   print('${driver?.cname}' +
+                            //       ' - ' +
+                            //       '${driver?.licenseNum}' +
+                            //       ' - ' +
+                            //       '${driver?.nic}' +
+                            //       ' - ' +
+                            //       '${driver?.id}');
+                            //   if (driver?.licenseNum ==
+                            //       _driverLicenseController.text) {
+                            //     driverID = driver?.id;
+                            //     _driverNameController.text = '${driver?.cname}';
+                            //     // driverName = driver?.cname;
+                            //   }
+                            // }
                           },
                           child: TextFormField(
                             enabled: false,
                             readOnly: true,
+                            style: TextStyle(
+                              color: ApplicationColors.PURE_BLACK,
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter some text';
@@ -1021,8 +1190,7 @@ class _DailyTrip extends State<DailyTrip> {
                               // errorText: _driverNameError,
                             ),
                           ),
-                        )
-                        ),
+                        )),
                   ],
                 ),
               ),
@@ -1130,9 +1298,12 @@ class _DailyTrip extends State<DailyTrip> {
                                   child: TextFormField(
                                     controller: _replaceVehicleNumberController,
                                     enabled:
-                                        _vehicleNumberController.text.isEmpty
-                                            ? true
-                                            : false,
+                                        _vehicleNumberController.text.isEmpty ||
+                                                _driverLicenseController
+                                                    .text.isEmpty ||
+                                                _tripIDController.text.isEmpty
+                                            ? false
+                                            : true,
                                     inputFormatters: [
                                       VehicleNumberTextInputFormatter(),
                                       LengthLimitingTextInputFormatter(8)
@@ -1184,9 +1355,11 @@ class _DailyTrip extends State<DailyTrip> {
                                 .textInputFieldInnerMargin,
                             child: TextFormField(
                               controller: _replaceDriverNICController,
-                              enabled: _driverLicenseController.text.isEmpty
-                                  ? true
-                                  : false,
+                              enabled: _vehicleNumberController.text.isEmpty ||
+                                      _driverLicenseController.text.isEmpty ||
+                                      _tripIDController.text.isEmpty
+                                  ? false
+                                  : true,
                               inputFormatters: [
                                 DriverLicenseTextInputFormatter(),
                                 LengthLimitingTextInputFormatter(10)
@@ -1234,6 +1407,11 @@ class _DailyTrip extends State<DailyTrip> {
                                 .textInputFieldInnerMargin,
                             child: TextFormField(
                               controller: _replaceCommentController,
+                              enabled: _vehicleNumberController.text.isEmpty ||
+                                      _driverLicenseController.text.isEmpty ||
+                                      _tripIDController.text.isEmpty
+                                  ? false
+                                  : true,
                               maxLength: 100,
                               decoration: InputDecoration(
                                 filled: true,
@@ -1343,57 +1521,42 @@ class _DailyTrip extends State<DailyTrip> {
               ),
 
               // Current Time Duplicate
-              Container(
-                margin: ApplicationMarginValues.pageInputFieldsMargin,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        children: [
-                          Text(
-                            "Current time  :  ",
-                            style: TextStyle(
-                                fontSize: ApplicationTextSizes
-                                    .userInputFieldLabelValue,
-                                fontFamily: 'Poppins',
-                                fontWeight: ApplicationTextWeights
-                                    .UserInputsLabelWeight),
-                          ),
-                          // Text(
-                          //   "*",
-                          //   style: TextStyle(
-                          //       fontSize: ApplicationTextSizes
-                          //           .userInputFieldLabelValue,
-                          //       color: ApplicationColors.RED_COLOR,
-                          //       fontWeight: FontWeight.bold),
-                          // ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: ApplicationMarginValues.textInputFieldInnerMargin,
-                      // flex: 6,
-                      // child: GestureDetector(
-                      //   onTap: () => _selectTime(context),
-                      child: TextFormField(
-                        readOnly: true,
-                        controller: _timeController,
-                        enabled: false,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: ApplicationColors.PURE_WHITE,
-                          border: OutlineInputBorder(),
-                          // suffixIcon: IconButton(
-                          //   icon: Icon(Icons.access_time),
-                          //   onPressed: () => _selectTime(context),
-                          // ),
-                        ),
-                      ),
-                      // ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   margin: ApplicationMarginValues.pageInputFieldsMargin,
+              //   child: Column(
+              //     children: <Widget>[
+              //       Container(
+              //         child: Row(
+              //           children: [
+              //             Text(
+              //               "Current time  :  ",
+              //               style: TextStyle(
+              //                   fontSize: ApplicationTextSizes
+              //                       .userInputFieldLabelValue,
+              //                   fontFamily: 'Poppins',
+              //                   fontWeight: ApplicationTextWeights
+              //                       .UserInputsLabelWeight),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //       Container(
+              //         margin: ApplicationMarginValues.textInputFieldInnerMargin,
+              //         child: TextFormField(
+              //           readOnly: true,
+              //           controller: _timeController,
+              //           enabled: false,
+              //           decoration: InputDecoration(
+              //             filled: true,
+              //             fillColor: ApplicationColors.PURE_WHITE,
+              //             border: OutlineInputBorder(),
+              //           ),
+              //         ),
+              //         // ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               // Start End Buttons----------------------------------------
               Container(
@@ -1406,11 +1569,15 @@ class _DailyTrip extends State<DailyTrip> {
                         onPress: () {
                           // logger.i(screenSize.height);
                           // logger.i(screenSize.width);
-                          // print('Start Button Pressed!');
+                          logger.i(driverName);
+                          logger.i("driverName");
+                          print('Start Button Pressed!');
                           Provider.of<MileageUnit>(context, listen: false)
                               .mileageToggleButton(
                                   _currentMileageController.text);
-                          
+
+                          logger.i('s1.25');
+
                           // print(Provider.of<MileageUnit>(context, listen: false)
                           //     .convertedMileageValue);
 
@@ -1418,12 +1585,12 @@ class _DailyTrip extends State<DailyTrip> {
                               i <
                                   findAllVehiclesProvider
                                       .findAllVehiclesResponse!
-                                      .appVehicleMobileDtoList
+                                      .appVehicleMobileDtoList!
                                       .length;
                               i++) {
                             final vehicle = findAllVehiclesProvider
                                 .findAllVehiclesResponse
-                                ?.appVehicleMobileDtoList[i];
+                                ?.appVehicleMobileDtoList![i];
                             if (vehicle?.vehicleRegNumber ==
                                 _vehicleNumberController.text) {
                               vehicleID = vehicle?.id;
@@ -1432,6 +1599,8 @@ class _DailyTrip extends State<DailyTrip> {
                               vehicleID = vehicle?.id;
                             }
                           }
+
+                          logger.i('s1.5');
 
                           for (int i = 0;
                               i <
@@ -1455,9 +1624,11 @@ class _DailyTrip extends State<DailyTrip> {
                             } else if (driver?.nic ==
                                 _replaceDriverNICController.text) {
                               driverID = driver?.id;
-                              // _driverNameController.text = '${driver?.cname}';
+                              _driverNameController.text = '${driver?.cname}';
                             }
                           }
+
+                          logger.i('s2');
 
                           setState(() {
                             userID = loginProvider
@@ -1469,6 +1640,7 @@ class _DailyTrip extends State<DailyTrip> {
                           checkFilledRequiredFields();
                           checkFIlledAllFields();
                           startButton();
+                          logger.i(driverName);
                         },
                         innerText: 'Start',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_GREEN,
@@ -1496,7 +1668,7 @@ class _DailyTrip extends State<DailyTrip> {
                           Provider.of<MileageUnit>(context, listen: false)
                               .mileageToggleButton(
                                   _currentMileageController.text);
-                          
+
                           // print(Provider.of<MileageUnit>(context, listen: false)
                           //     .convertedMileageValue);
 
@@ -1504,12 +1676,12 @@ class _DailyTrip extends State<DailyTrip> {
                               i <
                                   findAllVehiclesProvider
                                       .findAllVehiclesResponse!
-                                      .appVehicleMobileDtoList
+                                      .appVehicleMobileDtoList!
                                       .length;
                               i++) {
                             final vehicle = findAllVehiclesProvider
                                 .findAllVehiclesResponse
-                                ?.appVehicleMobileDtoList[i];
+                                ?.appVehicleMobileDtoList![i];
                             if (vehicle?.vehicleRegNumber ==
                                 _vehicleNumberController.text) {
                               vehicleID = vehicle?.id;
