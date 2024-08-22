@@ -242,11 +242,13 @@ class _DailyAttendance extends State<DailyAttendance> {
           : null;
     });
 
-    if (_currentMileageController.text.isEmpty == false) {
-      isAllFilled = true;
-    } else {
-      isAllFilled = false;
-    }
+    // if (_currentMileageController.text.isEmpty == false) {
+    //   isAllFilled = true;
+    // } else {
+    //   isAllFilled = false;
+    // }
+
+    isAllFilled = true;
   }
 
   // Check required field empty or not
@@ -257,6 +259,9 @@ class _DailyAttendance extends State<DailyAttendance> {
           : null;
       _licenseNumberError = _driverLicenseController.text.isEmpty
           ? 'License Number cannot be empty'
+          : null;
+      _currentMileageError = _currentMileageController.text.isEmpty
+          ? 'Mileage cannot be empty'
           : null;
       // _timeError =
       //     _currentTimeController.text.isEmpty ? 'Time cannot be empty' : null;
@@ -285,7 +290,8 @@ class _DailyAttendance extends State<DailyAttendance> {
     }
 
     if (requiredVehicleNumberFilled == true &&
-        requiredDriverDetailFilled == true) {
+        requiredDriverDetailFilled == true &&
+        _currentMileageController.text.isEmpty == false) {
       isRequiredFilled = true;
     } else {
       isRequiredFilled = false;
@@ -294,6 +300,7 @@ class _DailyAttendance extends State<DailyAttendance> {
 
   // Work in button function
   void workInButton() {
+    logger.i('work in inside');
     setState(() {
       combinedDateTime =
           '${_dateController.text}' + ' ' + '${_timeController.text}';
@@ -305,6 +312,8 @@ class _DailyAttendance extends State<DailyAttendance> {
       } else if (vehicleID == null && driverID != null) {
         logger.i('invalid vehicle number !');
       } else if (vehicleID != null && driverID == null) {
+        logger.i(vehicleID);
+        logger.i(driverID);
         logger.i('invalid driver license number !');
       } else {
         logger.i('all are okay');
@@ -339,7 +348,7 @@ class _DailyAttendance extends State<DailyAttendance> {
     // print('now in work out button');
 
     if (isRequiredFilled == true && isAllFilled == true) {
-      logger.i('meee inne ');
+      // logger.i('meee inne ');
       if (vehicleID == null && driverID == null) {
         logger.i('invalid vehicle number and driver license number !');
       } else if (vehicleID == null && driverID != null) {
@@ -443,7 +452,7 @@ class _DailyAttendance extends State<DailyAttendance> {
       await Provider.of<StartAttendanceProvider>(context, listen: false)
           .startAttendanceWithTemp(startWithTempRequestBody);
     } catch (error) {
-      logger.i('Error occurred 67: $error');
+      logger.i('Error occurred in startAttendanceWithTempFunc: $error');
     }
     logger.i('ephe');
     successCall();
@@ -781,10 +790,10 @@ class _DailyAttendance extends State<DailyAttendance> {
                             // flex: 7,
                             child: TextField(
                               controller: _vehicleNumberController,
-                              enabled:
-                                  _replaceVehicleNumberController.text.isEmpty
-                                      ? true
-                                      : false,
+                              // enabled:
+                              //     _replaceVehicleNumberController.text.isEmpty
+                              //         ? true
+                              //         : false,
                               inputFormatters: [
                                 VehicleNumberTextInputFormatter(),
                                 LengthLimitingTextInputFormatter(8)
@@ -868,9 +877,9 @@ class _DailyAttendance extends State<DailyAttendance> {
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
                       child: TextFormField(
                           controller: _driverLicenseController,
-                          enabled: _replaceDriverNICController.text.isEmpty
-                              ? true
-                              : false,
+                          // enabled: _replaceDriverNICController.text.isEmpty
+                          //     ? true
+                          //     : false,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'This field is required';
@@ -968,14 +977,14 @@ class _DailyAttendance extends State<DailyAttendance> {
                                 fontWeight: ApplicationTextWeights
                                     .UserInputsLabelWeight),
                           ),
-                          Text(
-                            "*",
-                            style: TextStyle(
-                                fontSize: ApplicationTextSizes
-                                    .userInputFieldLabelValue,
-                                color: ApplicationColors.RED_COLOR,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          // Text(
+                          //   "*",
+                          //   style: TextStyle(
+                          //       fontSize: ApplicationTextSizes
+                          //           .userInputFieldLabelValue,
+                          //       color: ApplicationColors.RED_COLOR,
+                          //       fontWeight: FontWeight.bold),
+                          // ),
                         ],
                       ),
                     ),
@@ -1281,14 +1290,14 @@ class _DailyAttendance extends State<DailyAttendance> {
                                 fontWeight: ApplicationTextWeights
                                     .UserInputsLabelWeight),
                           ),
-                          // Text(
-                          //   "*",
-                          //   style: TextStyle(
-                          //       fontSize: ApplicationTextSizes
-                          //           .userInputFieldLabelValue,
-                          //       color: ApplicationColors.RED_COLOR,
-                          //       fontWeight: FontWeight.bold),
-                          // ),
+                          Text(
+                            "*",
+                            style: TextStyle(
+                                fontSize: ApplicationTextSizes
+                                    .userInputFieldLabelValue,
+                                color: ApplicationColors.RED_COLOR,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                     ),
@@ -1306,11 +1315,10 @@ class _DailyAttendance extends State<DailyAttendance> {
                                 LengthLimitingTextInputFormatter(6)
                               ],
                               decoration: InputDecoration(
-                                filled: true,
-                                fillColor: ApplicationColors.PURE_WHITE,
-                                border: OutlineInputBorder(),
-                                // errorText: _currentMileageError
-                              ),
+                                  filled: true,
+                                  fillColor: ApplicationColors.PURE_WHITE,
+                                  border: OutlineInputBorder(),
+                                  errorText: _currentMileageError),
                             ),
                           ),
                           Container(
@@ -1430,31 +1438,97 @@ class _DailyAttendance extends State<DailyAttendance> {
                             }
                           }
 
-                          for (int i = 0;
-                              i <
-                                  findAllDriversProvider.findAllDriversResponse!
-                                      .appDriverMobileDtoList.length;
-                              i++) {
-                            final driver = findAllDriversProvider
-                                .findAllDriversResponse
-                                ?.appDriverMobileDtoList[i];
-                            // print('${driver?.cname}' +
-                            //     ' - ' +
-                            //     '${driver?.licenseNum}' +
-                            //     ' - ' +
-                            //     '${driver?.nic}' +
-                            //     ' - ' +
-                            //     '${driver?.id}');
-                            if (driver?.licenseNum ==
-                                _driverLicenseController.text) {
-                              driverID = driver?.id;
-                              _driverNameController.text = '${driver?.cname}';
-                            } else if (driver?.nic ==
-                                _replaceDriverNICController.text) {
-                              driverID = driver?.id;
-                              // _driverNameController.text = '${driver?.cname}';
+                          logger.i('A 2');
+
+                          //----------------------------------
+
+                          // for (int i = 0;
+                          //     i <
+                          //         findAllVehiclesProvider
+                          //             .findAllVehiclesResponse!
+                          //             .appVehicleMobileDtoList!
+                          //             .length;
+                          //     i++) {
+                          //       final driverDetails = findAllVehiclesProvider
+                          //       .findAllVehiclesResponse!.appVehicleMobileDtoList![i];
+
+                          //       logger.i('A 3');
+
+                          //       if(_replaceDriverNICController.text.isEmpty) {
+                          //         logger.i('A 4');
+                          //         if(_driverLicenseController.text == driverDetails.driverDto!.licenseNum) {
+                          //           logger.i('A 4.1');
+                          //           driverID = driverDetails.id;
+                          //         }
+                          //         logger.i(driverID);
+                          //       } else {
+                          //         logger.i('A 5');
+                          //         if(driverDetails.driverDto!.nic == _replaceDriverNICController.text) {
+                          //           logger.i('A 5.1');
+                          //           driverID = driverDetails.id;
+                          //         }
+                          //         logger.i(driverID);
+                          //       }
+                          //     }
+
+                          //-----------------------------------------
+
+                          if (_replaceDriverNICController.text.isEmpty) {
+                            for (int i = 0;
+                                i <
+                                    findAllVehiclesProvider
+                                        .findAllVehiclesResponse!
+                                        .appVehicleMobileDtoList!
+                                        .length;
+                                i++) {
+                              final driverDetails = findAllVehiclesProvider
+                                  .findAllVehiclesResponse
+                                  ?.appVehicleMobileDtoList![i];
+                              if (driverDetails?.vehicleRegNumber ==
+                                  _vehicleNumberController.text) {
+                                driverID = driverDetails!.driverDto!.id;
+                              }
+                            }
+                          } else {
+                            for (int i = 0;
+                                i <
+                                    findAllDriversProvider
+                                        .findAllDriversResponse!
+                                        .appDriverMobileDtoList
+                                        .length;
+                                i++) {
+                              final driverDetails = findAllDriversProvider
+                                  .findAllDriversResponse
+                                  ?.appDriverMobileDtoList[i];
+                              if (driverDetails?.nic ==
+                                  _replaceDriverNICController.text) {
+                                driverID = driverDetails!.id;
+                              }
                             }
                           }
+
+                          //-----------------------------------------
+
+                          // for (int i = 0;
+                          //     i <
+                          //         findAllDriversProvider.findAllDriversResponse!
+                          //             .appDriverMobileDtoList.length;
+                          //     i++) {
+                          //   final driver = findAllDriversProvider
+                          //       .findAllDriversResponse
+                          //       ?.appDriverMobileDtoList[i];
+                          //   if (driver?.licenseNum ==
+                          //       _driverLicenseController.text) {
+                          //     driverID = driver?.id;
+                          //     _driverNameController.text = '${driver?.cname}';
+                          //   } else if (driver?.nic ==
+                          //       _replaceDriverNICController.text) {
+                          //     driverID = driver?.id;
+                          //     // _driverNameController.text = '${driver?.cname}';
+                          //   }
+                          // }
+
+                          //------------------------------------------------
 
                           setState(() {
                             userID = loginProvider
@@ -1500,6 +1574,8 @@ class _DailyAttendance extends State<DailyAttendance> {
                           print(Provider.of<MileageUnit>(context, listen: false)
                               .convertedMileageValue);
 
+                          //---------------------------------------------
+
                           for (int i = 0;
                               i <
                                   findAllVehiclesProvider
@@ -1519,49 +1595,64 @@ class _DailyAttendance extends State<DailyAttendance> {
                             }
                           }
 
-                          for (int i = 0;
-                              i <
-                                  findAllDriversProvider.findAllDriversResponse!
-                                      .appDriverMobileDtoList.length;
-                              i++) {
-                            final driver = findAllDriversProvider
-                                .findAllDriversResponse
-                                ?.appDriverMobileDtoList[i];
-                            // print('${driver?.cname}' +
-                            //     ' - ' +
-                            //     '${driver?.licenseNum}' +
-                            //     ' - ' +
-                            //     '${driver?.nic}' +
-                            //     ' - ' +
-                            //     '${driver?.id}');
-                            if (driver?.licenseNum ==
-                                _driverNameController.text) {
-                              driverID = driver?.id;
-                              _driverNameController.text = '${driver?.cname}';
-                            } else if (driver?.nic ==
-                                _replaceDriverNICController.text) {
-                              driverID = driver?.id;
-                              // _driverNameController.text = '${driver?.cname}';
+                          //----------------------------------------------
+
+                          if (_replaceDriverNICController.text.isEmpty) {
+                            for (int i = 0;
+                                i <
+                                    findAllVehiclesProvider
+                                        .findAllVehiclesResponse!
+                                        .appVehicleMobileDtoList!
+                                        .length;
+                                i++) {
+                              final driverDetails = findAllVehiclesProvider
+                                  .findAllVehiclesResponse
+                                  ?.appVehicleMobileDtoList![i];
+                              if (driverDetails?.vehicleRegNumber ==
+                                  _vehicleNumberController.text) {
+                                driverID = driverDetails!.driverDto!.id;
+                              }
+                            }
+                          } else {
+                            for (int i = 0;
+                                i <
+                                    findAllDriversProvider
+                                        .findAllDriversResponse!
+                                        .appDriverMobileDtoList
+                                        .length;
+                                i++) {
+                              final driverDetails = findAllDriversProvider
+                                  .findAllDriversResponse
+                                  ?.appDriverMobileDtoList[i];
+                              if (driverDetails?.nic ==
+                                  _replaceDriverNICController.text) {
+                                driverID = driverDetails!.id;
+                              }
                             }
                           }
 
-                          // if (endAttendanceProvider
-                          //             .endAttendanceWithTempResponse!.success ==
-                          //         true ||
-                          //     endAttendanceProvider
-                          //             .endAttendanceWithoutTempResponse!
-                          //             .success ==
-                          //         true) {
-                          //   setState(() {
-                          //     finalResponseStatus =
-                          //         'Successfully submitted(End Attendance) !';
-                          //   });
-                          // } else {
-                          //   setState(() {
-                          //     finalResponseStatus =
-                          //         'Error in submitting(End Attendance) !';
-                          //   });
+                          //----------------------------------------------------
+
+                          // for (int i = 0;
+                          //     i <
+                          //         findAllDriversProvider.findAllDriversResponse!
+                          //             .appDriverMobileDtoList.length;
+                          //     i++) {
+                          //   final driver = findAllDriversProvider
+                          //       .findAllDriversResponse
+                          //       ?.appDriverMobileDtoList[i];
+                          //   if (driver?.licenseNum ==
+                          //       _driverNameController.text) {
+                          //     driverID = driver?.id;
+                          //     _driverNameController.text = '${driver?.cname}';
+                          //   } else if (driver?.nic ==
+                          //       _replaceDriverNICController.text) {
+                          //     driverID = driver?.id;
+                          //     // _driverNameController.text = '${driver?.cname}';
+                          //   }
                           // }
+
+                          //-----------------------------------------------------
 
                           checkFilledRequiredFields();
                           checkFIlledAllFields();

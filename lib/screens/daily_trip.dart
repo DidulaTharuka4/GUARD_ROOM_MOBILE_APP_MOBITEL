@@ -236,7 +236,7 @@ class _DailyTrip extends State<DailyTrip> {
       _driverNameError =
           _driverNameController.text.isEmpty ? 'Driver Name is empty' : null;
       // _timeError = _currentTimeController.text.isEmpty ? 'TIme is empty' : null;
-      _tripIdError = _tripIDController.text.isEmpty ? 'TIme is empty' : null;
+      _tripIdError = _tripIDController.text.isEmpty ? 'Trip ID is empty' : null;
     });
 
     if (_tripIDController.text.isEmpty == false) {
@@ -284,7 +284,8 @@ class _DailyTrip extends State<DailyTrip> {
     }
 
     if (requiredVehicleNumberFilled == true &&
-        requiredDriverDetailFilled == true) {
+        requiredDriverDetailFilled == true &&
+        _currentMileageController.text.isEmpty == false) {
       setState(() {
         isRequiredFilled = true;
       });
@@ -632,50 +633,79 @@ class _DailyTrip extends State<DailyTrip> {
     super.initState();
     startClock();
     getCurrentDate();
-    final findAllVehicles =
-        Provider.of<FindAllVehiclesProvider>(context, listen: false)
-            .findAllVehiclesResponse;
+    // final findAllVehicles =
+    //     Provider.of<FindAllVehiclesProvider>(context, listen: false);
   }
 
-  List<String> allVehicleNumbers = [
-    'ND-1290',
-    'ND-1090',
-    'ND-1618',
-    'NA-9345',
-    'NA-9347',
-    'NB-6152',
-    'NB-6153'
-  ];
-  // List<String> allVehicleNumbers = [];
-  List<String> filteredVehicleNumbers = [];
+  // List<String> allVehicleNumbers = [
+  //   'nd-1290',
+  //   'nd-1090',
+  //   'ND-1618',
+  //   'NA-9345',
+  //   'NA-9347',
+  //   'NB-6152',
+  //   'NB-6153'
+  // ];
 
-  // void showVehicleNumberList() {
-  //   final findAllVehicles =
-  //       Provider.of<FindAllVehiclesProvider>(context, listen: false).findAllVehiclesResponse!.appVehicleMobileDtoList;
+  // String? vehicleNumbers;
+  // List<String>? allVehicleNumbers = [];
+  // List<String> filteredVehicleNumbers = [];
 
-  //   allVehicleNumbers = findAllVehicles
+  void showVehicleNumberList() {
+    // final allVehicleDetails =
+    //     Provider.of<FindAllVehiclesProvider>(context, listen: false).findAllVehiclesResponse;
+
+    // final Map<String, dynamic> allVehicles = json.decode(allVehicleDetails);
+
+    // List<String> vehicleRegNumbers = [];
+
+    // allVehicleNumbers = allVehicles
+    //     .findAllVehiclesResponse!.appVehicleMobileDtoList!.
+    //     .map<String>(
+    //         (vehicle) => vehicle["vehicleRegNumber"].toString().trim());
+
+    // for (int i = 0;
+    //     i <
+    //         allVehicles
+    //             .findAllVehiclesResponse!.appVehicleMobileDtoList!.length;
+    //     i++) {
+    //   allVehicleNumbers = allVehicles.findAllVehiclesResponse
+    //       ?.appVehicleMobileDtoList![i].vehicleRegNumber!
+    //       .map<String>(
+    //           (vehicle) => vehicle["vehicleRegNumber"].toString().trim());
+    // }
+  }
+
+  // if (vehicle?.vehicleRegNumber == _vehicleNumberController.text) {
+  //       vehicleID = vehicle?.id;
+  //     } else if (vehicle?.vehicleRegNumber ==
+  //         _replaceVehicleNumberController.text) {
+  //       vehicleID = vehicle?.id;
+  //     }
+
+  // void filterItems() {
+  // allVehicleNumbers = findAllVehicles..map((item) => item['vehicleRegNumber'].toString()).toList();
+  //   List<String> results = [];
+  //   if (_vehicleNumberController.text.isEmpty) {
+  //     logger.i('21');
+  //     results = allVehicleNumbers; // If search is empty, show all items
+  //   } else {
+  //     logger.i('31');
+  //     results = allVehicleNumbers
+  //         .where((item) => item
+  //             .toLowerCase()
+  //             .contains(_vehicleNumberController.text.toLowerCase()))
+  //         .toList(); // Filter items based on search input
+
+  //     allVehicleNumbers = findAllVehicles
   //       .map<String>((vehicle) => vehicle["vehicleRegNumber"].toString().trim())
   //       .toList();
+  //   }
+
+  //   setState(() {
+  //     filteredVehicleNumbers = results;
+  //   });
   // }
-
-  void filterItems() {
-    List<String> results = [];
-    if (_vehicleNumberController.text.isEmpty) {
-      logger.i('21');
-      results = allVehicleNumbers; // If search is empty, show all items
-    } else {
-      logger.i('31');
-      results = allVehicleNumbers
-          .where((item) => item
-              .toLowerCase()
-              .contains(_vehicleNumberController.text.toLowerCase()))
-          .toList(); // Filter items based on search input
-    }
-
-    setState(() {
-      filteredVehicleNumbers = results;
-    });
-  }
 
   // FindAllVehiclesProvider? vId;
   // bool _isDropdownVisible = false;
@@ -915,10 +945,10 @@ class _DailyTrip extends State<DailyTrip> {
                             flex: 7,
                             child: TextField(
                               controller: _vehicleNumberController,
-                              enabled:
-                                  _replaceVehicleNumberController.text.isEmpty
-                                      ? true
-                                      : false,
+                              // enabled:
+                              //     _replaceVehicleNumberController.text.isEmpty
+                              //         ? true
+                              //         : false,
                               inputFormatters: [
                                 VehicleNumberTextInputFormatter(),
                                 LengthLimitingTextInputFormatter(8)
@@ -930,7 +960,7 @@ class _DailyTrip extends State<DailyTrip> {
                                   prefixIcon: Icon(Icons.search),
                                   errorText: _vehicleNumberError),
                               onChanged: (text) {
-                                filterItems();
+                                // filterItems();
                                 logger.i('12');
                                 if (text.isEmpty) {
                                   _driverNameController.text = '';
@@ -1030,9 +1060,9 @@ class _DailyTrip extends State<DailyTrip> {
                       margin: ApplicationMarginValues.textInputFieldInnerMargin,
                       child: TextFormField(
                           controller: _driverLicenseController,
-                          enabled: _replaceDriverNICController.text.isEmpty
-                              ? true
-                              : false,
+                          // enabled: _replaceDriverNICController.text.isEmpty
+                          //     ? true
+                          //     : false,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'This field is required';
@@ -1129,14 +1159,14 @@ class _DailyTrip extends State<DailyTrip> {
                                 fontWeight: ApplicationTextWeights
                                     .UserInputsLabelWeight),
                           ),
-                          Text(
-                            "*",
-                            style: TextStyle(
-                                fontSize: ApplicationTextSizes
-                                    .userInputFieldLabelValue,
-                                color: ApplicationColors.RED_COLOR,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          // Text(
+                          //   "*",
+                          //   style: TextStyle(
+                          //       fontSize: ApplicationTextSizes
+                          //           .userInputFieldLabelValue,
+                          //       color: ApplicationColors.RED_COLOR,
+                          //       fontWeight: FontWeight.bold),
+                          // ),
                         ],
                       ),
                     ),
@@ -1444,14 +1474,14 @@ class _DailyTrip extends State<DailyTrip> {
                                 fontWeight: ApplicationTextWeights
                                     .UserInputsLabelWeight),
                           ),
-                          // Text(
-                          //   "*",
-                          //   style: TextStyle(
-                          //       fontSize: ApplicationTextSizes
-                          //           .userInputFieldLabelValue,
-                          //       color: ApplicationColors.RED_COLOR,
-                          //       fontWeight: FontWeight.bold),
-                          // ),
+                          Text(
+                            "*",
+                            style: TextStyle(
+                                fontSize: ApplicationTextSizes
+                                    .userInputFieldLabelValue,
+                                color: ApplicationColors.RED_COLOR,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                     ),
@@ -1471,7 +1501,7 @@ class _DailyTrip extends State<DailyTrip> {
                                 filled: true,
                                 fillColor: ApplicationColors.PURE_WHITE,
                                 border: OutlineInputBorder(),
-                                // errorText: _currentMileageError
+                                errorText: _currentMileageError
                               ),
                             ),
                           ),
@@ -1581,6 +1611,8 @@ class _DailyTrip extends State<DailyTrip> {
                           // print(Provider.of<MileageUnit>(context, listen: false)
                           //     .convertedMileageValue);
 
+                          //------------------------------------------------------
+
                           for (int i = 0;
                               i <
                                   findAllVehiclesProvider
@@ -1600,33 +1632,66 @@ class _DailyTrip extends State<DailyTrip> {
                             }
                           }
 
-                          logger.i('s1.5');
+                          //-----------------------------------------------
 
-                          for (int i = 0;
-                              i <
-                                  findAllDriversProvider.findAllDriversResponse!
-                                      .appDriverMobileDtoList.length;
-                              i++) {
-                            final driver = findAllDriversProvider
-                                .findAllDriversResponse
-                                ?.appDriverMobileDtoList[i];
-                            // print('${driver?.cname}' +
-                            //     ' - ' +
-                            //     '${driver?.licenseNum}' +
-                            //     ' - ' +
-                            //     '${driver?.nic}' +
-                            //     ' - ' +
-                            //     '${driver?.id}');
-                            if (driver?.licenseNum ==
-                                _driverNameController.text) {
-                              driverID = driver?.id;
-                              _driverNameController.text = '${driver?.cname}';
-                            } else if (driver?.nic ==
-                                _replaceDriverNICController.text) {
-                              driverID = driver?.id;
-                              _driverNameController.text = '${driver?.cname}';
+                          if (_replaceDriverNICController.text.isEmpty) {
+                            for (int i = 0;
+                                i <
+                                    findAllVehiclesProvider
+                                        .findAllVehiclesResponse!
+                                        .appVehicleMobileDtoList!
+                                        .length;
+                                i++) {
+                              final driverDetails = findAllVehiclesProvider
+                                  .findAllVehiclesResponse
+                                  ?.appVehicleMobileDtoList![i];
+                              if (driverDetails?.vehicleRegNumber ==
+                                  _vehicleNumberController.text) {
+                                driverID = driverDetails!.driverDto!.id;
+                              }
+                            }
+                          } else {
+                            for (int i = 0;
+                                i <
+                                    findAllDriversProvider
+                                        .findAllDriversResponse!
+                                        .appDriverMobileDtoList
+                                        .length;
+                                i++) {
+                              final driverDetails = findAllDriversProvider
+                                  .findAllDriversResponse
+                                  ?.appDriverMobileDtoList[i];
+                              if (driverDetails?.nic ==
+                                  _replaceDriverNICController.text) {
+                                driverID = driverDetails!.id;
+                              }
                             }
                           }
+
+                          //---------------------------------------------------------
+
+                          logger.i('s1.5');
+
+                          // for (int i = 0;
+                          //     i <
+                          //         findAllDriversProvider.findAllDriversResponse!
+                          //             .appDriverMobileDtoList.length;
+                          //     i++) {
+                          //   final driver = findAllDriversProvider
+                          //       .findAllDriversResponse
+                          //       ?.appDriverMobileDtoList[i];
+                          //   if (driver?.licenseNum ==
+                          //       _driverNameController.text) {
+                          //     driverID = driver?.id;
+                          //     _driverNameController.text = '${driver?.cname}';
+                          //   } else if (driver?.nic ==
+                          //       _replaceDriverNICController.text) {
+                          //     driverID = driver?.id;
+                          //     _driverNameController.text = '${driver?.cname}';
+                          //   }
+                          // }
+
+                          //---------------------------------------------------------
 
                           logger.i('s2');
 
@@ -1672,6 +1737,8 @@ class _DailyTrip extends State<DailyTrip> {
                           // print(Provider.of<MileageUnit>(context, listen: false)
                           //     .convertedMileageValue);
 
+                          //------------------------------------------------
+
                           for (int i = 0;
                               i <
                                   findAllVehiclesProvider
@@ -1691,31 +1758,64 @@ class _DailyTrip extends State<DailyTrip> {
                             }
                           }
 
-                          for (int i = 0;
-                              i <
-                                  findAllDriversProvider.findAllDriversResponse!
-                                      .appDriverMobileDtoList.length;
-                              i++) {
-                            final driver = findAllDriversProvider
-                                .findAllDriversResponse
-                                ?.appDriverMobileDtoList[i];
-                            // print('${driver?.cname}' +
-                            //     ' - ' +
-                            //     '${driver?.licenseNum}' +
-                            //     ' - ' +
-                            //     '${driver?.nic}' +
-                            //     ' - ' +
-                            //     '${driver?.id}');
-                            if (driver?.licenseNum ==
-                                _driverNameController.text) {
-                              driverID = driver?.id;
-                              _driverNameController.text = '${driver?.cname}';
-                            } else if (driver?.nic ==
-                                _replaceDriverNICController.text) {
-                              driverID = driver?.id;
-                              // _driverNameController.text = '${driver?.cname}';
+                          //-----------------------------------------------------
+
+                          if (_replaceDriverNICController.text.isEmpty) {
+                            for (int i = 0;
+                                i <
+                                    findAllVehiclesProvider
+                                        .findAllVehiclesResponse!
+                                        .appVehicleMobileDtoList!
+                                        .length;
+                                i++) {
+                              final driverDetails = findAllVehiclesProvider
+                                  .findAllVehiclesResponse
+                                  ?.appVehicleMobileDtoList![i];
+                              if (driverDetails?.vehicleRegNumber ==
+                                  _vehicleNumberController.text) {
+                                driverID = driverDetails!.driverDto!.id;
+                              }
+                            }
+                          } else {
+                            for (int i = 0;
+                                i <
+                                    findAllDriversProvider
+                                        .findAllDriversResponse!
+                                        .appDriverMobileDtoList
+                                        .length;
+                                i++) {
+                              final driverDetails = findAllDriversProvider
+                                  .findAllDriversResponse
+                                  ?.appDriverMobileDtoList[i];
+                              if (driverDetails?.nic ==
+                                  _replaceDriverNICController.text) {
+                                driverID = driverDetails!.id;
+                              }
                             }
                           }
+
+                          //------------------------------------------------------
+
+                          // for (int i = 0;
+                          //     i <
+                          //         findAllDriversProvider.findAllDriversResponse!
+                          //             .appDriverMobileDtoList.length;
+                          //     i++) {
+                          //   final driver = findAllDriversProvider
+                          //       .findAllDriversResponse
+                          //       ?.appDriverMobileDtoList[i];
+                          //   if (driver?.licenseNum ==
+                          //       _driverNameController.text) {
+                          //     driverID = driver?.id;
+                          //     _driverNameController.text = '${driver?.cname}';
+                          //   } else if (driver?.nic ==
+                          //       _replaceDriverNICController.text) {
+                          //     driverID = driver?.id;
+                          //     // _driverNameController.text = '${driver?.cname}';
+                          //   }
+                          // }
+
+                          //-------------------------------------------------------
 
                           setState(() {
                             userID = loginProvider
