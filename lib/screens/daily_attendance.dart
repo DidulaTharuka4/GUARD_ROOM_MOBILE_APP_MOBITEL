@@ -147,12 +147,12 @@ class _DailyAttendance extends State<DailyAttendance> {
   final TextEditingController _dateTimeController = TextEditingController();
   late Timer timer;
 
-  @override
-  void initState() {
-    super.initState();
-    startClock();
-    getCurrentDate();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   startClock();
+  //   getCurrentDate();
+  // }
 
   @override
   void dispose() {
@@ -627,6 +627,76 @@ class _DailyAttendance extends State<DailyAttendance> {
     });
   }
 
+  //--------------------------------------------------------------------
+
+  @override
+  void initState() {
+    super.initState();
+    startClock();
+    getCurrentDate();
+    
+    focusNodeForExpandableList.addListener(() {
+      if (!focusNodeForExpandableList.hasFocus) {
+        setState(() {
+          showDropdown = false;
+        });
+      }
+    });
+  }
+
+  List<String> allVehicles = [];
+  List<String> filteredVehicles = [];
+  String? selectedVehicle;
+
+  void vehicleNumberList() {
+    // logger.i('B4 for loop');
+    final findAllVehicles =
+        Provider.of<FindAllVehiclesProvider>(context, listen: false);
+
+    allVehicles.clear();
+
+    for (int i = 0;
+        i <
+            findAllVehicles
+                .findAllVehiclesResponse!.appVehicleMobileDtoList!.length;
+        i++) {
+      // logger.i('inside for loop');
+      final vehicleDetailItem =
+          findAllVehicles.findAllVehiclesResponse!.appVehicleMobileDtoList![i];
+      allVehicles.add(vehicleDetailItem.vehicleRegNumber.toString());
+    }
+    logger.i('end of the for loop');
+    // logger.i(allVehicles);
+  }
+
+  void filterVehicles(String query) {
+    logger.i('inside the func');
+    vehicleNumberList();
+
+    setState(() {
+      filteredVehicles = allVehicles
+          .where(
+              (vehicle) => vehicle.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      if (filteredVehicles.isEmpty) {
+        selectedVehicle = null;
+      } else if (filteredVehicles.contains(selectedVehicle)) {
+        // Keep the selected vehicle if it's still in the filtered list
+        selectedVehicle = selectedVehicle;
+      } else {
+        // Reset selection if the previously selected vehicle is not in the filtered list
+        selectedVehicle = null;
+      }
+    });
+
+    showDropdown = filteredVehicles.isNotEmpty && query.isNotEmpty;
+  }
+
+  bool showDropdown = false;
+  FocusNode focusNodeForExpandableList = FocusNode();
+
+  //--------------------------------------------------------------------------
+
   // content design------------------------------------------------------
 
   @override
@@ -804,10 +874,12 @@ class _DailyAttendance extends State<DailyAttendance> {
                                   border: OutlineInputBorder(),
                                   prefixIcon: Icon(Icons.search),
                                   errorText: _vehicleNumberError),
-                              onChanged: (text) {
-                                // filterItems();
+                              onChanged: (value) {
+                                vehicleNumberList();
+                                filterVehicles(value);
+
                                 logger.i('12');
-                                if (text.isEmpty) {
+                                if (value.isEmpty) {
                                   _driverNameController.text = '';
                                   _driverLicenseController.text = '';
                                 } else {
@@ -838,12 +910,139 @@ class _DailyAttendance extends State<DailyAttendance> {
                               },
                             ),
                           ),
+                          // Flexible(
+                          //   child: ConstrainedBox(
+                          //     constraints: BoxConstraints(
+                          //       maxHeight: 300, // Set max height or min height
+                          //       minHeight: 150, // Set minimum height
+                          //       maxWidth: 150,
+                          //       minWidth: 100,
+                          //     ),
+                          //     child: ListView.builder(
+                          //       itemCount: filteredVehicles.length,
+                          //       itemBuilder: (context, index) {
+                          //         return ListTile(
+                          //           title: Text(filteredVehicles[index]),
+                          //           onTap: () {
+                          //             // Handle the selection of a vehicle
+                          //             _vehicleNumberController.text =
+                          //                 filteredVehicles[index];
+                          //             // Close the dropdown or perform any other action
+
+                          //             if (_vehicleNumberController
+                          //                 .text.isEmpty) {
+                          //               _driverNameController.text = '';
+                          //               _driverLicenseController.text = '';
+                          //             } else {
+                          //               for (int i = 0;
+                          //                   i <
+                          //                       findAllVehiclesProvider
+                          //                           .findAllVehiclesResponse!
+                          //                           .appVehicleMobileDtoList!
+                          //                           .length;
+                          //                   i++) {
+                          //                 final vehicle =
+                          //                     findAllVehiclesProvider
+                          //                         .findAllVehiclesResponse
+                          //                         ?.appVehicleMobileDtoList![i];
+                          //                 if (vehicle?.vehicleRegNumber ==
+                          //                     _vehicleNumberController.text) {
+                          //                   // vehicleID = vehicle?.id;
+                          //                   driverName =
+                          //                       vehicle!.driverDto!.cname;
+                          //                   _driverNameController.text =
+                          //                       '${vehicle!.driverDto!.cname}';
+                          //                   _driverLicenseController.text =
+                          //                       '${vehicle!.driverDto!.licenseNum}';
+                          //                 } else if (vehicle
+                          //                         ?.vehicleRegNumber ==
+                          //                     _replaceVehicleNumberController
+                          //                         .text) {
+                          //                   vehicleID = vehicle?.id;
+                          //                 }
+                          //               }
+                          //             }
+                          //           },
+                          //         );
+                          //       },
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
+
+              if (showDropdown)
+                    Positioned(
+                      child: 
+                            Container(
+                              color: ApplicationColors.PURE_WHITE,
+                              constraints: BoxConstraints(maxHeight: 200),
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxHeight: 300,
+                                  minHeight: 150,
+                                  maxWidth: 150,
+                                  minWidth: 100,
+                                ),
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: filteredVehicles.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: Text(filteredVehicles[index]),
+                                      onTap: () {
+                                        // Handle the selection of a vehicle
+                                        _vehicleNumberController.text =
+                                            filteredVehicles[index];
+                                        // Close the dropdown or perform any other action
+
+                                        if (_vehicleNumberController
+                                            .text.isEmpty) {
+                                          _driverNameController.text = '';
+                                          _driverLicenseController.text = '';
+                                        } else {
+                                          for (int i = 0;
+                                              i <
+                                                  findAllVehiclesProvider
+                                                      .findAllVehiclesResponse!
+                                                      .appVehicleMobileDtoList!
+                                                      .length;
+                                              i++) {
+                                            final vehicle =
+                                                findAllVehiclesProvider
+                                                    .findAllVehiclesResponse
+                                                    ?.appVehicleMobileDtoList![i];
+                                            if (vehicle?.vehicleRegNumber ==
+                                                _vehicleNumberController.text) {
+                                              // vehicleID = vehicle?.id;
+                                              driverName =
+                                                  vehicle!.driverDto!.cname;
+                                              _driverNameController.text =
+                                                  '${vehicle!.driverDto!.cname}';
+                                              _driverLicenseController.text =
+                                                  '${vehicle!.driverDto!.licenseNum}';
+                                            } else if (vehicle
+                                                    ?.vehicleRegNumber ==
+                                                _replaceVehicleNumberController
+                                                    .text) {
+                                              vehicleID = vehicle?.id;
+                                            }
+                                          }
+                                        }
+                                        setState(() {
+                                          showDropdown = false;
+                                        });
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            )
+                    ),
 
               // Driver's License Number----------------------------------------
               Container(
