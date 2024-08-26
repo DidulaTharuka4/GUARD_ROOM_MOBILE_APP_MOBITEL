@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
+import 'dart:io'; // To use exit(0)
 
 class TypeSelector extends StatefulWidget {
   @override
@@ -54,7 +55,14 @@ class _TypeSelector extends State<TypeSelector> {
     // final findAllDriversProvider = Provider.of<FindAllDriversProvider>(context);
     // final findAllVehiclesProvider = Provider.of<FindAllVehiclesProvider>(context);
     var screenSize = MediaQuery.of(context).size;
-    return Scaffold(
+    return 
+    WillPopScope(
+      onWillPop: () async {
+        // Exit the app when the back button is pressed
+        exit(0);
+        return false; // Returning false prevents the usual behavior
+      },
+    child: Scaffold(
         backgroundColor: ApplicationColors.PURE_WHITE,
         body: Container(
           child: SingleChildScrollView(
@@ -222,6 +230,6 @@ class _TypeSelector extends State<TypeSelector> {
               ],
             ),
           ),
-        ));
+        )));
   }
 }
