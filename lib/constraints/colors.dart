@@ -17,4 +17,5 @@ class ApplicationColors {
   static const Color CUSTOM_ERROR_ALERT_BOX = Color(0xFFFFEFEE);
   static const Color TOGGLE_BUTTON_OFF_COLOR = Color(0xFFE0E0E0);
   static const Color ALERT_BOX_TEXT_COLOR = Color(0xFF828282);
+  static const Color EXPANSION_TILE_BORDER = Color(0xFFD4E0FF);
 }

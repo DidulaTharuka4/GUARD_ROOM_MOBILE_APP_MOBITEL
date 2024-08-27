@@ -60,6 +60,29 @@ class _LoginPageState extends State<LoginPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+  void showSuccess(BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text('Login Successfully !'),
+      backgroundColor: ApplicationColors.BUTTON_COLOR_GREEN,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void loginFailedDialogBox(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.all(0.0),
+          content: AlertDialogBox(
+              // alertDialogText:
+              //     'Cannot proceed with invalid inputs! Please try again.'
+              ),
+        );
+      },
+    );
+  }
+
   void showCustomDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -128,9 +151,13 @@ class _LoginPageState extends State<LoginPage> {
     final token = await getToken();
 
     if (token == null) {
-      showError(context);
+      loginFailedDialogBox(context);
+      // _passwordController.clear();
+      // _usernameController.clear();
+      // showError(context);
       logger.i('Login Failed !');
     } else {
+      showSuccess(context);
       logger.i('Login Successfully !');
       Navigator.push(
         context,
