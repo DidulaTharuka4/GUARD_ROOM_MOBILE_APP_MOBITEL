@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ApplicationMarginValues {  
+class ApplicationMarginValues { 
   // **************************************************************************
   static const loginPageTitleMargin = EdgeInsets.fromLTRB(20.0, 80.0, 20.0, 0.0);
   static const loginPageUserNameInputMargin = EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 0.0);

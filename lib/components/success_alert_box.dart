@@ -42,7 +42,7 @@ class SuccessStatusAlertBox extends StatelessWidget {
             ),
         ),
         Container(
-          padding: EdgeInsets.all(16.0),
+          // padding: EdgeInsets.all(16.0),
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
           child: Text(
             successStatus ? 'Saved Successfully' : 'Failed to Save',
@@ -58,7 +58,7 @@ class SuccessStatusAlertBox extends StatelessWidget {
           ),
         ),
         Container(
-          padding: EdgeInsets.all(16.0),
+          // padding: EdgeInsets.all(16.0),
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
           child: Text(
             successStatus

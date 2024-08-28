@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
           content: AlertDialogBox(
               // alertDialogText:
               //     'Cannot proceed with invalid inputs! Please try again.'
-          ),
+              ),
         );
       },
     );
@@ -147,8 +147,44 @@ class _LoginPageState extends State<LoginPage> {
     LoginToMyAccount();
   }
 
+  // bool isLoading = false;
+
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible:
+          false, // Prevents closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Center(
+            child: CircularProgressIndicator(
+                color: ApplicationColors.MAIN_COLOR_BLUE, strokeWidth: 4.0),
+          ),
+        );
+      },
+    );
+  }
+
+  void hideLoadingDialog(BuildContext context) {
+    Navigator.of(context).pop(); // Close the loading dialog
+  }
+
   Future<void> LoginToMyAccount() async {
     final token = await getToken();
+    // setState(() {
+    //   isLoading = true;
+    // });
+
+    showLoadingDialog(context);
+
+    await Future.delayed(Duration(seconds: 2));
+
+    hideLoadingDialog(context);
+
+    // setState(() {
+    //   isLoading = false;
+    // });
 
     if (token == null) {
       loginFailedDialogBox(context);
@@ -171,158 +207,171 @@ class _LoginPageState extends State<LoginPage> {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: ApplicationColors.PURE_WHITE,
-      body: Container(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(0.0),
-          child: Column(
-            children: <Widget>[
-              // Header Color Container Part-----------------------------------
-              Container(
-                  child: SvgPicture.asset('assets/images/Footer.svg',
-                      width: screenSize.width)),
+      body: SingleChildScrollView(
+        child: Stack(
+          // padding: EdgeInsets.all(0.0),
+          children: [
+            Column(
+              children: <Widget>[
+                // Header Color Container Part-----------------------------------
+                Container(
+                    child: SvgPicture.asset('assets/images/Footer.svg',
+                        width: screenSize.width)),
 
-              // Login Account page title-------------------------------------
-              Container(
-                margin: ApplicationMarginValues.loginPageTitleMargin,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Login Account',
-                    style: TextStyle(
-                        fontSize: ApplicationTextSizes.LoginPageTitleText,
-                        fontWeight: ApplicationTextWeights.PageTitleTextWeight,
-                        fontFamily: 'Poppins',
-                        color: ApplicationColors.LOGIN_TEXT_COLOR),
-                  ),
-                ),
-              ),
-
-              // UserName Input Field------------------------------------------
-              Container(
-                margin: ApplicationMarginValues.loginPageUserNameInputMargin,
-                child: Column(children: [
-                  Align(
+                // Login Account page title-------------------------------------
+                Container(
+                  margin: ApplicationMarginValues.loginPageTitleMargin,
+                  child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Username :',
+                      'Login Account',
                       style: TextStyle(
-                          fontSize:
-                              ApplicationTextSizes.UserInputFieldLabelValue,
-                          fontFamily: 'Poppins',
+                          fontSize: ApplicationTextSizes.LoginPageTitleText,
                           fontWeight:
-                              ApplicationTextWeights.UserInputsLabelWeight),
-                    ),
-                  ),
-                  Container(
-                    margin: ApplicationMarginValues.textInputFieldInnerMargin,
-                    child: TextFormField(
-                      controller: _usernameController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 5.0)),
-                        errorText: _usernameError,
-                      ),
-                    ),
-                  ),
-                ]),
-              ),
-
-              // Password Input Field------------------------------------------
-              Container(
-                margin: ApplicationMarginValues.userInputFiledMargin,
-                child: Column(children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Password :',
-                      style: TextStyle(
-                          fontSize:
-                              ApplicationTextSizes.UserInputFieldLabelValue,
+                              ApplicationTextWeights.PageTitleTextWeight,
                           fontFamily: 'Poppins',
-                          fontWeight:
-                              ApplicationTextWeights.UserInputsLabelWeight),
+                          color: ApplicationColors.LOGIN_TEXT_COLOR),
                     ),
-                  ),
-                  Container(
-                    margin: ApplicationMarginValues.textInputFieldInnerMargin,
-                    child: TextFormField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        errorText: _passwordError,
-                      ),
-                      obscureText: true,
-                    ),
-                  ),
-                ]),
-              ),
-
-              // Remember Login-----------------------------------------------
-              Container(
-                margin: ApplicationMarginValues.rememberMeFieldMargin,
-                child: Row(
-                  children: <Widget>[
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _rememberMe = value ?? false;
-                        });
-                      },
-                    ),
-                    Text(
-                      'Remember me',
-                      style: TextStyle(
-                          fontSize: ApplicationTextSizes.RememberMeTextValue,
-                          fontFamily: 'Poppins',
-                          fontWeight:
-                              ApplicationTextWeights.UserInputsLabelWeight),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Login Button---------------------------------------------------
-              Container(
-                margin: ApplicationMarginValues.loginPageButtonMargin,
-                child: CustomButton(
-                  onPress: () {
-                    clearToken();
-                    checkFilled();
-                    _saveCredentials();
-                    // logger.i(screenSize.height);
-                    // logger.i(screenSize.width);
-                  },
-                  innerText: 'Login',
-                  backgroundColor: ApplicationColors.MAIN_COLOR_BLUE,
-                  borderColor: ApplicationColors.MAIN_COLOR_BLUE,
-                  borderWidth: 0.0,
-                  borderRadius: 4,
-                  buttonWidth: screenSize.width,
-                  // buttonHeight: 54.024,
-                  // buttonWidth: screenSize.width,
-                  buttonHeight: screenSize.height / 16.47944802310084,
-                  textStyles: TextStyle(
-                    fontSize: ApplicationTextSizes.LoginButtonTitleValue,
-                    fontWeight: ApplicationTextWeights.LoginButtonTitleWeight,
-                    fontFamily: 'Poppins',
-                    color: ApplicationColors.PURE_WHITE,
                   ),
                 ),
-              ),
 
-              // Logo-----------------------------------------------------
-              Container(
-                  margin: ApplicationMarginValues.loginPageLogoMargin,
-                  child: SvgPicture.asset(
-                      'assets/images/SLTMobitel_Logo.svg',
-                      // width: 90.7214,
-                      // height: 46.1455,
-                      width: screenSize.width / 4.5350,
-                      height: screenSize.height / 19.2930)),
-            ],
-          ),
+                // UserName Input Field------------------------------------------
+                Container(
+                  margin: ApplicationMarginValues.loginPageUserNameInputMargin,
+                  child: Column(children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Username :',
+                        style: TextStyle(
+                            fontSize:
+                                ApplicationTextSizes.UserInputFieldLabelValue,
+                            fontFamily: 'Poppins',
+                            fontWeight:
+                                ApplicationTextWeights.UserInputsLabelWeight),
+                      ),
+                    ),
+                    Container(
+                      margin: ApplicationMarginValues.textInputFieldInnerMargin,
+                      child: TextFormField(
+                        controller: _usernameController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 5.0)),
+                          errorText: _usernameError,
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
+
+                // Password Input Field------------------------------------------
+                Container(
+                  margin: ApplicationMarginValues.userInputFiledMargin,
+                  child: Column(children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Password :',
+                        style: TextStyle(
+                            fontSize:
+                                ApplicationTextSizes.UserInputFieldLabelValue,
+                            fontFamily: 'Poppins',
+                            fontWeight:
+                                ApplicationTextWeights.UserInputsLabelWeight),
+                      ),
+                    ),
+                    Container(
+                      margin: ApplicationMarginValues.textInputFieldInnerMargin,
+                      child: TextFormField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          errorText: _passwordError,
+                        ),
+                        obscureText: true,
+                      ),
+                    ),
+                  ]),
+                ),
+
+                // Remember Login-----------------------------------------------
+                Container(
+                  margin: ApplicationMarginValues.rememberMeFieldMargin,
+                  child: Row(
+                    children: <Widget>[
+                      Checkbox(
+                        value: _rememberMe,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _rememberMe = value ?? false;
+                          });
+                        },
+                      ),
+                      Text(
+                        'Remember me',
+                        style: TextStyle(
+                            fontSize: ApplicationTextSizes.RememberMeTextValue,
+                            fontFamily: 'Poppins',
+                            fontWeight:
+                                ApplicationTextWeights.UserInputsLabelWeight),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Login Button---------------------------------------------------
+                Container(
+                  margin: ApplicationMarginValues.loginPageButtonMargin,
+                  child: CustomButton(
+                    onPress: () {
+                      clearToken();
+                      checkFilled();
+                      _saveCredentials();
+                      // logger.i(screenSize.height);
+                      // logger.i(screenSize.width);
+                    },
+                    innerText: 'Login',
+                    backgroundColor: ApplicationColors.MAIN_COLOR_BLUE,
+                    borderColor: ApplicationColors.MAIN_COLOR_BLUE,
+                    borderWidth: 0.0,
+                    borderRadius: 4,
+                    buttonWidth: screenSize.width,
+                    // buttonHeight: 54.024,
+                    // buttonWidth: screenSize.width,
+                    buttonHeight: screenSize.height / 16.47944802310084,
+                    textStyles: TextStyle(
+                      fontSize: ApplicationTextSizes.LoginButtonTitleValue,
+                      fontWeight: ApplicationTextWeights.LoginButtonTitleWeight,
+                      fontFamily: 'Poppins',
+                      color: ApplicationColors.PURE_WHITE,
+                    ),
+                  ),
+                ),
+
+                // Logo-----------------------------------------------------
+                Container(
+                    // margin: ApplicationMarginValues.loginPageLogoMargin,
+                    margin: EdgeInsets.fromLTRB(
+                        20.0, screenSize.height / 5.94, 20.0, 0.0),
+                    child: SvgPicture.asset('assets/images/SLTMobitel_Logo.svg',
+                        // width: 90.7214,
+                        // height: 46.1455,
+                        width: screenSize.width / 4.5350,
+                        height: screenSize.height / 19.2930)),
+              ],
+            ),
+            // if (isLoading)
+            //   Container(
+            //     color: Colors.black.withOpacity(0.5),
+            //     child: Center(
+            //       child: CircularProgressIndicator(
+            //           color: ApplicationColors.MAIN_COLOR_BLUE,
+            //           strokeWidth: 4.0),
+            //     ),
+            //   ),
+          ],
         ),
       ),
     );
