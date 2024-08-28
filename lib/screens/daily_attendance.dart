@@ -44,33 +44,33 @@ class _DailyAttendance extends State<DailyAttendance> {
       TextEditingController();
   final TextEditingController _currentTimeController = TextEditingController();
 
-  final List<String> _provinceDropdownItems = [
-    'CP',
-    'EP',
-    'NC',
-    'NE',
-    'NW',
-    'SG',
-    'SP',
-    'UP',
-    'WP',
-    'N/A'
-  ];
-  String? _selectedVehicleProvince;
+  // final List<String> _provinceDropdownItems = [
+  //   'CP',
+  //   'EP',
+  //   'NC',
+  //   'NE',
+  //   'NW',
+  //   'SG',
+  //   'SP',
+  //   'UP',
+  //   'WP',
+  //   'N/A'
+  // ];
+  // String? _selectedVehicleProvince;
 
-  final List<String> _replaceProvinceDropdownItems = [
-    'CP',
-    'EP',
-    'NC',
-    'NE',
-    'NW',
-    'SG',
-    'SP',
-    'UP',
-    'WP',
-    'N/A'
-  ];
-  String? _selectedReplaceVehicleProvince;
+  // final List<String> _replaceProvinceDropdownItems = [
+  //   'CP',
+  //   'EP',
+  //   'NC',
+  //   'NE',
+  //   'NW',
+  //   'SG',
+  //   'SP',
+  //   'UP',
+  //   'WP',
+  //   'N/A'
+  // ];
+  // String? _selectedReplaceVehicleProvince;
 
   var logger = Logger();
   final loginProvider = Provider.of<LoginProvider>;
@@ -78,60 +78,6 @@ class _DailyAttendance extends State<DailyAttendance> {
   final findAllDriversProvider = Provider.of<FindAllDriversProvider>;
   final startAttendanceProvider = Provider.of<StartAttendanceProvider>;
   final endAttendanceProvider = Provider.of<EndAttendanceProvider>;
-
-  // DateTime? _selectedDate;
-
-  // Method to show the date picker
-  // Future<void> _selectDate(BuildContext context) async {
-  //   final DateTime? pickedDate = await showDatePicker(
-  //     context: context,
-  //     initialDate: _selectedDate ?? DateTime.now(),
-  //     firstDate: DateTime(2000),
-  //     lastDate: DateTime(2101),
-  //   );
-  //   if (pickedDate != null && pickedDate != _selectedDate) {
-  //     setState(() {
-  //       _selectedDate = pickedDate;
-  //       _currentDateController.text = "${pickedDate.toLocal()}".split(' ')[0];
-  //     });
-  //   }
-  // }
-
-  // TimeOfDay _selectedTime = TimeOfDay.now();
-
-  // Method to show time picker
-  // Future<void> _selectTime(BuildContext context) async {
-  //   final TimeOfDay? pickedTime = await showTimePicker(
-  //     context: context,
-  //     initialTime: _selectedTime,
-  //   );
-
-  //   if (pickedTime != null && pickedTime != _selectedTime) {
-  //     setState(() {
-  //       _selectedTime = pickedTime;
-
-  //       _currentTimeController.text = (pickedTime.hour < 10
-  //               ? "0" + "${pickedTime.hour}"
-  //               : "${pickedTime.hour}") +
-  //           ":" +
-  //           (pickedTime.minute < 10
-  //                   ? "0" + "${pickedTime.minute}"
-  //                   : "${pickedTime.minute}")
-  //               .split(' ')[0];
-  //     });
-  //   } else {
-  //     setState(() {
-  //       _currentTimeController.text = (_selectedTime.hour < 10
-  //               ? "0" + "${_selectedTime.hour}"
-  //               : "${_selectedTime.hour}") +
-  //           ":" +
-  //           (_selectedTime.minute < 10
-  //                   ? "0" + "${_selectedTime.minute}"
-  //                   : "${_selectedTime.minute}")
-  //               .split(' ')[0];
-  //     });
-  //   }
-  // }
 
   bool toggleValue1 = false;
   double? finalMileageValue;
@@ -147,12 +93,47 @@ class _DailyAttendance extends State<DailyAttendance> {
   final TextEditingController _dateTimeController = TextEditingController();
   late Timer timer;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   startClock();
-  //   getCurrentDate();
-  // }
+  String? _dateError;
+  String? _vehicleNumberError;
+  String? _licenseNumberError;
+  String? _driverNameError;
+  String? _currentMileageError;
+  String? _timeError;
+  String? combinedDateTime;
+  String? driverName;
+  String? finalResponseStatus;
+
+  bool isAllFilled = false;
+  bool isRequiredFilled = false;
+  bool isVehicleValId = false;
+  bool isDriverId = false;
+
+  bool requiredVehicleNumberFilled = false;
+  bool requiredDriverDetailFilled = false;
+
+  bool? successStatusStartWithoutTemp;
+  bool? successStatusStartWithTemp;
+  bool? successStatusEndWithoutTemp;
+  bool? successStatusEndWithTemp;
+  bool? successStatus;
+
+  bool showDropdown = false;
+  FocusNode focusNodeForExpandableList = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    startClock();
+    getCurrentDate();
+
+    focusNodeForExpandableList.addListener(() {
+      if (!focusNodeForExpandableList.hasFocus) {
+        setState(() {
+          showDropdown = false;
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -236,23 +217,6 @@ class _DailyAttendance extends State<DailyAttendance> {
     Navigator.of(context).pop(); // Close the loading dialog
   }
 
-  String? _dateError;
-  String? _vehicleNumberError;
-  String? _licenseNumberError;
-  String? _driverNameError;
-  String? _currentMileageError;
-  String? _timeError;
-  String? combinedDateTime;
-  String? driverName;
-  String? finalResponseStatus;
-
-  bool isAllFilled = false;
-  bool isRequiredFilled = false;
-  bool isVehicleValId = false;
-  bool isDriverId = false;
-
-  bool requiredVehicleNumberFilled = false;
-  bool requiredDriverDetailFilled = false;
 
   //  Check all field empty or not
   void checkFIlledAllFields() {
@@ -590,12 +554,6 @@ class _DailyAttendance extends State<DailyAttendance> {
     });
   }
 
-  bool? successStatusStartWithoutTemp;
-  bool? successStatusStartWithTemp;
-  bool? successStatusEndWithoutTemp;
-  bool? successStatusEndWithTemp;
-  bool? successStatus;
-
   void successCall() {
     final startAttendanceProvider =
         Provider.of<StartAttendanceProvider>(context, listen: false);
@@ -682,21 +640,6 @@ class _DailyAttendance extends State<DailyAttendance> {
 
   //--------------------------------------------------------------------
 
-  @override
-  void initState() {
-    super.initState();
-    startClock();
-    getCurrentDate();
-
-    focusNodeForExpandableList.addListener(() {
-      if (!focusNodeForExpandableList.hasFocus) {
-        setState(() {
-          showDropdown = false;
-        });
-      }
-    });
-  }
-
   List<String> allVehicles = [];
   List<String> filteredVehicles = [];
   String? selectedVehicle;
@@ -744,9 +687,6 @@ class _DailyAttendance extends State<DailyAttendance> {
 
     showDropdown = filteredVehicles.isNotEmpty && query.isNotEmpty;
   }
-
-  bool showDropdown = false;
-  FocusNode focusNodeForExpandableList = FocusNode();
 
   //--------------------------------------------------------------------------
 

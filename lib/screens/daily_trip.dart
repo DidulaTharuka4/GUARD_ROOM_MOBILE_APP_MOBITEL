@@ -46,90 +46,33 @@ class _DailyTrip extends State<DailyTrip> {
       TextEditingController();
   final TextEditingController _currentTimeController = TextEditingController();
 
-  final List<String> _provinceDropdownItems = [
-    'CP',
-    'EP',
-    'NC',
-    'NE',
-    'NW',
-    'SG',
-    'SP',
-    'UP',
-    'WP',
-    'N/A'
-  ];
-  String? _selectedVehicleProvince;
+  // final List<String> _provinceDropdownItems = [
+  //   'CP',
+  //   'EP',
+  //   'NC',
+  //   'NE',
+  //   'NW',
+  //   'SG',
+  //   'SP',
+  //   'UP',
+  //   'WP',
+  //   'N/A'
+  // ];
+  // String? _selectedVehicleProvince;
 
-  final List<String> _replaceProvinceDropdownItems = [
-    'CP',
-    'EP',
-    'NC',
-    'NE',
-    'NW',
-    'SG',
-    'SP',
-    'UP',
-    'WP',
-    'N/A'
-  ];
-  String? _selectedReplaceVehicleProvince;
-
-  // DateTime? _selectedDate;
-
-  // Method to show the date picker
-  // Future<void> _selectDate(BuildContext context) async {
-  //   final DateTime? pickedDate = await showDatePicker(
-  //     context: context,
-  //     initialDate: _selectedDate ?? DateTime.now(),
-  //     firstDate: DateTime(2000),
-  //     lastDate: DateTime(2101),
-  //   );
-  //   if (pickedDate != null && pickedDate != _selectedDate) {
-  //     setState(() {
-  //       _selectedDate = pickedDate;
-  //       _currentDateController.text = "${pickedDate.toLocal()}".split(' ')[0];
-  //     });
-  //   }
-  // }
-
-  // TimeOfDay _selectedTime = TimeOfDay.now();
-
-  // Method to show the time picker
-  // Future<void> _selectTime(BuildContext context) async {
-  //   final TimeOfDay? pickedTime = await showTimePicker(
-  //     context: context,
-  //     initialTime: _selectedTime,
-  //   );
-  //   print(_selectedTime);
-
-  //   if (pickedTime != null && pickedTime != _selectedTime) {
-  //     setState(() {
-  //       _selectedTime = pickedTime;
-  //       if (pickedTime.hour < 10) {
-  //         pickedTime.hour == "0" + "${pickedTime.hour}";
-  //       }
-  //       _currentTimeController.text = (pickedTime.hour < 10
-  //               ? "0" + "${pickedTime.hour}"
-  //               : "${pickedTime.hour}") +
-  //           ":" +
-  //           (pickedTime.minute < 10
-  //                   ? "0" + "${pickedTime.minute}"
-  //                   : "${pickedTime.minute}")
-  //               .split(' ')[0];
-  //     });
-  //   } else {
-  //     setState(() {
-  //       _currentTimeController.text = (_selectedTime.hour < 10
-  //               ? "0" + "${_selectedTime.hour}"
-  //               : "${_selectedTime.hour}") +
-  //           ":" +
-  //           (_selectedTime.minute < 10
-  //                   ? "0" + "${_selectedTime.minute}"
-  //                   : "${_selectedTime.minute}")
-  //               .split(' ')[0];
-  //     });
-  //   }
-  // }
+  // final List<String> _replaceProvinceDropdownItems = [
+  //   'CP',
+  //   'EP',
+  //   'NC',
+  //   'NE',
+  //   'NW',
+  //   'SG',
+  //   'SP',
+  //   'UP',
+  //   'WP',
+  //   'N/A'
+  // ];
+  // String? _selectedReplaceVehicleProvince;
 
   var logger = Logger();
   final formKey = GlobalKey<FormState>();
@@ -138,12 +81,64 @@ class _DailyTrip extends State<DailyTrip> {
   final TextEditingController _dateTimeController = TextEditingController();
   late Timer timer;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   startClock();
-  //   getCurrentDate();
-  // }
+   String formattedTime = '';
+  String? _dateError;
+  String? _vehicleNumberError;
+  String? _licenseNumberError;
+  String? _driverNameError;
+  String? _currentMileageError;
+  String? _timeError;
+  String? _tripIdError;
+  int? vehicleID;
+  int? driverID;
+  int? userID;
+  String? userName;
+  String? combinedDateTime;
+  String? driverName;
+  String? driverLicenseNum;
+
+  bool? successStatusVehicleIntWithoutTemp;
+  bool? successStatusVehicleInWithTemp;
+  bool? successStatusVehicleOutWithoutTemp;
+  bool? successStatusVehicleOutWithTemp;
+  bool? successStatus;
+
+  String? errorCode;
+
+  bool isAllFilled = false;
+  bool isRequiredFilled = false;
+
+  bool requiredVehicleNumberFilled = false;
+  bool requiredDriverDetailFilled = false;
+
+  bool showVehicleNumberDropdown = false;
+  FocusNode focusNodeForVehicleNumberExpandableList = FocusNode();
+
+  bool showLicenseNumberDropdown = false;
+  FocusNode focusNodeForLicenseNumberExpandableList = FocusNode();
+
+   @override
+  void initState() {
+    super.initState();
+    startClock();
+    getCurrentDate();
+
+    focusNodeForVehicleNumberExpandableList.addListener(() {
+      if (!focusNodeForVehicleNumberExpandableList.hasFocus) {
+        setState(() {
+          showVehicleNumberDropdown = false;
+        });
+      }
+    });
+
+    focusNodeForLicenseNumberExpandableList.addListener(() {
+      if (!focusNodeForLicenseNumberExpandableList.hasFocus) {
+        setState(() {
+          showLicenseNumberDropdown = false;
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -227,27 +222,7 @@ class _DailyTrip extends State<DailyTrip> {
     Navigator.of(context).pop(); // Close the loading dialog
   }
 
-  String formattedTime = '';
-  String? _dateError;
-  String? _vehicleNumberError;
-  String? _licenseNumberError;
-  String? _driverNameError;
-  String? _currentMileageError;
-  String? _timeError;
-  String? _tripIdError;
-  int? vehicleID;
-  int? driverID;
-  int? userID;
-  String? userName;
-  String? combinedDateTime;
-  String? driverName;
-  String? driverLicenseNum;
-
-  bool isAllFilled = false;
-  bool isRequiredFilled = false;
-
-  bool requiredVehicleNumberFilled = false;
-  bool requiredDriverDetailFilled = false;
+ 
 
   //  Check all field empty or not
   void checkFIlledAllFields() {
@@ -582,13 +557,7 @@ class _DailyTrip extends State<DailyTrip> {
     });
   }
 
-  bool? successStatusVehicleIntWithoutTemp;
-  bool? successStatusVehicleInWithTemp;
-  bool? successStatusVehicleOutWithoutTemp;
-  bool? successStatusVehicleOutWithTemp;
-  bool? successStatus;
-
-  String? errorCode;
+  
 
   void successCall() {
     final vehicleInProvider =
@@ -698,28 +667,6 @@ class _DailyTrip extends State<DailyTrip> {
   }
 
   // --------------------------------------------------------------------
-  @override
-  void initState() {
-    super.initState();
-    startClock();
-    getCurrentDate();
-
-    focusNodeForVehicleNumberExpandableList.addListener(() {
-      if (!focusNodeForVehicleNumberExpandableList.hasFocus) {
-        setState(() {
-          showVehicleNumberDropdown = false;
-        });
-      }
-    });
-
-    focusNodeForLicenseNumberExpandableList.addListener(() {
-      if (!focusNodeForLicenseNumberExpandableList.hasFocus) {
-        setState(() {
-          showLicenseNumberDropdown = false;
-        });
-      }
-    });
-  }
 
   List<String> allVehicles = [];
   List<String> filteredVehicles = [];
@@ -769,8 +716,7 @@ class _DailyTrip extends State<DailyTrip> {
     showVehicleNumberDropdown = filteredVehicles.isNotEmpty && query.isNotEmpty;
   }
 
-  bool showVehicleNumberDropdown = false;
-  FocusNode focusNodeForVehicleNumberExpandableList = FocusNode();
+  
 
   // driver's license number drop down-----------------------------------------
 
@@ -794,10 +740,8 @@ class _DailyTrip extends State<DailyTrip> {
             findAllLicenseNumbers
                 .findAllVehiclesResponse!.appVehicleMobileDtoList!.length;
         i++) {
-      // logger.i('inside for loop');
       final licenseNumberItem = findAllLicenseNumbers
           .findAllVehiclesResponse!.appVehicleMobileDtoList![i];
-      // logger.i('second inside for loop');
 
       // logger.i(licenseNumberItem);
       // allLicenseNumbers.add(licenseNumberItem.driverDto!.licenseNum.toString());
@@ -810,10 +754,8 @@ class _DailyTrip extends State<DailyTrip> {
             .add(licenseNumberItem.driverDto!.licenseNum.toString());
       }
 
-      // logger.i('third inside for loop');
     }
     logger.i('end of the for loop');
-    // logger.i(allLicenseNumbers);
   }
 
   void filterLicenseNumbers(String query) {
@@ -839,8 +781,7 @@ class _DailyTrip extends State<DailyTrip> {
         filteredLicenseNumbers.isNotEmpty && query.isNotEmpty;
   }
 
-  bool showLicenseNumberDropdown = false;
-  FocusNode focusNodeForLicenseNumberExpandableList = FocusNode();
+  
 
   // content design------------------------------------------------------
 
@@ -1341,6 +1282,10 @@ class _DailyTrip extends State<DailyTrip> {
                             _driverLicenseController.text =
                                 filteredLicenseNumbers[index];
 
+                                setState(() {
+                              showLicenseNumberDropdown = false;
+                            });
+
                             if (_driverLicenseController.text.isEmpty) {
                               _driverNameController.text = '';
                               if (_vehicleNumberController.text.isEmpty) {
@@ -1359,7 +1304,6 @@ class _DailyTrip extends State<DailyTrip> {
                                     ?.appVehicleMobileDtoList![i];
                                 if (vehicle?.driverDto!.licenseNum ==
                                     _driverLicenseController.text) {
-                                  // vehicleID = vehicle?.id;
                                   driverID = vehicle!.driverDto!.id;
                                   driverName = vehicle!.driverDto!.cname;
                                   _driverNameController.text =
@@ -1371,9 +1315,9 @@ class _DailyTrip extends State<DailyTrip> {
                                 }
                               }
                             }
-                            setState(() {
-                              showLicenseNumberDropdown = false;
-                            });
+                            // setState(() {
+                            //   showLicenseNumberDropdown = false;
+                            // });
                           },
                         );
                       },
