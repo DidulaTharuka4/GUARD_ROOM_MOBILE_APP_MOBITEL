@@ -206,6 +206,27 @@ class _DailyTrip extends State<DailyTrip> {
     );
   }
 
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible:
+          false, // Prevents closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Center(
+            child: CircularProgressIndicator(
+                color: ApplicationColors.MAIN_COLOR_BLUE, strokeWidth: 4.0),
+          ),
+        );
+      },
+    );
+  }
+
+  void hideLoadingDialog(BuildContext context) {
+    Navigator.of(context).pop(); // Close the loading dialog
+  }
+
   String formattedTime = '';
   String? _dateError;
   String? _vehicleNumberError;
@@ -444,6 +465,11 @@ class _DailyTrip extends State<DailyTrip> {
       // print('Error occurredsss: $error');
       logger.i('Error occurred 67: $error');
     }
+
+    showLoadingDialog(context);
+    await Future.delayed(Duration(seconds: 2));
+    hideLoadingDialog(context);
+
     successCall();
     setState(() {
       vehicleID = null;
@@ -473,6 +499,11 @@ class _DailyTrip extends State<DailyTrip> {
       // print('Error occurredeeee: $error');
       logger.i('Error occurred 67: $error');
     }
+
+    showLoadingDialog(context);
+    await Future.delayed(Duration(seconds: 2));
+    hideLoadingDialog(context);
+
     successCall();
     setState(() {
       vehicleID = null;
@@ -505,6 +536,11 @@ class _DailyTrip extends State<DailyTrip> {
       // print('Error occurreddddd: $error');
       logger.i('Error occurred 67: $error');
     }
+
+    showLoadingDialog(context);
+    await Future.delayed(Duration(seconds: 2));
+    hideLoadingDialog(context);
+
     successCall();
     setState(() {
       vehicleID = null;
@@ -535,6 +571,11 @@ class _DailyTrip extends State<DailyTrip> {
       // print('Error occurredpppp: $error');
       logger.i('Error occurred 67: $error');
     }
+
+    showLoadingDialog(context);
+    await Future.delayed(Duration(seconds: 2));
+    hideLoadingDialog(context);
+
     successCall();
     setState(() {
       vehicleID = null;
@@ -591,6 +632,20 @@ class _DailyTrip extends State<DailyTrip> {
     logger.i(successStatus);
     logger.i('wait go ');
     finalResponseStatusDialogBox(context);
+
+    // if (successStatus == true) {
+
+    //   _tripIDController.clear();
+    //   _vehicleNumberController.clear();
+    //   _driverLicenseController.clear();
+    //   _driverNameController.clear();
+    //   _currentMileageController.clear();
+    //   _replaceVehicleNumberController.clear();
+    //   _replaceDriverNICController.clear();
+    //   _replaceCommentController.clear();
+
+    //    Navigator.pop(context);
+    // }
   }
 
   void finalResponseStatusDialogBox(BuildContext context) {
@@ -598,6 +653,21 @@ class _DailyTrip extends State<DailyTrip> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 3), () {
+          Navigator.of(context).pop(true);
+          if (successStatus == true) {
+            _tripIDController.clear();
+            _vehicleNumberController.clear();
+            _driverLicenseController.clear();
+            _driverNameController.clear();
+            _currentMileageController.clear();
+            _replaceVehicleNumberController.clear();
+            _replaceDriverNICController.clear();
+            _replaceCommentController.clear();
+
+            Navigator.pop(context);
+          }
+        });
         return AlertDialog(
           contentPadding: EdgeInsets.all(0.0),
           content: SuccessStatusAlertBox(
@@ -634,10 +704,18 @@ class _DailyTrip extends State<DailyTrip> {
     startClock();
     getCurrentDate();
 
-    focusNodeForExpandableList.addListener(() {
-      if (!focusNodeForExpandableList.hasFocus) {
+    focusNodeForVehicleNumberExpandableList.addListener(() {
+      if (!focusNodeForVehicleNumberExpandableList.hasFocus) {
         setState(() {
-          showDropdown = false;
+          showVehicleNumberDropdown = false;
+        });
+      }
+    });
+
+    focusNodeForLicenseNumberExpandableList.addListener(() {
+      if (!focusNodeForLicenseNumberExpandableList.hasFocus) {
+        setState(() {
+          showLicenseNumberDropdown = false;
         });
       }
     });
@@ -662,14 +740,15 @@ class _DailyTrip extends State<DailyTrip> {
       // logger.i('inside for loop');
       final vehicleDetailItem =
           findAllVehicles.findAllVehiclesResponse!.appVehicleMobileDtoList![i];
+      // logger.i(vehicleDetailItem);
       allVehicles.add(vehicleDetailItem.vehicleRegNumber.toString());
     }
     logger.i('end of the for loop');
-    // logger.i(allVehicles);
+    logger.i(allVehicles);
   }
 
   void filterVehicles(String query) {
-    logger.i('inside the func');
+    logger.i('inside the func 1');
     vehicleNumberList();
 
     setState(() {
@@ -687,11 +766,81 @@ class _DailyTrip extends State<DailyTrip> {
         selectedVehicle = null;
       }
     });
-     showDropdown = filteredVehicles.isNotEmpty && query.isNotEmpty;
+    showVehicleNumberDropdown = filteredVehicles.isNotEmpty && query.isNotEmpty;
   }
 
-  bool showDropdown = false;
-  FocusNode focusNodeForExpandableList = FocusNode();
+  bool showVehicleNumberDropdown = false;
+  FocusNode focusNodeForVehicleNumberExpandableList = FocusNode();
+
+  // driver's license number drop down-----------------------------------------
+
+  //----------------------------------------------------------------------------
+
+  //----------------------------------------------------------------------------
+
+  List<String> allLicenseNumbers = [];
+  List<String> filteredLicenseNumbers = [];
+  String? selectedLicenseNumber;
+
+  void licenseNumberList() {
+    logger.i('B4 for loop');
+    final findAllLicenseNumbers =
+        Provider.of<FindAllVehiclesProvider>(context, listen: false);
+
+    allLicenseNumbers.clear();
+
+    for (int i = 0;
+        i <
+            findAllLicenseNumbers
+                .findAllVehiclesResponse!.appVehicleMobileDtoList!.length;
+        i++) {
+      // logger.i('inside for loop');
+      final licenseNumberItem = findAllLicenseNumbers
+          .findAllVehiclesResponse!.appVehicleMobileDtoList![i];
+      // logger.i('second inside for loop');
+
+      // logger.i(licenseNumberItem);
+      // allLicenseNumbers.add(licenseNumberItem.driverDto!.licenseNum.toString());
+      // allLicenseNumbers
+      //     .add(licenseNumberItem.driverDto?.licenseNum?.toString() ?? '');
+
+      if (licenseNumberItem.driverDto != null &&
+          licenseNumberItem.driverDto!.licenseNum != null) {
+        allLicenseNumbers
+            .add(licenseNumberItem.driverDto!.licenseNum.toString());
+      }
+
+      // logger.i('third inside for loop');
+    }
+    logger.i('end of the for loop');
+    // logger.i(allLicenseNumbers);
+  }
+
+  void filterLicenseNumbers(String query) {
+    logger.i('inside the func 1');
+    licenseNumberList();
+
+    setState(() {
+      filteredLicenseNumbers = allLicenseNumbers
+          .where((licenseNumber) =>
+              licenseNumber.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      if (filteredLicenseNumbers.isEmpty) {
+        selectedLicenseNumber = null;
+      } else if (filteredLicenseNumbers.contains(selectedLicenseNumber)) {
+        // Keep the selected vehicle if it's still in the filtered list
+        selectedLicenseNumber = selectedLicenseNumber;
+      } else {
+        // Reset selection if the previously selected vehicle is not in the filtered list
+        selectedLicenseNumber = null;
+      }
+    });
+    showLicenseNumberDropdown =
+        filteredLicenseNumbers.isNotEmpty && query.isNotEmpty;
+  }
+
+  bool showLicenseNumberDropdown = false;
+  FocusNode focusNodeForLicenseNumberExpandableList = FocusNode();
 
   // content design------------------------------------------------------
 
@@ -914,7 +1063,8 @@ class _DailyTrip extends State<DailyTrip> {
                             // flex: 7,
                             child: TextField(
                               controller: _vehicleNumberController,
-                              focusNode: focusNodeForExpandableList,
+                              focusNode:
+                                  focusNodeForVehicleNumberExpandableList,
                               // enabled:
                               //     _replaceVehicleNumberController.text.isEmpty
                               //         ? true
@@ -932,9 +1082,6 @@ class _DailyTrip extends State<DailyTrip> {
                               onChanged: (value) {
                                 vehicleNumberList();
                                 filterVehicles(value);
-                                // setState(() {
-                                //   showDropdown = false;
-                                // });
 
                                 //                 setState(() {
                                 //   filteredVehicles = vehicleNumbers
@@ -943,102 +1090,34 @@ class _DailyTrip extends State<DailyTrip> {
                                 // });
 
                                 logger.i('12');
-                                if (value.isEmpty) {
-                                  _driverNameController.text = '';
-                                  _driverLicenseController.text = '';
-                                } else {
-                                  for (int i = 0;
-                                      i <
-                                          findAllVehiclesProvider
-                                              .findAllVehiclesResponse!
-                                              .appVehicleMobileDtoList!
-                                              .length;
-                                      i++) {
-                                    final vehicle = findAllVehiclesProvider
-                                        .findAllVehiclesResponse
-                                        ?.appVehicleMobileDtoList![i];
-                                    if (vehicle?.vehicleRegNumber ==
-                                        _vehicleNumberController.text) {
-                                      // vehicleID = vehicle?.id;
-                                      driverName = vehicle!.driverDto!.cname;
-                                      _driverNameController.text =
-                                          '${vehicle!.driverDto!.cname}';
-                                      _driverLicenseController.text =
-                                          '${vehicle!.driverDto!.licenseNum}';
-                                    } else if (vehicle?.vehicleRegNumber ==
-                                        _replaceVehicleNumberController.text) {
-                                      vehicleID = vehicle?.id;
-                                    }
-                                  }
-                                }
+                                // if (value.isEmpty) {
+                                //   _driverNameController.text = '';
+                                //   _driverLicenseController.text = '';
+                                // } else {
+                                //   for (int i = 0;
+                                //       i <
+                                //           findAllVehiclesProvider
+                                //               .findAllVehiclesResponse!
+                                //               .appVehicleMobileDtoList!
+                                //               .length;
+                                //       i++) {
+                                //     final vehicle = findAllVehiclesProvider
+                                //         .findAllVehiclesResponse
+                                //         ?.appVehicleMobileDtoList![i];
+                                //     if (vehicle?.vehicleRegNumber ==
+                                //         _vehicleNumberController.text) {
+                                //       vehicleID = vehicle?.id;
+                                //       driverName = vehicle!.driverDto!.cname;
+                                //       _driverNameController.text =
+                                //           '${vehicle!.driverDto!.cname}';
+                                //       _driverLicenseController.text =
+                                //           '${vehicle!.driverDto!.licenseNum}';
+                                //     }
+                                //   }
+                                // }
                               },
                             ),
                           ),
-                          // if (showDropdown)
-                          //   Container(
-                          //     color: ApplicationColors.PURE_WHITE,
-                          //     constraints: BoxConstraints(maxHeight: 200),
-                          //     child: ConstrainedBox(
-                          //       constraints: BoxConstraints(
-                          //         maxHeight: 300,
-                          //         minHeight: 150,
-                          //         maxWidth: 150,
-                          //         minWidth: 100,
-                          //       ),
-                          //       child: ListView.builder(
-                          //         shrinkWrap: true,
-                          //         itemCount: filteredVehicles.length,
-                          //         itemBuilder: (context, index) {
-                          //           return ListTile(
-                          //             title: Text(filteredVehicles[index]),
-                          //             onTap: () {
-                          //               // Handle the selection of a vehicle
-                          //               _vehicleNumberController.text =
-                          //                   filteredVehicles[index];
-                          //               // Close the dropdown or perform any other action
-
-                          //               if (_vehicleNumberController
-                          //                   .text.isEmpty) {
-                          //                 _driverNameController.text = '';
-                          //                 _driverLicenseController.text = '';
-                          //               } else {
-                          //                 for (int i = 0;
-                          //                     i <
-                          //                         findAllVehiclesProvider
-                          //                             .findAllVehiclesResponse!
-                          //                             .appVehicleMobileDtoList!
-                          //                             .length;
-                          //                     i++) {
-                          //                   final vehicle =
-                          //                       findAllVehiclesProvider
-                          //                           .findAllVehiclesResponse
-                          //                           ?.appVehicleMobileDtoList![i];
-                          //                   if (vehicle?.vehicleRegNumber ==
-                          //                       _vehicleNumberController.text) {
-                          //                     // vehicleID = vehicle?.id;
-                          //                     driverName =
-                          //                         vehicle!.driverDto!.cname;
-                          //                     _driverNameController.text =
-                          //                         '${vehicle!.driverDto!.cname}';
-                          //                     _driverLicenseController.text =
-                          //                         '${vehicle!.driverDto!.licenseNum}';
-                          //                   } else if (vehicle
-                          //                           ?.vehicleRegNumber ==
-                          //                       _replaceVehicleNumberController
-                          //                           .text) {
-                          //                     vehicleID = vehicle?.id;
-                          //                   }
-                          //                 }
-                          //               }
-                          //               setState(() {
-                          //                 showDropdown = false;
-                          //               });
-                          //             },
-                          //           );
-                          //         },
-                          //       ),
-                          //     ),
-                          //   )
                         ],
                       ),
                     ),
@@ -1046,258 +1125,261 @@ class _DailyTrip extends State<DailyTrip> {
                 ),
               ),
 
-              if (showDropdown)
-                    Positioned(
-                      child: 
-                            Container(
-                              color: ApplicationColors.PURE_WHITE,
-                              constraints: BoxConstraints(maxHeight: 200),
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxHeight: 300,
-                                  minHeight: 150,
-                                  maxWidth: 150,
-                                  minWidth: 100,
-                                ),
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: filteredVehicles.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: Text(filteredVehicles[index]),
-                                      onTap: () {
-                                        // Handle the selection of a vehicle
-                                        _vehicleNumberController.text =
-                                            filteredVehicles[index];
-                                        // Close the dropdown or perform any other action
+              if (showVehicleNumberDropdown)
+                Positioned(
+                    child: Container(
+                  // color: ApplicationColors.PURE_WHITE,
+                  color: ApplicationColors.BACKGROUND_BLUE,
+                  constraints: BoxConstraints(maxHeight: 200),
 
-                                        if (_vehicleNumberController
-                                            .text.isEmpty) {
-                                          _driverNameController.text = '';
-                                          _driverLicenseController.text = '';
-                                        } else {
-                                          for (int i = 0;
-                                              i <
-                                                  findAllVehiclesProvider
-                                                      .findAllVehiclesResponse!
-                                                      .appVehicleMobileDtoList!
-                                                      .length;
-                                              i++) {
-                                            final vehicle =
-                                                findAllVehiclesProvider
-                                                    .findAllVehiclesResponse
-                                                    ?.appVehicleMobileDtoList![i];
-                                            if (vehicle?.vehicleRegNumber ==
-                                                _vehicleNumberController.text) {
-                                              // vehicleID = vehicle?.id;
-                                              driverName =
-                                                  vehicle!.driverDto!.cname;
-                                              _driverNameController.text =
-                                                  '${vehicle!.driverDto!.cname}';
-                                              _driverLicenseController.text =
-                                                  '${vehicle!.driverDto!.licenseNum}';
-                                            } else if (vehicle
-                                                    ?.vehicleRegNumber ==
-                                                _replaceVehicleNumberController
-                                                    .text) {
-                                              vehicleID = vehicle?.id;
-                                            }
-                                          }
-                                        }
-                                        setState(() {
-                                          showDropdown = false;
-                                        });
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            )
+                  // decoration: BoxDecoration(
+                  //   border: Border.all(width: 1.0),
+                  // ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: 200,
+                      minHeight: 100,
+                      // maxWidth: 350,
+                      // minWidth: 100,
                     ),
+                    child: ListView.builder(
+                      shrinkWrap: false,
+                      itemCount: filteredVehicles.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(filteredVehicles[index]),
+                          onTap: () {
+                            // Handle the selection of a vehicle
+                            _vehicleNumberController.text =
+                                filteredVehicles[index];
+                            // Close the dropdown or perform any other action
+
+                            if (_vehicleNumberController.text.isEmpty) {
+                              _driverNameController.text = '';
+                              _driverLicenseController.text = '';
+                            } else {
+                              for (int i = 0;
+                                  i <
+                                      findAllVehiclesProvider
+                                          .findAllVehiclesResponse!
+                                          .appVehicleMobileDtoList!
+                                          .length;
+                                  i++) {
+                                final vehicle = findAllVehiclesProvider
+                                    .findAllVehiclesResponse
+                                    ?.appVehicleMobileDtoList![i];
+                                if (vehicle?.vehicleRegNumber ==
+                                    _vehicleNumberController.text) {
+                                  vehicleID = vehicle?.id;
+                                  driverID = vehicle?.driverDto!.id;
+                                  // driverName = vehicle!.driverDto!.cname;
+                                  _driverNameController.text =
+                                      '${vehicle!.driverDto!.cname}';
+                                  _driverLicenseController.text =
+                                      '${vehicle!.driverDto!.licenseNum}';
+                                }
+                              }
+                            }
+                            setState(() {
+                              showVehicleNumberDropdown = false;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                )),
 
               // Driver's License Number----------------------------------------
               Container(
-                  margin: ApplicationMarginValues.pageInputFieldsMargin,
-                  child: Stack(children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          child: Row(
-                            children: [
-                              Text(
-                                "Driver's License Number  :  ",
-                                style: TextStyle(
-                                    fontSize: ApplicationTextSizes
-                                        .userInputFieldLabelValue,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: ApplicationTextWeights
-                                        .UserInputsLabelWeight),
-                              ),
-                              Text(
-                                "*",
-                                style: TextStyle(
-                                    fontSize: ApplicationTextSizes
-                                        .userInputFieldLabelValue,
-                                    color: ApplicationColors.RED_COLOR,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                margin: ApplicationMarginValues.pageInputFieldsMargin,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: Row(
+                        children: [
+                          Text(
+                            "Driver's License Number  :  ",
+                            style: TextStyle(
+                                fontSize: ApplicationTextSizes
+                                    .userInputFieldLabelValue,
+                                fontFamily: 'Poppins',
+                                fontWeight: ApplicationTextWeights
+                                    .UserInputsLabelWeight),
                           ),
-                        ),
-                        Container(
-                          margin:
-                              ApplicationMarginValues.textInputFieldInnerMargin,
-                          child: TextFormField(
-                              controller: _driverLicenseController,
-                              // enabled: _replaceDriverNICController.text.isEmpty
-                              //     ? true
-                              //     : false,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'This field is required';
-                                }
-                                return null;
-                              },
-                              inputFormatters: [
-                                DriverLicenseTextInputFormatter(),
-                                LengthLimitingTextInputFormatter(10)
-                              ],
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: ApplicationColors.PURE_WHITE,
-                                  border: OutlineInputBorder(),
-                                  errorText: _licenseNumberError),
-                              onChanged: (text) {
-                                if (text.isEmpty) {
-                                  _driverNameController.text = '';
-                                } else {
-                                  for (int i = 0;
-                                      i <
-                                          findAllDriversProvider
-                                              .findAllDriversResponse!
-                                              .appDriverMobileDtoList
-                                              .length;
-                                      i++) {
-                                    final driver = findAllDriversProvider
-                                        .findAllDriversResponse
-                                        ?.appDriverMobileDtoList[i];
-                                    print('${driver?.cname}' +
-                                        ' - ' +
-                                        '${driver?.licenseNum}' +
-                                        ' - ' +
-                                        '${driver?.nic}' +
-                                        ' - ' +
-                                        '${driver?.id}');
-                                    if (driver?.licenseNum ==
-                                        _driverLicenseController.text) {
-                                      driverID = driver?.id;
-                                      _driverNameController.text =
-                                          '${driver?.cname}';
-                                    }
-                                  }
-                                }
-
-                                if (text.isEmpty) {
-                                  _driverNameController.text = '';
-                                  _vehicleNumberController.text = '';
-                                } else {
-                                  for (int i = 0;
-                                      i <
-                                          findAllVehiclesProvider
-                                              .findAllVehiclesResponse!
-                                              .appVehicleMobileDtoList!
-                                              .length;
-                                      i++) {
-                                    final vehicle = findAllVehiclesProvider
-                                        .findAllVehiclesResponse
-                                        ?.appVehicleMobileDtoList![i];
-                                    if (vehicle?.driverDto!.licenseNum ==
-                                        _driverLicenseController.text) {
-                                      // driverName = vehicle!.driverDto!.cname;
-                                      _vehicleNumberController.text =
-                                          '${vehicle!.vehicleRegNumber}';
-                                      _driverNameController.text =
-                                          '${vehicle!.driverDto!.cname}';
-                                    }
-                                    // else if (vehicle?.vehicleRegNumber ==
-                                    //     _replaceVehicleNumberController.text) {
-                                    //   vehicleID = vehicle?.id;
-                                    // }
-                                  }
-                                }
-                              }),
-                        ),
-                      ],
+                          Text(
+                            "*",
+                            style: TextStyle(
+                                fontSize: ApplicationTextSizes
+                                    .userInputFieldLabelValue,
+                                color: ApplicationColors.RED_COLOR,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
-                    // if (showDropdown)
-                    // Positioned(
-                    //   child: 
-                    //         Container(
-                    //           color: ApplicationColors.PURE_WHITE,
-                    //           constraints: BoxConstraints(maxHeight: 200),
-                    //           child: ConstrainedBox(
-                    //             constraints: BoxConstraints(
-                    //               maxHeight: 300,
-                    //               minHeight: 150,
-                    //               maxWidth: 150,
-                    //               minWidth: 100,
-                    //             ),
-                    //             child: ListView.builder(
-                    //               shrinkWrap: true,
-                    //               itemCount: filteredVehicles.length,
-                    //               itemBuilder: (context, index) {
-                    //                 return ListTile(
-                    //                   title: Text(filteredVehicles[index]),
-                    //                   onTap: () {
-                    //                     // Handle the selection of a vehicle
-                    //                     _vehicleNumberController.text =
-                    //                         filteredVehicles[index];
-                    //                     // Close the dropdown or perform any other action
+                    Container(
+                      margin: ApplicationMarginValues.textInputFieldInnerMargin,
+                      child: TextFormField(
+                          controller: _driverLicenseController,
+                          focusNode: focusNodeForLicenseNumberExpandableList,
+                          // enabled: _replaceDriverNICController.text.isEmpty
+                          //     ? true
+                          //     : false,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'This field is required';
+                            }
+                            return null;
+                          },
+                          inputFormatters: [
+                            DriverLicenseTextInputFormatter(),
+                            LengthLimitingTextInputFormatter(10)
+                          ],
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: ApplicationColors.PURE_WHITE,
+                              border: OutlineInputBorder(),
+                              errorText: _licenseNumberError),
+                          onChanged: (value) {
+                            // logger.i('j query');
+                            licenseNumberList();
+                            filterLicenseNumbers(value);
 
-                    //                     if (_vehicleNumberController
-                    //                         .text.isEmpty) {
-                    //                       _driverNameController.text = '';
-                    //                       _driverLicenseController.text = '';
-                    //                     } else {
-                    //                       for (int i = 0;
-                    //                           i <
-                    //                               findAllVehiclesProvider
-                    //                                   .findAllVehiclesResponse!
-                    //                                   .appVehicleMobileDtoList!
-                    //                                   .length;
-                    //                           i++) {
-                    //                         final vehicle =
-                    //                             findAllVehiclesProvider
-                    //                                 .findAllVehiclesResponse
-                    //                                 ?.appVehicleMobileDtoList![i];
-                    //                         if (vehicle?.vehicleRegNumber ==
-                    //                             _vehicleNumberController.text) {
-                    //                           // vehicleID = vehicle?.id;
-                    //                           driverName =
-                    //                               vehicle!.driverDto!.cname;
-                    //                           _driverNameController.text =
-                    //                               '${vehicle!.driverDto!.cname}';
-                    //                           _driverLicenseController.text =
-                    //                               '${vehicle!.driverDto!.licenseNum}';
-                    //                         } else if (vehicle
-                    //                                 ?.vehicleRegNumber ==
-                    //                             _replaceVehicleNumberController
-                    //                                 .text) {
-                    //                           vehicleID = vehicle?.id;
-                    //                         }
-                    //                       }
-                    //                     }
-                    //                     setState(() {
-                    //                       showDropdown = false;
-                    //                     });
-                    //                   },
-                    //                 );
-                    //               },
-                    //             ),
-                    //           ),
-                    //         )
-                    // )
-                  ])),
+                            if (value.isEmpty) {
+                              _driverNameController.text = '';
+                            } else {
+                              for (int i = 0;
+                                  i <
+                                      findAllDriversProvider
+                                          .findAllDriversResponse!
+                                          .appDriverMobileDtoList
+                                          .length;
+                                  i++) {
+                                final driver = findAllDriversProvider
+                                    .findAllDriversResponse
+                                    ?.appDriverMobileDtoList[i];
+                                print('${driver?.cname}' +
+                                    ' - ' +
+                                    '${driver?.licenseNum}' +
+                                    ' - ' +
+                                    '${driver?.nic}' +
+                                    ' - ' +
+                                    '${driver?.id}');
+                                if (driver?.licenseNum ==
+                                    _driverLicenseController.text) {
+                                  driverID = driver?.id;
+                                  if (driver?.cname != null) {
+                                    _driverNameController.text =
+                                        '${driver?.cname}';
+                                  }
+                                }
+                              }
+                            }
+
+                            // if (value.isEmpty) {
+                            //   _driverNameController.text = '';
+                            //   _vehicleNumberController.text = '';
+                            // } else {
+                            //   for (int i = 0;
+                            //       i <
+                            //           findAllVehiclesProvider
+                            //               .findAllVehiclesResponse!
+                            //               .appVehicleMobileDtoList!
+                            //               .length;
+                            //       i++) {
+                            //     final vehicle = findAllVehiclesProvider
+                            //         .findAllVehiclesResponse
+                            //         ?.appVehicleMobileDtoList![i];
+                            //     if (vehicle?.driverDto!.licenseNum ==
+                            //         _driverLicenseController.text) {
+                            //       // driverName = vehicle!.driverDto!.cname;
+                            //       if (_vehicleNumberController.text.isEmpty) {
+                            //         _vehicleNumberController.text =
+                            //             '${vehicle!.vehicleRegNumber}';
+                            //       }
+                            //       _driverNameController.text =
+                            //           '${vehicle!.driverDto!.cname}';
+                            //     }
+                            //     // else if (vehicle?.vehicleRegNumber ==
+                            //     //     _replaceVehicleNumberController.text) {
+                            //     //   vehicleID = vehicle?.id;
+                            //     // }
+                            //   }
+                            // }
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+
+              if (showLicenseNumberDropdown)
+                Positioned(
+                    child: Container(
+                  // color: ApplicationColors.PURE_WHITE,
+                  color: ApplicationColors.BACKGROUND_BLUE,
+                  constraints: BoxConstraints(maxHeight: 200),
+
+                  // decoration: BoxDecoration(
+                  //   border: Border.all(width: 1.0),
+                  // ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: 300,
+                      minHeight: 150,
+                      maxWidth: 350,
+                      minWidth: 100,
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: filteredLicenseNumbers.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(filteredLicenseNumbers[index]),
+                          onTap: () {
+                            // Handle the selection
+                            _driverLicenseController.text =
+                                filteredLicenseNumbers[index];
+
+                            if (_driverLicenseController.text.isEmpty) {
+                              _driverNameController.text = '';
+                              if (_vehicleNumberController.text.isEmpty) {
+                                _vehicleNumberController.text = '';
+                              }
+                            } else {
+                              for (int i = 0;
+                                  i <
+                                      findAllVehiclesProvider
+                                          .findAllVehiclesResponse!
+                                          .appVehicleMobileDtoList!
+                                          .length;
+                                  i++) {
+                                final vehicle = findAllVehiclesProvider
+                                    .findAllVehiclesResponse
+                                    ?.appVehicleMobileDtoList![i];
+                                if (vehicle?.driverDto!.licenseNum ==
+                                    _driverLicenseController.text) {
+                                  // vehicleID = vehicle?.id;
+                                  driverID = vehicle!.driverDto!.id;
+                                  driverName = vehicle!.driverDto!.cname;
+                                  _driverNameController.text =
+                                      '${vehicle!.driverDto!.cname}';
+                                  if (_vehicleNumberController.text.isEmpty) {
+                                    _vehicleNumberController.text = '${vehicle.vehicleRegNumber}';
+                                    vehicleID = vehicle.id;
+                                  }
+                                }
+                              }
+                            }
+                            setState(() {
+                              showLicenseNumberDropdown = false;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                )),
 
               // Driver's Name--------------------------------------------------
               Container(
@@ -1332,30 +1414,6 @@ class _DailyTrip extends State<DailyTrip> {
                             ApplicationMarginValues.textInputFieldInnerMargin,
                         child: GestureDetector(
                           onTap: () {
-                            // for (int i = 0;
-                            //     i <
-                            //         findAllDriversProvider
-                            //             .findAllDriversResponse!
-                            //             .appDriverMobileDtoList
-                            //             .length;
-                            //     i++) {
-                            //   final driver = findAllDriversProvider
-                            //       .findAllDriversResponse
-                            //       ?.appDriverMobileDtoList[i];
-                            //   print('${driver?.cname}' +
-                            //       ' - ' +
-                            //       '${driver?.licenseNum}' +
-                            //       ' - ' +
-                            //       '${driver?.nic}' +
-                            //       ' - ' +
-                            //       '${driver?.id}');
-                            //   if (driver?.licenseNum ==
-                            //       _driverLicenseController.text) {
-                            //     driverID = driver?.id;
-                            //     _driverNameController.text = '${driver?.cname}';
-                            //     // driverName = driver?.cname;
-                            //   }
-                            // }
                           },
                           child: TextFormField(
                             enabled: false,
@@ -1385,6 +1443,18 @@ class _DailyTrip extends State<DailyTrip> {
               // Replace Vehicle Details----------------------------------------
               Container(
                 margin: ApplicationMarginValues.replaceBoxMargin,
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                        width: 2.0,
+                        color: ApplicationColors
+                            .EXPANSION_TILE_BORDER), // Top border with width 3.0
+                    bottom: BorderSide(
+                        width: 2.0,
+                        color: ApplicationColors
+                            .EXPANSION_TILE_BORDER), // Bottom border with width 5.0
+                  ),
+                ),
                 child: ExpansionTile(
                   controller: controller,
                   backgroundColor: ApplicationColors.BG_LIGHT_BLUE,
@@ -1402,7 +1472,7 @@ class _DailyTrip extends State<DailyTrip> {
                   children: <Widget>[
                     ListTile(
                       title: Text(
-                          'If a replacement driver or vehicle arrives, please fill in the following fields.......',
+                          'If a replacement driver or vehicle arrives, please fill in the following fields.',
                           style: TextStyle(
                             fontWeight:
                                 ApplicationTextWeights.UserInputsLabelWeight,
@@ -1753,80 +1823,82 @@ class _DailyTrip extends State<DailyTrip> {
                       flex: 1,
                       child: CustomButton(
                         onPress: () {
+                          logger.i(
+                              'license number - ${_driverLicenseController.text}');
                           // logger.i(screenSize.height);
                           // logger.i(screenSize.width);
-                          logger.i(driverName);
-                          logger.i("driverName");
+                          // logger.i(driverName);
+                          // logger.i("driverName");
                           print('Start Button Pressed!');
                           Provider.of<MileageUnit>(context, listen: false)
                               .mileageToggleButton(
                                   _currentMileageController.text);
 
-                          logger.i('s1.25');
+                          // logger.i('s1.25');
 
                           // print(Provider.of<MileageUnit>(context, listen: false)
                           //     .convertedMileageValue);
 
                           //------------------------------------------------------
 
-                          for (int i = 0;
-                              i <
-                                  findAllVehiclesProvider
-                                      .findAllVehiclesResponse!
-                                      .appVehicleMobileDtoList!
-                                      .length;
-                              i++) {
-                            final vehicle = findAllVehiclesProvider
-                                .findAllVehiclesResponse
-                                ?.appVehicleMobileDtoList![i];
-                            if (vehicle?.vehicleRegNumber ==
-                                _vehicleNumberController.text) {
-                              vehicleID = vehicle?.id;
-                            } else if (vehicle?.vehicleRegNumber ==
-                                _replaceVehicleNumberController.text) {
-                              vehicleID = vehicle?.id;
-                            }
-                          }
+                          // for (int i = 0;
+                          //     i <
+                          //         findAllVehiclesProvider
+                          //             .findAllVehiclesResponse!
+                          //             .appVehicleMobileDtoList!
+                          //             .length;
+                          //     i++) {
+                          //   final vehicle = findAllVehiclesProvider
+                          //       .findAllVehiclesResponse
+                          //       ?.appVehicleMobileDtoList![i];
+                          //   if (vehicle?.vehicleRegNumber ==
+                          //       _vehicleNumberController.text) {
+                          //     vehicleID = vehicle?.id;
+                          //   } else if (vehicle?.vehicleRegNumber ==
+                          //       _replaceVehicleNumberController.text) {
+                          //     vehicleID = vehicle?.id;
+                          //   }
+                          // }
 
                           //-----------------------------------------------
 
-                          if (_replaceDriverNICController.text.isEmpty) {
-                            for (int i = 0;
-                                i <
-                                    findAllVehiclesProvider
-                                        .findAllVehiclesResponse!
-                                        .appVehicleMobileDtoList!
-                                        .length;
-                                i++) {
-                              final driverDetails = findAllVehiclesProvider
-                                  .findAllVehiclesResponse
-                                  ?.appVehicleMobileDtoList![i];
-                              if (driverDetails?.vehicleRegNumber ==
-                                  _vehicleNumberController.text) {
-                                driverID = driverDetails!.driverDto!.id;
-                              }
-                            }
-                          } else {
-                            for (int i = 0;
-                                i <
-                                    findAllDriversProvider
-                                        .findAllDriversResponse!
-                                        .appDriverMobileDtoList
-                                        .length;
-                                i++) {
-                              final driverDetails = findAllDriversProvider
-                                  .findAllDriversResponse
-                                  ?.appDriverMobileDtoList[i];
-                              if (driverDetails?.nic ==
-                                  _replaceDriverNICController.text) {
-                                driverID = driverDetails!.id;
-                              }
-                            }
-                          }
+                          // if (_replaceDriverNICController.text.isEmpty) {
+                          //   for (int i = 0;
+                          //       i <
+                          //           findAllVehiclesProvider
+                          //               .findAllVehiclesResponse!
+                          //               .appVehicleMobileDtoList!
+                          //               .length;
+                          //       i++) {
+                          //     final driverDetails = findAllVehiclesProvider
+                          //         .findAllVehiclesResponse
+                          //         ?.appVehicleMobileDtoList![i];
+                          //     if (driverDetails?.vehicleRegNumber ==
+                          //         _vehicleNumberController.text) {
+                          //       driverID = driverDetails!.driverDto!.id;
+                          //     }
+                          //   }
+                          // } else {
+                          //   for (int i = 0;
+                          //       i <
+                          //           findAllDriversProvider
+                          //               .findAllDriversResponse!
+                          //               .appDriverMobileDtoList
+                          //               .length;
+                          //       i++) {
+                          //     final driverDetails = findAllDriversProvider
+                          //         .findAllDriversResponse
+                          //         ?.appDriverMobileDtoList[i];
+                          //     if (driverDetails?.nic ==
+                          //         _replaceDriverNICController.text) {
+                          //       driverID = driverDetails!.id;
+                          //     }
+                          //   }
+                          // }
 
                           //---------------------------------------------------------
 
-                          logger.i('s1.5');
+                          // logger.i('s1.5');
 
                           // for (int i = 0;
                           //     i <
@@ -1837,11 +1909,7 @@ class _DailyTrip extends State<DailyTrip> {
                           //       .findAllDriversResponse
                           //       ?.appDriverMobileDtoList[i];
                           //   if (driver?.licenseNum ==
-                          //       _driverNameController.text) {
-                          //     driverID = driver?.id;
-                          //     _driverNameController.text = '${driver?.cname}';
-                          //   } else if (driver?.nic ==
-                          //       _replaceDriverNICController.text) {
+                          //       _driverLicenseController.text) {
                           //     driverID = driver?.id;
                           //     _driverNameController.text = '${driver?.cname}';
                           //   }
@@ -1851,7 +1919,7 @@ class _DailyTrip extends State<DailyTrip> {
 
                           logger.i('vehicle IT : ${vehicleID}');
                           logger.i('driver IT : ${driverID}');
-                          logger.i('driver name : ${driverName}');
+                          // logger.i('driver name : ${driverName}');
                           logger.i('driver license : ${driverLicenseNum}');
 
                           setState(() {
@@ -1864,7 +1932,7 @@ class _DailyTrip extends State<DailyTrip> {
                           checkFilledRequiredFields();
                           checkFIlledAllFields();
                           startButton();
-                          logger.i(driverName);
+                          // logger.i(driverName);
                         },
                         innerText: 'Start',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_GREEN,
@@ -1898,60 +1966,60 @@ class _DailyTrip extends State<DailyTrip> {
 
                           //------------------------------------------------
 
-                          for (int i = 0;
-                              i <
-                                  findAllVehiclesProvider
-                                      .findAllVehiclesResponse!
-                                      .appVehicleMobileDtoList!
-                                      .length;
-                              i++) {
-                            final vehicle = findAllVehiclesProvider
-                                .findAllVehiclesResponse
-                                ?.appVehicleMobileDtoList![i];
-                            if (vehicle?.vehicleRegNumber ==
-                                _vehicleNumberController.text) {
-                              vehicleID = vehicle?.id;
-                            } else if (vehicle?.vehicleRegNumber ==
-                                _replaceVehicleNumberController.text) {
-                              vehicleID = vehicle?.id;
-                            }
-                          }
+                          // for (int i = 0;
+                          //     i <
+                          //         findAllVehiclesProvider
+                          //             .findAllVehiclesResponse!
+                          //             .appVehicleMobileDtoList!
+                          //             .length;
+                          //     i++) {
+                          //   final vehicle = findAllVehiclesProvider
+                          //       .findAllVehiclesResponse
+                          //       ?.appVehicleMobileDtoList![i];
+                          //   if (vehicle?.vehicleRegNumber ==
+                          //       _vehicleNumberController.text) {
+                          //     vehicleID = vehicle?.id;
+                          //   } else if (vehicle?.vehicleRegNumber ==
+                          //       _replaceVehicleNumberController.text) {
+                          //     vehicleID = vehicle?.id;
+                          //   }
+                          // }
 
                           //-----------------------------------------------------
 
-                          if (_replaceDriverNICController.text.isEmpty) {
-                            for (int i = 0;
-                                i <
-                                    findAllVehiclesProvider
-                                        .findAllVehiclesResponse!
-                                        .appVehicleMobileDtoList!
-                                        .length;
-                                i++) {
-                              final vehicleDetails = findAllVehiclesProvider
-                                  .findAllVehiclesResponse
-                                  ?.appVehicleMobileDtoList![i];
-                              if (vehicleDetails?.vehicleRegNumber ==
-                                  _vehicleNumberController.text) {
-                                driverID = vehicleDetails!.driverDto!.id;
-                              }
-                            }
-                          } else {
-                            for (int i = 0;
-                                i <
-                                    findAllDriversProvider
-                                        .findAllDriversResponse!
-                                        .appDriverMobileDtoList
-                                        .length;
-                                i++) {
-                              final driverDetails = findAllDriversProvider
-                                  .findAllDriversResponse
-                                  ?.appDriverMobileDtoList[i];
-                              if (driverDetails?.nic ==
-                                  _replaceDriverNICController.text) {
-                                driverID = driverDetails!.id;
-                              }
-                            }
-                          }
+                          // if (_replaceDriverNICController.text.isEmpty) {
+                          //   for (int i = 0;
+                          //       i <
+                          //           findAllVehiclesProvider
+                          //               .findAllVehiclesResponse!
+                          //               .appVehicleMobileDtoList!
+                          //               .length;
+                          //       i++) {
+                          //     final vehicleDetails = findAllVehiclesProvider
+                          //         .findAllVehiclesResponse
+                          //         ?.appVehicleMobileDtoList![i];
+                          //     if (vehicleDetails?.vehicleRegNumber ==
+                          //         _vehicleNumberController.text) {
+                          //       driverID = vehicleDetails!.driverDto!.id;
+                          //     }
+                          //   }
+                          // } else {
+                          //   for (int i = 0;
+                          //       i <
+                          //           findAllDriversProvider
+                          //               .findAllDriversResponse!
+                          //               .appDriverMobileDtoList
+                          //               .length;
+                          //       i++) {
+                          //     final driverDetails = findAllDriversProvider
+                          //         .findAllDriversResponse
+                          //         ?.appDriverMobileDtoList[i];
+                          //     if (driverDetails?.nic ==
+                          //         _replaceDriverNICController.text) {
+                          //       driverID = driverDetails!.id;
+                          //     }
+                          //   }
+                          // }
 
                           //------------------------------------------------------
 
