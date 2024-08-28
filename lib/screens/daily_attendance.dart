@@ -217,7 +217,6 @@ class _DailyAttendance extends State<DailyAttendance> {
     Navigator.of(context).pop(); // Close the loading dialog
   }
 
-
   //  Check all field empty or not
   void checkFIlledAllFields() {
     setState(() {
@@ -930,6 +929,10 @@ class _DailyAttendance extends State<DailyAttendance> {
                             _vehicleNumberController.text =
                                 filteredVehicles[index];
 
+                            setState(() {
+                              showDropdown = false;
+                            });
+
                             if (_vehicleNumberController.text.isEmpty) {
                               _driverNameController.text = '';
                               _driverLicenseController.text = '';
@@ -956,9 +959,6 @@ class _DailyAttendance extends State<DailyAttendance> {
                                 }
                               }
                             }
-                            setState(() {
-                              showDropdown = false;
-                            });
                           },
                         );
                       },

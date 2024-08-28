@@ -81,7 +81,7 @@ class _DailyTrip extends State<DailyTrip> {
   final TextEditingController _dateTimeController = TextEditingController();
   late Timer timer;
 
-   String formattedTime = '';
+  String formattedTime = '';
   String? _dateError;
   String? _vehicleNumberError;
   String? _licenseNumberError;
@@ -117,7 +117,7 @@ class _DailyTrip extends State<DailyTrip> {
   bool showLicenseNumberDropdown = false;
   FocusNode focusNodeForLicenseNumberExpandableList = FocusNode();
 
-   @override
+  @override
   void initState() {
     super.initState();
     startClock();
@@ -221,8 +221,6 @@ class _DailyTrip extends State<DailyTrip> {
   void hideLoadingDialog(BuildContext context) {
     Navigator.of(context).pop(); // Close the loading dialog
   }
-
- 
 
   //  Check all field empty or not
   void checkFIlledAllFields() {
@@ -557,8 +555,6 @@ class _DailyTrip extends State<DailyTrip> {
     });
   }
 
-  
-
   void successCall() {
     final vehicleInProvider =
         Provider.of<VehicleInProvider>(context, listen: false);
@@ -716,8 +712,6 @@ class _DailyTrip extends State<DailyTrip> {
     showVehicleNumberDropdown = filteredVehicles.isNotEmpty && query.isNotEmpty;
   }
 
-  
-
   // driver's license number drop down-----------------------------------------
 
   //----------------------------------------------------------------------------
@@ -753,7 +747,6 @@ class _DailyTrip extends State<DailyTrip> {
         allLicenseNumbers
             .add(licenseNumberItem.driverDto!.licenseNum.toString());
       }
-
     }
     logger.i('end of the for loop');
   }
@@ -780,8 +773,6 @@ class _DailyTrip extends State<DailyTrip> {
     showLicenseNumberDropdown =
         filteredLicenseNumbers.isNotEmpty && query.isNotEmpty;
   }
-
-  
 
   // content design------------------------------------------------------
 
@@ -1093,7 +1084,10 @@ class _DailyTrip extends State<DailyTrip> {
                             // Handle the selection of a vehicle
                             _vehicleNumberController.text =
                                 filteredVehicles[index];
-                            // Close the dropdown or perform any other action
+
+                            setState(() {
+                              showVehicleNumberDropdown = false;
+                            });
 
                             if (_vehicleNumberController.text.isEmpty) {
                               _driverNameController.text = '';
@@ -1121,9 +1115,6 @@ class _DailyTrip extends State<DailyTrip> {
                                 }
                               }
                             }
-                            setState(() {
-                              showVehicleNumberDropdown = false;
-                            });
                           },
                         );
                       },
@@ -1282,7 +1273,7 @@ class _DailyTrip extends State<DailyTrip> {
                             _driverLicenseController.text =
                                 filteredLicenseNumbers[index];
 
-                                setState(() {
+                            setState(() {
                               showLicenseNumberDropdown = false;
                             });
 
@@ -1309,7 +1300,8 @@ class _DailyTrip extends State<DailyTrip> {
                                   _driverNameController.text =
                                       '${vehicle!.driverDto!.cname}';
                                   if (_vehicleNumberController.text.isEmpty) {
-                                    _vehicleNumberController.text = '${vehicle.vehicleRegNumber}';
+                                    _vehicleNumberController.text =
+                                        '${vehicle.vehicleRegNumber}';
                                     vehicleID = vehicle.id;
                                   }
                                 }
@@ -1357,8 +1349,7 @@ class _DailyTrip extends State<DailyTrip> {
                         margin:
                             ApplicationMarginValues.textInputFieldInnerMargin,
                         child: GestureDetector(
-                          onTap: () {
-                          },
+                          onTap: () {},
                           child: TextFormField(
                             enabled: false,
                             readOnly: true,
