@@ -1060,8 +1060,8 @@ class _DailyTrip extends State<DailyTrip> {
               if (showVehicleNumberDropdown)
                 Positioned(
                     child: Container(
-                  // color: ApplicationColors.PURE_WHITE,
-                  color: ApplicationColors.BACKGROUND_BLUE,
+                  color: ApplicationColors.PURE_WHITE,
+                  // color: ApplicationColors.BACKGROUND_BLUE,
                   constraints: BoxConstraints(maxHeight: 200),
 
                   // decoration: BoxDecoration(
