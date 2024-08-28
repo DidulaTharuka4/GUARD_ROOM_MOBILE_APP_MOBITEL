@@ -1209,36 +1209,40 @@ class _DailyTrip extends State<DailyTrip> {
                               }
                             }
 
-                            // if (value.isEmpty) {
-                            //   _driverNameController.text = '';
-                            //   _vehicleNumberController.text = '';
-                            // } else {
-                            //   for (int i = 0;
-                            //       i <
-                            //           findAllVehiclesProvider
-                            //               .findAllVehiclesResponse!
-                            //               .appVehicleMobileDtoList!
-                            //               .length;
-                            //       i++) {
-                            //     final vehicle = findAllVehiclesProvider
-                            //         .findAllVehiclesResponse
-                            //         ?.appVehicleMobileDtoList![i];
-                            //     if (vehicle?.driverDto!.licenseNum ==
-                            //         _driverLicenseController.text) {
-                            //       // driverName = vehicle!.driverDto!.cname;
-                            //       if (_vehicleNumberController.text.isEmpty) {
-                            //         _vehicleNumberController.text =
-                            //             '${vehicle!.vehicleRegNumber}';
-                            //       }
-                            //       _driverNameController.text =
-                            //           '${vehicle!.driverDto!.cname}';
-                            //     }
-                            //     // else if (vehicle?.vehicleRegNumber ==
-                            //     //     _replaceVehicleNumberController.text) {
-                            //     //   vehicleID = vehicle?.id;
-                            //     // }
-                            //   }
-                            // }
+                            if (value.isEmpty) {
+                              _driverNameController.text = '';
+                              _vehicleNumberController.text = '';
+                            } else {
+                              for (int i = 0;
+                                  i <
+                                      findAllVehiclesProvider
+                                          .findAllVehiclesResponse!
+                                          .appVehicleMobileDtoList!
+                                          .length;
+                                  i++) {
+                                final vehicle = findAllVehiclesProvider
+                                    .findAllVehiclesResponse
+                                    ?.appVehicleMobileDtoList![i];
+                                if (vehicle?.driverDto!.licenseNum ==
+                                    _driverLicenseController.text) {
+                                  // driverName = vehicle!.driverDto!.cname;
+
+                                  _vehicleNumberController.text =
+                                        '${vehicle!.vehicleRegNumber}';
+
+                                  // if (_vehicleNumberController.text.isEmpty) {
+                                  //   _vehicleNumberController.text =
+                                  //       '${vehicle!.vehicleRegNumber}';
+                                  // }
+                                  _driverNameController.text =
+                                      '${vehicle!.driverDto!.cname}';
+                                }
+                                // else if (vehicle?.vehicleRegNumber ==
+                                //     _replaceVehicleNumberController.text) {
+                                //   vehicleID = vehicle?.id;
+                                // }
+                              }
+                            }
                           }),
                     ),
                   ],
@@ -1248,8 +1252,8 @@ class _DailyTrip extends State<DailyTrip> {
               if (showLicenseNumberDropdown)
                 Positioned(
                     child: Container(
-                  // color: ApplicationColors.PURE_WHITE,
-                  color: ApplicationColors.BACKGROUND_BLUE,
+                  color: ApplicationColors.PURE_WHITE,
+                  // color: ApplicationColors.BACKGROUND_BLUE,
                   constraints: BoxConstraints(maxHeight: 200),
 
                   // decoration: BoxDecoration(
@@ -1299,11 +1303,25 @@ class _DailyTrip extends State<DailyTrip> {
                                   driverName = vehicle!.driverDto!.cname;
                                   _driverNameController.text =
                                       '${vehicle!.driverDto!.cname}';
-                                  if (_vehicleNumberController.text.isEmpty) {
-                                    _vehicleNumberController.text =
+
+                                    //   _vehicleNumberController.text =
+                                    //     '${vehicle.vehicleRegNumber}';
+                                    // vehicleID = vehicle.id;
+
+                                    if(vehicle.vehicleRegNumber != null) {
+                                       _vehicleNumberController.text =
                                         '${vehicle.vehicleRegNumber}';
                                     vehicleID = vehicle.id;
-                                  }
+                                    }
+                                    // else {
+                                    //   _vehicleNumberController.text = '';
+                                    // }
+
+                                  // if (_vehicleNumberController.text.isEmpty) {
+                                  //   _vehicleNumberController.text =
+                                  //       '${vehicle.vehicleRegNumber}';
+                                  //   vehicleID = vehicle.id;
+                                  // }
                                 }
                               }
                             }
@@ -1852,8 +1870,8 @@ class _DailyTrip extends State<DailyTrip> {
 
                           //---------------------------------------------------------
 
-                          logger.i('vehicle IT : ${vehicleID}');
-                          logger.i('driver IT : ${driverID}');
+                          logger.i('vehicle ID : ${vehicleID}');
+                          logger.i('driver ID : ${driverID}');
                           // logger.i('driver name : ${driverName}');
                           logger.i('driver license : ${driverLicenseNum}');
 

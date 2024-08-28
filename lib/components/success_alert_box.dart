@@ -15,7 +15,8 @@ class SuccessStatusAlertBox extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
     return Container(
       width: screenSize.width / 1.0549,
-      height: screenSize.height / 4.9460,
+      // height: screenSize.height / 4.9460,
+      height: screenSize.height / 4,
       // width: 390,
       // height: 180,
       decoration: BoxDecoration(
