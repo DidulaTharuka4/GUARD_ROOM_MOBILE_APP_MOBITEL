@@ -63,8 +63,8 @@ class SuccessStatusAlertBox extends StatelessWidget {
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
           child: Text(
             successStatus
-                ? 'Your items have been successfully saved. Please rest assured that all the necessary information has been securely stored.'
-                : 'We encountered an issue while attempting to save your items. Please try again, or contact support if the problem persists.',
+                ? 'Your items have been successfully saved.'
+                : 'Failed to submit. Please try again.',
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: ApplicationTextSizes.FInalResponseAlertText,

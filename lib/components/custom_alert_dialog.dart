@@ -52,7 +52,7 @@ class AlertDialogBox extends StatelessWidget {
         Container(
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
           child: Text(
-            'Unable to continue due to invalid inputs. Kindly review and correct the information before attempting to proceed.',
+            'Unable to continue due to invalid inputs.',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: ApplicationTextSizes.FInalResponseAlertText,
