@@ -399,7 +399,7 @@ class _DailyAttendance extends State<DailyAttendance> {
                 Navigator.of(context).pop();
               },
               alertDialogText:
-                  'Are you sure you want record attendance for Vehicle Number ${_vehicleNumberController.text} ${_replaceVehicleNumberController.text}:  ?'),
+                  'Are you sure you want record attendance for Vehicle Number ${_vehicleNumberController.text}:  ?'),
         );
       },
     );
@@ -988,7 +988,7 @@ class _DailyAttendance extends State<DailyAttendance> {
                     constraints: BoxConstraints(
                       maxHeight: 300,
                       minHeight: 150,
-                      maxWidth: 150,
+                      maxWidth: 350,
                       minWidth: 100,
                     ),
                     child: ListView.builder(
@@ -1009,28 +1009,8 @@ class _DailyAttendance extends State<DailyAttendance> {
 
                             if (_driverLicenseController.text.isEmpty) {
                               _vehicleNumberController.text =
-                                filteredVehicles[index];
+                                  filteredVehicles[index];
 
-                                for (int i = 0;
-                                  i <
-                                      findAllVehiclesProvider
-                                          .findAllVehiclesResponse!
-                                          .appVehicleMobileDtoList!
-                                          .length;
-                                  i++) {
-                                    final vehicle = findAllVehiclesProvider
-                                    .findAllVehiclesResponse
-                                    ?.appVehicleMobileDtoList![i];
-
-                                    if (vehicle?.vehicleRegNumber == _vehicleNumberController.text) {
-
-                                     _driverLicenseController.text =
-                                      '${vehicle!.driverDto!.licenseNum}';
-                                    driverID = vehicle?.driverDto!.id;
-                                    _driverNameController.text =
-                                      '${vehicle!.driverDto!.cname}'; }
-                                  }
-                            } else if (_driverLicenseController.text.isNotEmpty) {
                               for (int i = 0;
                                   i <
                                       findAllVehiclesProvider
@@ -1038,21 +1018,48 @@ class _DailyAttendance extends State<DailyAttendance> {
                                           .appVehicleMobileDtoList!
                                           .length;
                                   i++) {
-                                    final vehicle = findAllVehiclesProvider
+                                final vehicle = findAllVehiclesProvider
                                     .findAllVehiclesResponse
                                     ?.appVehicleMobileDtoList![i];
-                                    if (vehicle?.driverDto!.licenseNum == _driverLicenseController.text) {
-                                      _vehicleNumberController.text = '${vehicle?.vehicleRegNumber}';
-                                      vehicleID = vehicle?.id;
-                                    } else {
-                                      _vehicleNumberController.text =
-                                        filteredVehicles[index];
 
-                                        if (vehicle?.vehicleRegNumber == _vehicleNumberController.text) {
-                                          vehicleID = vehicle?.id;
-                                        }
-                                    }
+                                if (vehicle?.vehicleRegNumber ==
+                                    _vehicleNumberController.text) {
+                                  vehicleID = vehicle?.id;
+                                  _driverLicenseController.text =
+                                      '${vehicle!.driverDto!.licenseNum}';
+                                  driverID = vehicle?.driverDto!.id;
+                                  _driverNameController.text =
+                                      '${vehicle!.driverDto!.cname}';
+                                }
+                              }
+                            } else if (_driverLicenseController
+                                .text.isNotEmpty) {
+                              for (int i = 0;
+                                  i <
+                                      findAllVehiclesProvider
+                                          .findAllVehiclesResponse!
+                                          .appVehicleMobileDtoList!
+                                          .length;
+                                  i++) {
+                                final vehicle = findAllVehiclesProvider
+                                    .findAllVehiclesResponse
+                                    ?.appVehicleMobileDtoList![i];
+                                if (vehicle?.driverDto!.licenseNum ==
+                                    _driverLicenseController.text) {
+                                  _vehicleNumberController.text =
+                                      '${vehicle?.vehicleRegNumber}';
+                                  vehicleID = vehicle?.id;
+                                  break;
+                                } else {
+                                  _vehicleNumberController.text =
+                                      filteredVehicles[index];
+
+                                  if (vehicle?.vehicleRegNumber ==
+                                      _vehicleNumberController.text) {
+                                    vehicleID = vehicle?.id;
                                   }
+                                }
+                              }
                             }
 
                             // if (_vehicleNumberController.text.isEmpty) {
@@ -1141,67 +1148,134 @@ class _DailyAttendance extends State<DailyAttendance> {
                           onChanged: (value) {
                             licenseNumberList();
                             filterLicenseNumbers(value);
+
                             if (value.isEmpty) {
                               _driverNameController.text = '';
                             } else {
-                              for (int i = 0;
-                                  i <
-                                      findAllDriversProvider
-                                          .findAllDriversResponse!
-                                          .appDriverMobileDtoList
-                                          .length;
-                                  i++) {
-                                final driver = findAllDriversProvider
-                                    .findAllDriversResponse
-                                    ?.appDriverMobileDtoList[i];
-                                print('${driver?.cname}' +
-                                    ' - ' +
-                                    '${driver?.licenseNum}' +
-                                    ' - ' +
-                                    '${driver?.nic}' +
-                                    ' - ' +
-                                    '${driver?.id}');
-                                if (driver?.licenseNum ==
-                                    _driverLicenseController.text) {
-                                  driverID = driver?.id;
-                                  if (driver?.cname != null) {
+                              if (_vehicleNumberController.text.isNotEmpty) {
+                                for (int i = 0;
+                                    i <
+                                        findAllVehiclesProvider
+                                            .findAllVehiclesResponse!
+                                            .appVehicleMobileDtoList!
+                                            .length;
+                                    i++) {
+                                  final vehicle = findAllVehiclesProvider
+                                      .findAllVehiclesResponse
+                                      ?.appVehicleMobileDtoList![i];
+
+                                  if (vehicle?.vehicleRegNumber ==
+                                      _vehicleNumberController.text) {
+                                    _driverLicenseController.text =
+                                        '${vehicle?.driverDto!.licenseNum}';
                                     _driverNameController.text =
-                                        '${driver?.cname}';
+                                        '${vehicle?.driverDto!.cname}';
+                                    driverID = vehicle?.driverDto!.id;
+                                    break;
+                                  } else {
+                                    for (int i = 0;
+                                        i <
+                                            findAllDriversProvider
+                                                .findAllDriversResponse!
+                                                .appDriverMobileDtoList
+                                                .length;
+                                        i++) {
+                                      final driver = findAllDriversProvider
+                                          .findAllDriversResponse
+                                          ?.appDriverMobileDtoList[i];
+                                      if (driver?.licenseNum ==
+                                          _driverLicenseController.text) {
+                                        driverID = driver?.id;
+                                        _driverNameController.text =
+                                            '${driver?.cname}';
+                                      }
+                                    }
                                   }
-                                  // driverName = driver?.cname;
+                                }
+                              } else if (_vehicleNumberController
+                                  .text.isEmpty) {
+                                for (int i = 0;
+                                    i <
+                                        findAllVehiclesProvider
+                                            .findAllVehiclesResponse!
+                                            .appVehicleMobileDtoList!
+                                            .length;
+                                    i++) {
+                                  final vehicle = findAllVehiclesProvider
+                                      .findAllVehiclesResponse
+                                      ?.appVehicleMobileDtoList![i];
+
+                                  if (vehicle?.driverDto!.licenseNum ==
+                                      _driverLicenseController.text) {
+                                    _vehicleNumberController.text =
+                                        '${vehicle?.vehicleRegNumber}';
+                                    vehicleID = vehicle?.id;
+                                    _driverNameController.text =
+                                        '${vehicle?.driverDto!.cname}';
+                                  }
                                 }
                               }
                             }
 
-                            if (value.isEmpty) {
-                              _driverNameController.text = '';
-                              _vehicleNumberController.text = '';
-                            } else {
-                              for (int i = 0;
-                                  i <
-                                      findAllVehiclesProvider
-                                          .findAllVehiclesResponse!
-                                          .appVehicleMobileDtoList!
-                                          .length;
-                                  i++) {
-                                final vehicle = findAllVehiclesProvider
-                                    .findAllVehiclesResponse
-                                    ?.appVehicleMobileDtoList![i];
-                                if (vehicle?.driverDto!.licenseNum ==
-                                    _driverLicenseController.text) {
-                                  if (_vehicleNumberController.text.isEmpty) {
-                                    _vehicleNumberController.text =
-                                        '${vehicle!.vehicleRegNumber}';
-                                  }
-                                  _driverNameController.text =
-                                      '${vehicle!.driverDto!.cname}';
-                                }
-                                // else if (vehicle?.vehicleRegNumber ==
-                                //     _replaceVehicleNumberController.text) {
-                                //   vehicleID = vehicle?.id;
-                                // }
-                              }
-                            }
+                            // if (value.isEmpty) {
+                            //   _driverNameController.text = '';
+                            // } else {
+                            //   for (int i = 0;
+                            //       i <
+                            //           findAllDriversProvider
+                            //               .findAllDriversResponse!
+                            //               .appDriverMobileDtoList
+                            //               .length;
+                            //       i++) {
+                            //     final driver = findAllDriversProvider
+                            //         .findAllDriversResponse
+                            //         ?.appDriverMobileDtoList[i];
+                            //     print('${driver?.cname}' +
+                            //         ' - ' +
+                            //         '${driver?.licenseNum}' +
+                            //         ' - ' +
+                            //         '${driver?.nic}' +
+                            //         ' - ' +
+                            //         '${driver?.id}');
+                            //     if (driver?.licenseNum ==
+                            //         _driverLicenseController.text) {
+                            //       driverID = driver?.id;
+                            //       if (driver?.cname != null) {
+                            //         _driverNameController.text =
+                            //             '${driver?.cname}';
+                            //       }
+                            //       // driverName = driver?.cname;
+                            //     }
+                            //   }
+                            // }
+
+                            // if (value.isEmpty) {
+                            //   _driverNameController.text = '';
+                            //   _vehicleNumberController.text = '';
+                            // } else {
+                            //   for (int i = 0;
+                            //       i <
+                            //           findAllVehiclesProvider
+                            //               .findAllVehiclesResponse!
+                            //               .appVehicleMobileDtoList!
+                            //               .length;
+                            //       i++) {
+                            //     final vehicle = findAllVehiclesProvider
+                            //         .findAllVehiclesResponse
+                            //         ?.appVehicleMobileDtoList![i];
+                            //     if (vehicle?.driverDto!.licenseNum ==
+                            //         _driverLicenseController.text) {
+                            //       if (_vehicleNumberController.text.isEmpty) {
+                            //         _vehicleNumberController.text =
+                            //             '${vehicle!.vehicleRegNumber}';
+                            //       }
+                            //       _driverNameController.text =
+                            //           '${vehicle!.driverDto!.cname}';
+                            //     }
+                            //   }
+                            // }
+
+                            //====================================
                           }),
                     ),
                   ],
@@ -1237,30 +1311,14 @@ class _DailyAttendance extends State<DailyAttendance> {
                             // _driverLicenseController.text =
                             //     filteredLicenseNumbers[index];
 
+                            setState(() {
+                              showLicenseNumberDropdown = false;
+                            });
+
                             if (_vehicleNumberController.text.isEmpty) {
                               _driverLicenseController.text =
-                                filteredLicenseNumbers[index];
+                                  filteredLicenseNumbers[index];
 
-                                for (int i = 0;
-                                  i <
-                                      findAllVehiclesProvider
-                                          .findAllVehiclesResponse!
-                                          .appVehicleMobileDtoList!
-                                          .length;
-                                  i++) {final vehicle = findAllVehiclesProvider
-                                    .findAllVehiclesResponse
-                                    ?.appVehicleMobileDtoList![i];
-                                    
-                                    if (vehicle?.driverDto!.licenseNum == _driverLicenseController.text) {
-                                      _driverNameController.text =
-                                      '${vehicle!.driverDto!.cname}';
-
-                                      _vehicleNumberController.text = '${vehicle?.vehicleRegNumber}';
-
-                                      driverID = vehicle?.driverDto!.id;
-                                    }}
-
-                            } else if (_vehicleNumberController.text.isNotEmpty) {
                               for (int i = 0;
                                   i <
                                       findAllVehiclesProvider
@@ -1268,26 +1326,54 @@ class _DailyAttendance extends State<DailyAttendance> {
                                           .appVehicleMobileDtoList!
                                           .length;
                                   i++) {
-                                    final vehicle = findAllVehiclesProvider
+                                final vehicle = findAllVehiclesProvider
                                     .findAllVehiclesResponse
                                     ?.appVehicleMobileDtoList![i];
-                                    if (vehicle?.vehicleRegNumber == _vehicleNumberController.text) {
-                                      _driverLicenseController.text = '${vehicle?.driverDto!.licenseNum}';
-                                      driverID = vehicle?.driverDto!.id;
-                                    } else {
-                                      _driverLicenseController.text =
-                                        filteredLicenseNumbers[index];
 
-                                        if (vehicle?.driverDto!.licenseNum == _driverLicenseController.text) {
-                                          driverID = vehicle?.driverDto!.id;
-                                        }
-                                    }
+                                if (vehicle?.driverDto!.licenseNum ==
+                                    _driverLicenseController.text) {
+                                  _driverNameController.text =
+                                      '${vehicle!.driverDto!.cname}';
+
+                                  _vehicleNumberController.text =
+                                      '${vehicle?.vehicleRegNumber}';
+
+                                  driverID = vehicle?.driverDto!.id;
+                                }
+                              }
+                            } else if (_vehicleNumberController
+                                .text.isNotEmpty) {
+                              for (int i = 0;
+                                  i <
+                                      findAllVehiclesProvider
+                                          .findAllVehiclesResponse!
+                                          .appVehicleMobileDtoList!
+                                          .length;
+                                  i++) {
+                                final vehicle = findAllVehiclesProvider
+                                    .findAllVehiclesResponse
+                                    ?.appVehicleMobileDtoList![i];
+                                if (vehicle?.vehicleRegNumber ==
+                                    _vehicleNumberController.text) {
+                                  _driverLicenseController.text =
+                                      '${vehicle?.driverDto!.licenseNum}';
+                                  driverID = vehicle?.driverDto!.id;
+                                  break;
+                                } else {
+                                  _driverLicenseController.text =
+                                      filteredLicenseNumbers[index];
+
+                                  if (vehicle?.driverDto!.licenseNum ==
+                                      _driverLicenseController.text) {
+                                    driverID = vehicle?.driverDto!.id;
                                   }
+                                }
+                              }
                             }
 
-                            setState(() {
-                              showLicenseNumberDropdown = false;
-                            });
+                            // setState(() {
+                            //   showLicenseNumberDropdown = false;
+                            // });
 
                             // if (_driverLicenseController.text.isEmpty) {
                             //   _driverNameController.text = '';
