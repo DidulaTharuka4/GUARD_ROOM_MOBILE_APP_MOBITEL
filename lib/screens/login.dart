@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/custom_alert_dialog.dart';
+import 'dart:io'; // To use exit(0)
 
 class LoginPage extends StatefulWidget {
   @override
@@ -62,8 +63,9 @@ class _LoginPageState extends State<LoginPage> {
 
   void showSuccess(BuildContext context) {
     final snackBar = SnackBar(
-      content: Text('Login Successfully !'),
-      backgroundColor: ApplicationColors.BUTTON_COLOR_GREEN,
+      content: Text('Login Successfully !',
+      style: TextStyle(color: ApplicationColors.MAIN_COLOR_BLUE),),
+      backgroundColor: ApplicationColors.BG_LIGHT_BLUE,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
@@ -205,7 +207,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: () async {
+          // Exit the app when the back button is pressed
+          exit(0);
+          return false; // Returning false prevents the usual behavior
+        },
+        child: Scaffold(
       backgroundColor: ApplicationColors.PURE_WHITE,
       body: SingleChildScrollView(
         child: Stack(
@@ -374,6 +382,6 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-    );
+    ));
   }
 }

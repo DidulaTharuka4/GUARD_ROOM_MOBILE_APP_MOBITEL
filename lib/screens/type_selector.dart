@@ -97,6 +97,7 @@ class _TypeSelector extends State<TypeSelector> {
                                 MaterialPageRoute(
                                     builder: (context) => LoginPage()),
                               );
+                              // exit(0);
                               // _onSelected(context, result);
                             },
                             itemBuilder: (BuildContext context) => [
