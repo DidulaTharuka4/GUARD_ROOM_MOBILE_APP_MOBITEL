@@ -5,13 +5,17 @@ import 'package:Guard_Room_Application/constraints/textSizes.dart';
 import 'package:Guard_Room_Application/constraints/token.dart';
 import 'package:Guard_Room_Application/providers/login_provider.dart';
 import 'package:Guard_Room_Application/screens/type_selector.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/custom_alert_dialog.dart';
 import 'dart:io'; // To use exit(0)
+
+// import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -25,10 +29,40 @@ class _LoginPageState extends State<LoginPage> {
 
   var logger = Logger();
 
+  late String? svgContent;
+
+  // late Future<void> svgLoading;
+
   @override
   void initState() {
     super.initState();
     _loadSavedCredentials();
+    Future.delayed(Duration(seconds: 5));
+    loadSvgAssets();
+
+    // precachePicture(
+    //     ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, 'assets/images/Footer.svg'),
+    //     context,);
+  }
+
+  Future<void> loadSvgAssets() async {
+    // await precacheImage(
+    //   ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, 'assets/images/Footer.svg'),
+    //   context,
+    // );
+    // await precachePicture(
+    //   ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, 'assets/images/SLTMobitel_Logo.svg'),
+    //   context,
+    // );
+
+    // await precacheImage(
+    //   SvgPicture.assetStringDecoderBuilder,
+    //   'assets/splash_image.svg',
+    // );
+
+    svgContent = await DefaultAssetBundle.of(context)
+        .loadString('assets/images/Footer.svg');
+    setState(() {});
   }
 
   // Remember me function
@@ -63,8 +97,10 @@ class _LoginPageState extends State<LoginPage> {
 
   void showSuccess(BuildContext context) {
     final snackBar = SnackBar(
-      content: Text('Login Successfully !',
-      style: TextStyle(color: ApplicationColors.MAIN_COLOR_BLUE),),
+      content: Text(
+        'Login Successfully !',
+        style: TextStyle(color: ApplicationColors.MAIN_COLOR_BLUE),
+      ),
       backgroundColor: ApplicationColors.BG_LIGHT_BLUE,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -160,9 +196,26 @@ class _LoginPageState extends State<LoginPage> {
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Center(
-            child: CircularProgressIndicator(
-                color: ApplicationColors.MAIN_COLOR_BLUE, strokeWidth: 4.0),
-          ),
+              // child: CircularProgressIndicator(
+              //     color: ApplicationColors.MAIN_COLOR_BLUE, strokeWidth: 4.0),
+
+              // child: CupertinoActivityIndicator(
+              //     color: ApplicationColors.MAIN_COLOR_BLUE, radius: 30.0),
+
+              // child: LinearProgressIndicator(
+              //     value:
+              //         null, // null for infinite loading, or a value between 0.0 and 1.0 for determinate
+              //     backgroundColor: ApplicationColors
+              //         .PURE_WHITE, // Background color of the progress bar
+              //     color: ApplicationColors
+              //         .MAIN_COLOR_BLUE // Color of the progress bar
+              //     ),
+
+              child: SpinKitWave(
+            color: ApplicationColors.MAIN_COLOR_BLUE,
+            size: 70.0,
+            itemCount: 6
+          )),
         );
       },
     );
@@ -197,9 +250,10 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       showSuccess(context);
       logger.i('Login Successfully !');
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => TypeSelector()),
+        (Route<dynamic> route) => false,
       );
     }
   }
@@ -207,13 +261,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    return WillPopScope(
-        onWillPop: () async {
-          // Exit the app when the back button is pressed
-          exit(0);
-          return false; // Returning false prevents the usual behavior
-        },
-        child: Scaffold(
+    Future.delayed(Duration(seconds: 3));
+    return Scaffold(
       backgroundColor: ApplicationColors.PURE_WHITE,
       body: SingleChildScrollView(
         child: Stack(
@@ -223,8 +272,14 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 // Header Color Container Part-----------------------------------
                 Container(
-                    child: SvgPicture.asset('assets/images/Footer.svg',
-                        width: screenSize.width)),
+                    // child: SvgPicture.asset('assets/images/Footer.svg',
+                    //     width: screenSize.width,
+                    //     placeholderBuilder: (context) => CircularProgressIndicator(),)
+
+                    child: svgContent != null
+                        ? SvgPicture.string(svgContent!,
+                            width: screenSize.width)
+                        : CircularProgressIndicator()),
 
                 // Login Account page title-------------------------------------
                 Container(
@@ -246,62 +301,62 @@ class _LoginPageState extends State<LoginPage> {
                 // UserName Input Field------------------------------------------
                 Container(
                   margin: ApplicationMarginValues.loginPageUserNameInputMargin,
-                  child: Column(children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Username :',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Username',
                         style: TextStyle(
-                            fontSize:
-                                ApplicationTextSizes.UserInputFieldLabelValue,
-                            fontFamily: 'Poppins',
-                            fontWeight:
-                                ApplicationTextWeights.UserInputsLabelWeight),
-                      ),
-                    ),
-                    Container(
-                      margin: ApplicationMarginValues.textInputFieldInnerMargin,
-                      child: TextFormField(
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 5.0)),
-                          errorText: _usernameError,
+                          fontSize:
+                              ApplicationTextSizes.UserInputFieldLabelValue,
+                          fontFamily: 'Poppins',
+                          fontWeight:
+                              ApplicationTextWeights.UserInputsLabelWeight,
                         ),
                       ),
-                    ),
-                  ]),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: TextFormField(
+                          controller: _usernameController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            errorText: _usernameError,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 // Password Input Field------------------------------------------
                 Container(
-                  margin: ApplicationMarginValues.userInputFiledMargin,
-                  child: Column(children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Password :',
+                  margin: ApplicationMarginValues.loginPageUserNameInputMargin,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Password',
                         style: TextStyle(
-                            fontSize:
-                                ApplicationTextSizes.UserInputFieldLabelValue,
-                            fontFamily: 'Poppins',
-                            fontWeight:
-                                ApplicationTextWeights.UserInputsLabelWeight),
-                      ),
-                    ),
-                    Container(
-                      margin: ApplicationMarginValues.textInputFieldInnerMargin,
-                      child: TextFormField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          errorText: _passwordError,
+                          fontSize:
+                              ApplicationTextSizes.UserInputFieldLabelValue,
+                          fontFamily: 'Poppins',
+                          fontWeight:
+                              ApplicationTextWeights.UserInputsLabelWeight,
                         ),
-                        obscureText: true,
                       ),
-                    ),
-                  ]),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: TextFormField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            errorText: _passwordError,
+                          ),
+                          obscureText: true,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 // Remember Login-----------------------------------------------
@@ -382,6 +437,6 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-    ));
+    );
   }
 }
