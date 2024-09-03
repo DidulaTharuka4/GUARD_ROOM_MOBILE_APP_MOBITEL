@@ -6,6 +6,8 @@ import 'package:Guard_Room_Application/providers/login_provider.dart';
 import 'package:Guard_Room_Application/providers/start_attendance_provider.dart';
 import 'package:Guard_Room_Application/providers/vehicle_in_provider.dart';
 import 'package:Guard_Room_Application/providers/vehicle_out_provider.dart';
+import 'package:Guard_Room_Application/screens/loadingScreen.dart';
+import 'package:Guard_Room_Application/screens/splashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -20,10 +22,14 @@ import 'package:provider/provider.dart';
 
 import 'screens/login.dart';
 
+import 'package:logger/logger.dart';
+
 // void main() => runApp(MyApp());
 
-void main() {
+void main() async {
+  // var logger = Logger();
   WidgetsFlutterBinding.ensureInitialized();
+  await Future.delayed(Duration(seconds: 3));
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -73,7 +79,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+
+      initialRoute: '/',
+
+      routes: {
+        '/': (context) => LoadingScreen(),
+        '/home': (context) => SplashScreen(), // Replace with your home screen
+      },
+
+      // home: LoginPage(),
       // home: TypeSelector(),
     );
   }
