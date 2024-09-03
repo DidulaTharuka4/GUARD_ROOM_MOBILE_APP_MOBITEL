@@ -29,7 +29,7 @@ import 'package:logger/logger.dart';
 void main() async {
   // var logger = Logger();
   WidgetsFlutterBinding.ensureInitialized();
-  await Future.delayed(Duration(seconds: 3));
+  await Future.delayed(Duration(seconds: 0));
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
