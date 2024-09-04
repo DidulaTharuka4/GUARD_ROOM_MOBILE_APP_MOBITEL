@@ -21,9 +21,9 @@ import 'package:provider/provider.dart';
 // import 'package:sample_flutter_application_1/providers/vehicle_in_provider.dart';
 // import 'package:sample_flutter_application_1/providers/vehicle_out_provider.dart';
 
-import 'screens/login.dart';
+// import 'screens/login.dart';
 
-import 'package:logger/logger.dart';
+// import 'package:logger/logger.dart';
 
 // void main() => runApp(MyApp());
 
@@ -80,6 +80,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Poppins'
       ),
 
       initialRoute: '/',
