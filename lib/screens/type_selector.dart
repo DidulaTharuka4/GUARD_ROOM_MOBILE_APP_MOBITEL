@@ -63,7 +63,7 @@ class _TypeSelector extends State<TypeSelector> {
     return WillPopScope(
         onWillPop: () async {
           // Exit the app when the back button is pressed
-          exit(0);
+          // exit(0);
           return false; // Returning false prevents the usual behavior
         },
         child: Scaffold(
