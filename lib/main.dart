@@ -1,3 +1,4 @@
+import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:Guard_Room_Application/notifiers/mileage_unit.dart';
 import 'package:Guard_Room_Application/providers/end_attendance_provider.dart';
 import 'package:Guard_Room_Application/providers/find_all_drivers_provider.dart';
@@ -33,12 +34,13 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark, // Adjust icon color
+      // statusBarColor: ApplicationColors.PURE_WHITE,
+      statusBarIconBrightness: Brightness.dark,
     ),
   );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
+    // DeviceOrientation.portraitDown,
     // For landscape mode, use the following instead:
     // DeviceOrientation.landscapeLeft,
     // DeviceOrientation.landscapeRight,

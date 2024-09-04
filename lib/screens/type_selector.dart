@@ -9,6 +9,7 @@ import 'package:Guard_Room_Application/screens/daily_attendance.dart';
 import 'package:Guard_Room_Application/screens/daily_trip.dart';
 import 'package:Guard_Room_Application/screens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
@@ -51,6 +52,10 @@ class _TypeSelector extends State<TypeSelector> {
 
   @override
   Widget build(BuildContext context) {
+     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ));
     // final loginProvider = Provider.of<LoginProvider>(context);
     // final findAllDriversProvider = Provider.of<FindAllDriversProvider>(context);
     // final findAllVehiclesProvider = Provider.of<FindAllVehiclesProvider>(context);

@@ -4,9 +4,11 @@ import 'package:Guard_Room_Application/constraints/marginValues.dart';
 import 'package:Guard_Room_Application/constraints/textSizes.dart';
 import 'package:Guard_Room_Application/constraints/token.dart';
 import 'package:Guard_Room_Application/providers/login_provider.dart';
+import 'package:Guard_Room_Application/screens/loadingScreen.dart';
 import 'package:Guard_Room_Application/screens/type_selector.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 // import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
@@ -193,29 +195,33 @@ class _LoginPageState extends State<LoginPage> {
       barrierDismissible:
           false, // Prevents closing the dialog by tapping outside
       builder: (BuildContext context) {
+        // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        //   statusBarColor: Colors.transparent,
+        //   statusBarIconBrightness: Brightness.light,
+        // ));
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Center(
-              // child: CircularProgressIndicator(
-              //     color: ApplicationColors.MAIN_COLOR_BLUE, strokeWidth: 4.0),
+            // child: CircularProgressIndicator(
+            //     color: ApplicationColors.MAIN_COLOR_BLUE, strokeWidth: 4.0),
 
-              child: CupertinoActivityIndicator(
-                  color: ApplicationColors.MAIN_COLOR_BLUE, radius: 30.0),
+            child: CupertinoActivityIndicator(
+                color: ApplicationColors.MAIN_COLOR_BLUE, radius: 30.0),
 
-              // child: LinearProgressIndicator(
-              //     value:
-              //         null, // null for infinite loading, or a value between 0.0 and 1.0 for determinate
-              //     backgroundColor: ApplicationColors
-              //         .PURE_WHITE, // Background color of the progress bar
-              //     color: ApplicationColors
-              //         .MAIN_COLOR_BLUE // Color of the progress bar
-              //     ),
+            // child: LinearProgressIndicator(
+            //     value:
+            //         null, // null for infinite loading, or a value between 0.0 and 1.0 for determinate
+            //     backgroundColor: ApplicationColors
+            //         .PURE_WHITE, // Background color of the progress bar
+            //     color: ApplicationColors
+            //         .MAIN_COLOR_BLUE // Color of the progress bar
+            //     ),
 
-          //     child: SpinKitWave(
-          //   color: ApplicationColors.MAIN_COLOR_BLUE,
-          //   size: 70.0,
-          //   itemCount: 6
-          // )
+            //     child: SpinKitWave(
+            //   color: ApplicationColors.MAIN_COLOR_BLUE,
+            //   size: 70.0,
+            //   itemCount: 6
+            // )
           ),
         );
       },
@@ -233,6 +239,8 @@ class _LoginPageState extends State<LoginPage> {
     // });
 
     showLoadingDialog(context);
+
+    // LoadingScreen();
 
     await Future.delayed(Duration(seconds: 2));
 
@@ -261,6 +269,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ));
     var screenSize = MediaQuery.of(context).size;
     Future.delayed(Duration(seconds: 3));
     return Scaffold(

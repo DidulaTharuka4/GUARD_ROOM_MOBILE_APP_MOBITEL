@@ -781,6 +781,10 @@ class _DailyAttendance extends State<DailyAttendance> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: ApplicationColors.PURE_WHITE,
+      statusBarIconBrightness: Brightness.dark,
+    ));
     var screenSize = MediaQuery.of(context).size;
     final findAllVehiclesProvider =
         Provider.of<FindAllVehiclesProvider>(context);
@@ -958,11 +962,11 @@ class _DailyAttendance extends State<DailyAttendance> {
                                 vehicleNumberList();
                                 filterVehicles(value);
 
-                              logger.i(filteredVehicles);
-                              logger.i(selectedVehicle);
+                                logger.i(filteredVehicles);
+                                logger.i(selectedVehicle);
 
-                            //     licenseNumberList();
-                            // filterLicenseNumbers(value);
+                                //     licenseNumberList();
+                                // filterLicenseNumbers(value);
 
                                 logger.i('12');
                                 // if (value.isEmpty) {
