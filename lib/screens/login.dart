@@ -7,7 +7,7 @@ import 'package:Guard_Room_Application/providers/login_provider.dart';
 import 'package:Guard_Room_Application/screens/type_selector.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -199,8 +199,8 @@ class _LoginPageState extends State<LoginPage> {
               // child: CircularProgressIndicator(
               //     color: ApplicationColors.MAIN_COLOR_BLUE, strokeWidth: 4.0),
 
-              // child: CupertinoActivityIndicator(
-              //     color: ApplicationColors.MAIN_COLOR_BLUE, radius: 30.0),
+              child: CupertinoActivityIndicator(
+                  color: ApplicationColors.MAIN_COLOR_BLUE, radius: 30.0),
 
               // child: LinearProgressIndicator(
               //     value:
@@ -211,11 +211,12 @@ class _LoginPageState extends State<LoginPage> {
               //         .MAIN_COLOR_BLUE // Color of the progress bar
               //     ),
 
-              child: SpinKitWave(
-            color: ApplicationColors.MAIN_COLOR_BLUE,
-            size: 70.0,
-            itemCount: 6
-          )),
+          //     child: SpinKitWave(
+          //   color: ApplicationColors.MAIN_COLOR_BLUE,
+          //   size: 70.0,
+          //   itemCount: 6
+          // )
+          ),
         );
       },
     );

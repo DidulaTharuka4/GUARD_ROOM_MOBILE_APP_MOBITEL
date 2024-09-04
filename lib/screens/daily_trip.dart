@@ -15,6 +15,7 @@ import 'package:Guard_Room_Application/providers/login_provider.dart';
 import 'package:Guard_Room_Application/providers/vehicle_in_provider.dart';
 import 'package:Guard_Room_Application/providers/vehicle_out_provider.dart';
 import 'package:Guard_Room_Application/screens/type_selector.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -210,8 +211,11 @@ class _DailyTrip extends State<DailyTrip> {
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Center(
-            child: CircularProgressIndicator(
-                color: ApplicationColors.MAIN_COLOR_BLUE, strokeWidth: 4.0),
+            // child: CircularProgressIndicator(
+            //     color: ApplicationColors.MAIN_COLOR_BLUE, strokeWidth: 4.0),
+
+            child: CupertinoActivityIndicator(
+                color: ApplicationColors.MAIN_COLOR_BLUE, radius: 30.0),
           ),
         );
       },
