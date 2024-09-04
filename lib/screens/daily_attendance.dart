@@ -302,7 +302,7 @@ class _DailyAttendance extends State<DailyAttendance> {
     logger.i('work in inside');
     setState(() {
       combinedDateTime =
-          '${_dateController.text}' + ' ' + '${_timeController.text}';
+          '${_dateController.text} ${_timeController.text}';
     });
 
     if (isRequiredFilled == true && isAllFilled == true) {
@@ -793,6 +793,7 @@ class _DailyAttendance extends State<DailyAttendance> {
     return Scaffold(
         backgroundColor: ApplicationColors.PURE_WHITE,
         body: Container(
+          
           // margin: ApplicationMarginValues.pageContainerMargin,
           child: SingleChildScrollView(
             padding: EdgeInsets.only(top: 0.0),
@@ -833,6 +834,7 @@ class _DailyAttendance extends State<DailyAttendance> {
                               width: screenSize.width / 52.8828,
                               height: screenSize.height / 43.9451),
                         ),
+                        
                         Text('Daily Attendance',
                             style: TextStyle(
                                 fontSize:
