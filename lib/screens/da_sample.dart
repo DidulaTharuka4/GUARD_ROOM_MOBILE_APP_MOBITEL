@@ -1,11 +1,16 @@
 import 'dart:async';
-import 'package:Guard_Room_Application/components/invalid_input_alert_box.dart';
-import 'package:Guard_Room_Application/components/confirmation_alert_box.dart';
-import 'package:Guard_Room_Application/components/main_button.dart';
-import 'package:Guard_Room_Application/components/custom_selector_button.dart';
+import 'package:Guard_Room_Application/components/alert_boxes.dart';
+import 'package:Guard_Room_Application/components/AlertBoxes/invalid_input_alert_box.dart';
+import 'package:Guard_Room_Application/components/AlertBoxes/confirmation_alert_box.dart';
+import 'package:Guard_Room_Application/components/Buttons/main_button.dart';
+import 'package:Guard_Room_Application/components/Buttons/custom_selector_button.dart';
+import 'package:Guard_Room_Application/components/driver_dropdown.dart';
+import 'package:Guard_Room_Application/components/driver_list.dart';
 import 'package:Guard_Room_Application/components/main_text_input.dart';
-import 'package:Guard_Room_Application/components/toggle_button.dart';
-import 'package:Guard_Room_Application/components/success_error_alert_box.dart';
+import 'package:Guard_Room_Application/components/Buttons/toggle_button.dart';
+import 'package:Guard_Room_Application/components/AlertBoxes/success_error_alert_box.dart';
+import 'package:Guard_Room_Application/components/vehicle_dropdown.dart';
+import 'package:Guard_Room_Application/components/vehicle_list.dart';
 import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:Guard_Room_Application/constraints/marginValues.dart';
 import 'package:Guard_Room_Application/constraints/textSizes.dart';
@@ -15,14 +20,19 @@ import 'package:Guard_Room_Application/providers/find_all_drivers_provider.dart'
 import 'package:Guard_Room_Application/providers/find_all_vehicles_provider.dart';
 import 'package:Guard_Room_Application/providers/login_provider.dart';
 import 'package:Guard_Room_Application/providers/start_attendance_provider.dart';
-import 'package:Guard_Room_Application/screens/type_selector.dart';
+import 'package:Guard_Room_Application/components/AppBars/form_page_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+enum ButtonType {
+  workIn,
+  workOut,
+  empty,
+}
 
 class DailyAttendance extends StatefulWidget {
   @override
@@ -44,6 +54,9 @@ class _DailyAttendance extends State<DailyAttendance> {
   final TextEditingController _driverNameController = TextEditingController();
   final TextEditingController _currentMileageController =
       TextEditingController();
+  final TextEditingController _currentTimeController = TextEditingController();
+
+  ButtonType currentButtonState = ButtonType.empty;
 
   var logger = Logger();
   final loginProvider = Provider.of<LoginProvider>;
@@ -66,13 +79,16 @@ class _DailyAttendance extends State<DailyAttendance> {
   final TextEditingController _dateTimeController = TextEditingController();
   late Timer timer;
 
+  String? _dateError;
   String? _vehicleNumberError;
   String? _licenseNumberError;
-  // String? _driverNameError;
+  String? _driverNameError;
   String? _currentMileageError;
+  String? _timeError;
   String? combinedDateTime;
   String? driverName;
   String? finalResponseStatus;
+  bool submitButtonClicked = false;
 
   bool isAllFilled = false;
   bool isRequiredFilled = false;
@@ -94,11 +110,15 @@ class _DailyAttendance extends State<DailyAttendance> {
   bool showLicenseNumberDropdown = false;
   FocusNode focusNodeForLicenseNumberExpandableList = FocusNode();
 
+  // bool _isDropdownExpanded = false;
+  // bool _isExpanded = false;
+
   @override
   void initState() {
     super.initState();
     startClock();
     getCurrentDate();
+    // VehicleFilter.vehicleNumberList();
 
     focusNodeForExpandableList.addListener(() {
       if (!focusNodeForExpandableList.hasFocus) {
@@ -153,7 +173,10 @@ class _DailyAttendance extends State<DailyAttendance> {
       builder: (BuildContext context) {
         return AlertDialog(
           contentPadding: EdgeInsets.all(0.0),
-          content: AlertDialogBox(),
+          content: AlertDialogBox(
+              // alertDialogText:
+              //     'Cannot proceed with invalid inputs! Please try again.'
+              ),
         );
       },
     );
@@ -166,7 +189,10 @@ class _DailyAttendance extends State<DailyAttendance> {
       builder: (BuildContext context) {
         return AlertDialog(
           contentPadding: EdgeInsets.all(0.0),
-          content: AlertDialogBox(),
+          content: AlertDialogBox(
+              // alertDialogText:
+              //     'Mandatory fields (*) cannot be empty! Please try again.'
+              ),
         );
       },
     );
@@ -199,46 +225,50 @@ class _DailyAttendance extends State<DailyAttendance> {
   //  Check all field empty or not
   void checkFIlledAllFields() {
     setState(() {
+      _dateError = _currentDateController.text.isEmpty ? 'Date is empty' : null;
       _currentMileageError = _currentMileageController.text.isEmpty
           ? 'Mileage cannot be empty'
           : null;
     });
-
     isAllFilled = true;
   }
 
   // Check required field empty or not
   void checkFilledRequiredFields() {
     setState(() {
-      _vehicleNumberError = _vehicleNumberController.text.isEmpty
-          ? 'Vehicle Number cannot be empty'
-          : null;
-      _licenseNumberError = _driverLicenseController.text.isEmpty
-          ? 'License Number cannot be empty'
-          : null;
-      _currentMileageError = _currentMileageController.text.isEmpty
-          ? 'Mileage cannot be empty'
-          : null;
-      // _driverNameError =
-      _driverNameController.text.isEmpty ? 'Name cannot be empty' : null;
+      // _vehicleNumberError = _vehicleNumberController.text.isEmpty
+      //     ? 'Vehicle Number cannot be empty'
+      //     : null;
+      // _licenseNumberError = _driverLicenseController.text.isEmpty
+      //     ? 'License Number cannot be empty'
+      //     : null;
+      // _currentMileageError = _currentMileageController.text.isEmpty
+      //     ? 'Mileage cannot be empty'
+      //     : null;
+      // _timeError =
+      //     _currentTimeController.text.isEmpty ? 'Time cannot be empty' : null;
+      _driverNameError =
+          _driverNameController.text.isEmpty ? 'Name cannot be empty' : null;
     });
 
     if (_vehicleNumberController.text.isEmpty == false ||
         _replaceVehicleNumberController.text.isEmpty == false) {
       requiredVehicleNumberFilled = true;
-      print('vehicle number okay');
+      logger.i('vehicle number okay');
     } else {
       requiredVehicleNumberFilled = false;
-      print('vehicle number not okay');
+      logger.i('vehicle number not okay');
     }
 
     if (_driverLicenseController.text.isEmpty == false ||
         _replaceDriverNICController.text.isEmpty == false) {
+      // _driverNameController.text.isEmpty == false;
       requiredDriverDetailFilled = true;
-      print('driver details okay');
+      logger.i('driver details okay');
     } else {
+      // _driverNameController.text.isEmpty == true;
       requiredDriverDetailFilled = false;
-      print('driver details not okay');
+      logger.i('driver details not okay');
     }
 
     if (requiredVehicleNumberFilled == true &&
@@ -248,6 +278,14 @@ class _DailyAttendance extends State<DailyAttendance> {
     } else {
       isRequiredFilled = false;
     }
+  }
+
+  void workTypeSelectionButton() {
+    logger.i('work Type Selection Button');
+
+    setState(() {
+      combinedDateTime = '${_dateController.text} ${_timeController.text}';
+    });
   }
 
   // Work in button function
@@ -273,11 +311,9 @@ class _DailyAttendance extends State<DailyAttendance> {
       }
     } else if (isRequiredFilled == false && isAllFilled == true) {
       logger.i('errors with required fields');
-
       invalidFieldAlertDialogBox(context);
     } else if (isRequiredFilled == true && isAllFilled == false) {
       logger.i('errors with all fields');
-
       invalidFieldAlertDialogBox(context);
     } else if (isRequiredFilled == false && isAllFilled == false) {
       logger.i('errors with required and all inputs');
@@ -296,7 +332,7 @@ class _DailyAttendance extends State<DailyAttendance> {
     // print('now in work out button');
 
     if (isRequiredFilled == true && isAllFilled == true) {
-      logger.i('input validations success');
+      // logger.i('meee inne ');
       if (vehicleID == null && driverID == null) {
         logger.i('invalid vehicle number and driver license number !');
       } else if (vehicleID == null && driverID != null) {
@@ -306,15 +342,16 @@ class _DailyAttendance extends State<DailyAttendance> {
       } else {
         logger.i('all are okay');
         workOutButtonDialogBox(context);
+        MyWidget(currentState: AlertType.okayOrNotOkayDialog);
       }
     } else if (isRequiredFilled == false && isAllFilled == true) {
-      logger.i('errors with required fields');
+      print('errors with required fields');
       emptyRequiredFieldsAlertDialogBox(context);
     } else if (isRequiredFilled == true && isAllFilled == false) {
-      logger.i('errors with all fields');
+      print('errors with all fields');
       invalidFieldAlertDialogBox(context);
     } else if (isRequiredFilled == false && isAllFilled == false) {
-      logger.i('errors with required and all inputsy');
+      print('errors with required and all inputs');
       invalidFieldAlertDialogBox(context);
       getCurrentDate();
     }
@@ -576,11 +613,13 @@ class _DailyAttendance extends State<DailyAttendance> {
         return AlertDialog(
           contentPadding: EdgeInsets.all(0.0),
           content: SuccessStatusAlertBox(
+
             successStatus: successStatus!,
           ),
         );
       },
     );
+
   }
 
   // expansion tile card toggle button function-------------------------------
@@ -590,124 +629,34 @@ class _DailyAttendance extends State<DailyAttendance> {
 
   void toggleExpansion() {
     isToggled = !isToggled;
-    setState(() {
-      if (isToggled == false) {
+   
+
+    if (isToggled == false) {
+      if (_vehicleNumberController.text.isEmpty == false &&
+          _driverLicenseController.text.isEmpty == false) {
         controller.collapse();
-      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('This is a Snackbar!'),
+          duration: Duration(seconds: 2),
+        ));
+      }
+    } else {
+      if (_vehicleNumberController.text.isEmpty == false &&
+          _driverLicenseController.text.isEmpty == false) {
         controller.expand();
-      }
-    });
-  }
-
-  //--------------------------------------------------------------------
-
-  List<String> allVehicles = [];
-  List<String> filteredVehicles = [];
-  String? selectedVehicle;
-
-  void vehicleNumberList() {
-    // logger.i('B4 for loop');
-    final findAllVehicles =
-        Provider.of<FindAllVehiclesProvider>(context, listen: false);
-
-    allVehicles.clear();
-
-    for (int i = 0;
-        i <
-            findAllVehicles
-                .findAllVehiclesResponse!.appVehicleMobileDtoList!.length;
-        i++) {
-      // logger.i('inside for loop');
-      final vehicleDetailItem =
-          findAllVehicles.findAllVehiclesResponse!.appVehicleMobileDtoList![i];
-      allVehicles.add(vehicleDetailItem.vehicleRegNumber.toString());
-    }
-    logger.i('end of the for loop');
-    // logger.i(allVehicles);
-    logger.i(filteredVehicles);
-    logger.i(selectedVehicle);
-  }
-
-  void filterVehicles(String query) {
-    logger.i('inside the func');
-    vehicleNumberList();
-
-    setState(() {
-      filteredVehicles = allVehicles
-          .where(
-              (vehicle) => vehicle.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      if (filteredVehicles.isEmpty) {
-        selectedVehicle = null;
-      } else if (filteredVehicles.contains(selectedVehicle)) {
-        selectedVehicle = selectedVehicle;
-      } else {
-        selectedVehicle = null;
-      }
-    });
-
-    showDropdown = filteredVehicles.isNotEmpty && query.isNotEmpty;
-  }
-
-  List<String> allLicenseNumbers = [];
-  List<String> filteredLicenseNumbers = [];
-  String? selectedLicenseNumber;
-
-  void licenseNumberList() {
-    logger.i('B4 for loop');
-    final findAllLicenseNumbers =
-        Provider.of<FindAllVehiclesProvider>(context, listen: false);
-
-    allLicenseNumbers.clear();
-
-    for (int i = 0;
-        i <
-            findAllLicenseNumbers
-                .findAllVehiclesResponse!.appVehicleMobileDtoList!.length;
-        i++) {
-      final licenseNumberItem = findAllLicenseNumbers
-          .findAllVehiclesResponse!.appVehicleMobileDtoList![i];
-
-      // Using a simple conditional check with null-aware operator
-      if (licenseNumberItem.driverDto?.licenseNum != null) {
-        allLicenseNumbers
-            .add(licenseNumberItem.driverDto!.licenseNum.toString());
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('This is a Snackbar!'),
+          duration: Duration(seconds: 2),
+        ));
       }
     }
-    logger.i('end of the for loop');
-    // logger.i(allLicenseNumbers);
-    logger.i(filteredLicenseNumbers);
-    logger.i(selectedLicenseNumber);
-  }
-
-  void filterLicenseNumbers(String query) {
-    logger.i('inside the func 1');
-    licenseNumberList();
-
-    setState(() {
-      filteredLicenseNumbers = allLicenseNumbers
-          .where((licenseNumber) =>
-              licenseNumber.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      if (filteredLicenseNumbers.isEmpty) {
-        selectedLicenseNumber = null;
-      } else if (filteredLicenseNumbers.contains(selectedLicenseNumber)) {
-        // Keep the selected vehicle if it's still in the filtered list
-        selectedLicenseNumber = selectedLicenseNumber;
-      } else {
-        // Reset selection if the previously selected vehicle is not in the filtered list
-        selectedLicenseNumber = null;
-      }
-    });
-    showLicenseNumberDropdown =
-        filteredLicenseNumbers.isNotEmpty && query.isNotEmpty;
   }
 
   // content design------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: ApplicationColors.PURE_WHITE,
       statusBarIconBrightness: Brightness.dark,
     ));
@@ -716,335 +665,87 @@ class _DailyAttendance extends State<DailyAttendance> {
         Provider.of<FindAllVehiclesProvider>(context);
     final findAllDriversProvider = Provider.of<FindAllDriversProvider>(context);
     final loginProvider = Provider.of<LoginProvider>(context);
+    final vehicleListProvider = Provider.of<VehicleListProvider>(context);
+    final licenseNumberListProvider =
+        Provider.of<LicenseNumberListProvider>(context);
     return Scaffold(
         backgroundColor: ApplicationColors.PURE_WHITE,
+        appBar: const FormPageAppBarWithShadow(),
         body: Container(
-          // margin: ApplicationMarginValues.pageContainerMargin,
           child: SingleChildScrollView(
             padding: EdgeInsets.only(top: 0.0),
             child: Column(children: <Widget>[
               Container(
-                  child: Stack(children: <Widget>[
-                Container(
-                  width: screenSize.width,
-                  // height: 120,
-                  height: screenSize.height / 7.42,
-                  decoration: BoxDecoration(
-                      color: ApplicationColors.PURE_WHITE,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          offset: Offset(0, 4),
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                        ),
-                      ]),
-                ),
-                Container(
-                  child: Positioned(
-                      bottom: 8.0,
-                      left: 8.0,
-                      child: Row(children: <Widget>[
-                        IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TypeSelector()),
-                            );
-                          },
-                          icon: SvgPicture.asset('assets/images/BackIcon.svg',
-                              // width: 7.78,
-                              // height: 20.259,
-                              width: screenSize.width / 52.88,
-                              height: screenSize.height / 43.95),
-                        ),
-                        Text('Daily Attendance',
-                            style: TextStyle(
-                                fontSize:
-                                    ApplicationTextSizes.pageTitleTextValue,
-                                fontFamily: 'Poppins',
-                                fontWeight:
-                                    ApplicationTextWeights.PageTitleTextWeight))
-                      ])),
-                ),
-              ])),
-
-              // Date---------------------------------------------------------
-              // Container(
-              //   margin: ApplicationMarginValues.pageTopInputFieldMargin,
-              //   child: Column(
-              //     children: <Widget>[
-              //       Container(
-              //         // flex: 4,
-              //         child: Row(
-              //           children: [
-              //             Text(
-              //               "Date  :  ",
-              //               style: TextStyle(
-              //                   fontSize: ApplicationTextSizes
-              //                       .userInputFieldLabelValue,
-              //                   fontFamily: 'Poppins',
-              //                   fontWeight: ApplicationTextWeights
-              //                       .UserInputsLabelWeight),
-              //             ),
-              //             SvgPicture.asset(
-              //               'assets/images/Calender.svg',
-              //               height: 22.51,
-              //               width: 22.51,
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //       Container(
-              //         margin: ApplicationMarginValues.textInputFieldInnerMargin,
-              //         child: TextFormField(
-              //           readOnly: true,
-              //           controller: _dateTimeController,
-              //           enabled: false,
-              //           style: TextStyle(
-              //             color: ApplicationColors.PURE_BLACK,
-              //           ),
-              //           decoration: InputDecoration(
-              //             filled: true,
-              //             fillColor: ApplicationColors.PURE_WHITE,
-              //             border: OutlineInputBorder(),
-              //           ),
-              //         ),
-              //         // ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+                  margin: ApplicationMarginValues.formPageTopMargin,
+                  child: CustomTextInput(
+                    inputController: _dateTimeController,
+                    titleText: "Date  :  ",
+                    inputEnabled: false,
+                    isRequired: false,
+                  )),
 
               Container(
                   child: CustomTextInput(
-                inputController: _dateTimeController,
-                titleText: "Date  :  ",
-                inputEnabled: false,
-              )),
-
-              // Vehicle Number-------------------------------------------------
-              Container(
-                  child: CustomTextInput(
-                inputController: _vehicleNumberController,
-                titleText: "Vehicle Number  :  ",
-                inputTextError: _vehicleNumberError,
-                inputFormatters: [
-                  VehicleNumberTextInputFormatter(),
-                  LengthLimitingTextInputFormatter(8)
-                ],
-                onChange: (value) {
-                  vehicleNumberList();
-                  filterVehicles(value);
-                },
-              )),
-
-              if (showDropdown)
-                Positioned(
-                    child: Container(
-                  color: ApplicationColors.PURE_WHITE,
-                  constraints: BoxConstraints(maxHeight: 200),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: 300,
-                      minHeight: 150,
-                      maxWidth: 350,
-                      minWidth: 100,
-                    ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: filteredVehicles.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(filteredVehicles[index]),
-                          onTap: () {
-                            setState(() {
-                              showDropdown = false;
-                            });
-
-                            if (_driverLicenseController.text.isEmpty) {
-                              _vehicleNumberController.text =
-                                  filteredVehicles[index];
-
-                              for (int i = 0;
-                                  i <
-                                      findAllVehiclesProvider
-                                          .findAllVehiclesResponse!
-                                          .appVehicleMobileDtoList!
-                                          .length;
-                                  i++) {
-                                final vehicle = findAllVehiclesProvider
-                                    .findAllVehiclesResponse
-                                    ?.appVehicleMobileDtoList![i];
-
-                                if (vehicle?.vehicleRegNumber ==
-                                    _vehicleNumberController.text) {
-                                  vehicleID = vehicle?.id;
-                                  _driverLicenseController.text =
-                                      '${vehicle!.driverDto!.licenseNum}';
-                                  driverID = vehicle.driverDto!.id;
-                                  _driverNameController.text =
-                                      '${vehicle.driverDto!.cname}';
-                                }
-                              }
-                            } else if (_driverLicenseController
-                                .text.isNotEmpty) {
-                              for (int i = 0;
-                                  i <
-                                      findAllVehiclesProvider
-                                          .findAllVehiclesResponse!
-                                          .appVehicleMobileDtoList!
-                                          .length;
-                                  i++) {
-                                final vehicle = findAllVehiclesProvider
-                                    .findAllVehiclesResponse
-                                    ?.appVehicleMobileDtoList![i];
-                                if (vehicle?.driverDto!.licenseNum ==
-                                    _driverLicenseController.text) {
-                                  _vehicleNumberController.text =
-                                      '${vehicle?.vehicleRegNumber}';
-                                  vehicleID = vehicle?.id;
-                                  break;
-                                } else {
-                                  _vehicleNumberController.text =
-                                      filteredVehicles[index];
-
-                                  if (vehicle?.vehicleRegNumber ==
-                                      _vehicleNumberController.text) {
-                                    vehicleID = vehicle?.id;
-                                  }
-                                }
-                              }
-                            }
-                          },
-                        );
+                      inputController: _vehicleNumberController,
+                      titleText: "Vehicle Number  :  ",
+                      inputFormatters: [
+                        VehicleNumberTextInputFormatter(),
+                        LengthLimitingTextInputFormatter(8)
+                      ],
+                      onChange: (value) {
+                        vehicleListProvider.filterVehicles(context, value);
                       },
-                    ),
-                  ),
-                )),
+                      isRequired: true,
+                      buttonClickStatus: submitButtonClicked)),
 
-              // Driver's License Number----------------------------------------
+              VehicleDropdown(
+                vehicleNumberController: _vehicleNumberController,
+                driverLicenseController: _driverLicenseController,
+                driverNameController: _driverNameController,
+                onVehicleSelected: (selectedVehicle) {
+                  setState(() {
+                    vehicleListProvider.showDropdown = false;
+                  });
+                },
+              ),
+
               Container(
                   child: CustomTextInput(
-                inputController: _driverLicenseController,
-                titleText: "Driver's Name  :  ",
-                inputTextError: _licenseNumberError,
-                inputFormatters: [
-                  DriverLicenseTextInputFormatter(),
-                  LengthLimitingTextInputFormatter(10)
-                ],
-                onChange: (value) {
-                  licenseNumberList();
-                  filterLicenseNumbers(value);
-                },
-              )),
-
-              if (showLicenseNumberDropdown)
-                Positioned(
-                    child: Container(
-                  color: ApplicationColors.PURE_WHITE,
-                  constraints: BoxConstraints(maxHeight: 200),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: 300,
-                      minHeight: 150,
-                      maxWidth: 350,
-                      minWidth: 100,
-                    ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: filteredLicenseNumbers.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(filteredLicenseNumbers[index]),
-                          onTap: () {
-                            // Handle the selection
-
-                            _driverLicenseController.text =
-                                filteredLicenseNumbers[index];
-
-                            setState(() {
-                              showLicenseNumberDropdown = false;
-                            });
-
-                            if (_vehicleNumberController.text.isEmpty) {
-                              _driverLicenseController.text =
-                                  filteredLicenseNumbers[index];
-
-                              for (int i = 0;
-                                  i <
-                                      findAllVehiclesProvider
-                                          .findAllVehiclesResponse!
-                                          .appVehicleMobileDtoList!
-                                          .length;
-                                  i++) {
-                                final vehicle = findAllVehiclesProvider
-                                    .findAllVehiclesResponse
-                                    ?.appVehicleMobileDtoList![i];
-
-                                if (vehicle?.driverDto!.licenseNum ==
-                                    _driverLicenseController.text) {
-                                  _driverNameController.text =
-                                      '${vehicle!.driverDto!.cname}';
-
-                                  _vehicleNumberController.text =
-                                      '${vehicle.vehicleRegNumber}';
-
-                                  driverID = vehicle.driverDto!.id;
-                                }
-                              }
-                            } else if (_vehicleNumberController
-                                .text.isNotEmpty) {
-                              for (int i = 0;
-                                  i <
-                                      findAllVehiclesProvider
-                                          .findAllVehiclesResponse!
-                                          .appVehicleMobileDtoList!
-                                          .length;
-                                  i++) {
-                                final vehicle = findAllVehiclesProvider
-                                    .findAllVehiclesResponse
-                                    ?.appVehicleMobileDtoList![i];
-                                if (vehicle?.vehicleRegNumber ==
-                                    _vehicleNumberController.text) {
-                                  _driverLicenseController.text =
-                                      '${vehicle?.driverDto!.licenseNum}';
-                                  driverID = vehicle?.driverDto!.id;
-                                  break;
-                                } else {
-                                  _driverLicenseController.text =
-                                      filteredLicenseNumbers[index];
-
-                                  if (vehicle?.driverDto!.licenseNum ==
-                                      _driverLicenseController.text) {
-                                    driverID = vehicle?.driverDto!.id;
-                                  }
-                                }
-                              }
-                            }
-
-                            logger.i(filteredLicenseNumbers);
-                            logger.i(selectedLicenseNumber);
-                          },
-                        );
+                      inputController: _driverLicenseController,
+                      titleText: "Driver's License Number  :  ",
+                      inputFormatters: [
+                        DriverLicenseTextInputFormatter(),
+                        LengthLimitingTextInputFormatter(10)
+                      ],
+                      onChange: (value) {
+                        licenseNumberListProvider.filterLicenseNumbers(
+                            context, value);
                       },
-                    ),
-                  ),
-                )),
+                      isRequired: true,
+                      buttonClickStatus: submitButtonClicked)),
 
-              // Driver's Name--------------------------------------------------
+              LicenseNumberDropdown(
+                vehicleNumberController: _vehicleNumberController,
+                driverLicenseController: _driverLicenseController,
+                driverNameController: _driverNameController,
+                onDriverSelected: (selectedVehicle) {
+                  setState(() {
+                    licenseNumberListProvider.showLicenseNumberDropdown = false;
+                  });
+                },
+              ),
+
               Container(
                   child: CustomTextInput(
                 inputController: _driverNameController,
                 titleText: "Driver's Name  :  ",
-                inputTextError: _currentMileageError,
+                isRequired: false,
               )),
 
               // Replace Vehicle Details----------------------------------------
               Container(
                 margin: ApplicationMarginValues.replaceBoxMargin,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     top: BorderSide(
                         width: 2.0,
@@ -1059,19 +760,26 @@ class _DailyAttendance extends State<DailyAttendance> {
                 child: ExpansionTile(
                   controller: controller,
                   backgroundColor: ApplicationColors.BG_LIGHT_BLUE,
-                  title: Text(
-                    'Replace Vehicle / Driver Details',
-                    style: TextStyle(
-                        fontSize: ApplicationTextSizes.userInputFieldLabelValue,
-                        fontFamily: 'Poppins',
-                        fontWeight:
-                            ApplicationTextWeights.UserInputsLabelWeight),
+                  title: GestureDetector(
+                    onTap: () {},
+                    child: const Text(
+                      'Replace Vehicle / Driver Details',
+                      style: TextStyle(
+                          fontSize:
+                              ApplicationTextSizes.userInputFieldLabelValue,
+                          fontFamily: 'Poppins',
+                          fontWeight:
+                              ApplicationTextWeights.UserInputsLabelWeight),
+                    ),
                   ),
-                  trailing: CustomToggleButton(
-                    changeToggleAction: toggleExpansion,
+                  trailing: GestureDetector(
+                    onTap: () {},
+                    child: CustomToggleButton(
+                      changeToggleAction: toggleExpansion,
+                    ),
                   ),
                   children: <Widget>[
-                    ListTile(
+                    const ListTile(
                       title: Text(
                           'If a replacement driver or vehicle arrives, please fill in the following fields.',
                           style: TextStyle(
@@ -1081,11 +789,7 @@ class _DailyAttendance extends State<DailyAttendance> {
                             fontSize: ApplicationTextSizes.RememberMeTextValue,
                           )),
                     ),
-
-                    // Replace Vehicle Number-----------------------------------
-
-                    Container(
-                        child: CustomTextInput(
+                    CustomTextInput(
                       inputController: _replaceVehicleNumberController,
                       titleText: "Vehicle Number  :  ",
                       inputEnabled: _vehicleNumberController.text.isEmpty ||
@@ -1095,11 +799,9 @@ class _DailyAttendance extends State<DailyAttendance> {
                       inputFormatters: <TextInputFormatter>[
                         VehicleNumberTextInputFormatter(),
                       ],
-                    )),
-
-                    // Replace Driver's NIC Number--------------------------
-                    Container(
-                        child: CustomTextInput(
+                      isRequired: true,
+                    ),
+                    CustomTextInput(
                       inputController: _replaceDriverNICController,
                       titleText: "Driver's NIC Number  :  ",
                       inputEnabled: _vehicleNumberController.text.isEmpty ||
@@ -1110,11 +812,9 @@ class _DailyAttendance extends State<DailyAttendance> {
                         DriverLicenseTextInputFormatter(),
                         LengthLimitingTextInputFormatter(10)
                       ],
-                    )),
-
-                    // Replace Comments-----------------------------------------
-                    Container(
-                        child: CustomTextInput(
+                      isRequired: true,
+                    ),
+                    CustomTextInput(
                       inputController: _replaceCommentController,
                       titleText: 'Comments  :  ',
                       inputEnabled: _vehicleNumberController.text.isEmpty ||
@@ -1124,22 +824,24 @@ class _DailyAttendance extends State<DailyAttendance> {
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(100)
                       ],
-                    )),
+                      isRequired: false,
+                    ),
                   ],
                 ),
               ),
 
-              // Current Vehicle Mileage-------------------------------------
               Container(
                   child: CustomTextInput(
-                      inputController: _currentMileageController,
-                      titleText: 'Current Vehicle Mileage  :  ',
-                      inputTextError: _currentMileageError,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(6)
-                      ],
-                      keyboardType: TextInputType.number)),
+                inputController: _currentMileageController,
+                titleText: 'Current Vehicle Mileage  :  ',
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(6)
+                ],
+                keyboardType: TextInputType.number,
+                isRequired: true,
+                buttonClickStatus: submitButtonClicked,
+              )),
 
               Container(
                   margin: ApplicationMarginValues.pageInputFieldsMargin,
@@ -1163,29 +865,21 @@ class _DailyAttendance extends State<DailyAttendance> {
                       flex: 1,
                       child: CustomButton(
                         onPress: () {
-                          // handleUserData();
+                          setState(() {
+                            submitButtonClicked = true;
+                          });
+
+                          setState(() {
+                            combinedDateTime =
+                                '${_dateController.text} ${_timeController.text}';
+                          });
+
                           print(_vehicleNumberController.text);
 
                           print('Work-In Button Pressed!');
                           Provider.of<MileageUnit>(context, listen: false)
                               .mileageToggleButton(
                                   _currentMileageController.text);
-
-                          print(_currentMileageController.text);
-                          print(Provider.of<MileageUnit>(context, listen: false)
-                              .convertedMileageValue);
-                          // print(finalMileageValue);
-                          // Provider.of<FindAllDriversProvider>(context, listen: false)
-                          //     .findAllDrivers();
-
-                          // for (int i = 0; i < findAllVehiclesProvider.findAllVehiclesResponse!.appVehicleMobileDtoList.length; i++) {
-                          //   final vehicle = findAllVehiclesProvider.findAllVehiclesResponse?.appVehicleMobileDtoList[i];
-                          //   print('${vehicle?.id}' + ' - ' + '${vehicle?.vehicleRegNumber}');
-
-                          //   if (findAllVehiclesProvider.findAllVehiclesResponse?.appVehicleMobileDtoList[i].vehicleRegNumber == _vehicleNumberController.text) {
-                          //     vehicleID = findAllVehiclesProvider.findAllVehiclesResponse?.appVehicleMobileDtoList[i].id;
-                          //   }
-                          // }
 
                           for (int i = 0;
                               i <
@@ -1241,6 +935,7 @@ class _DailyAttendance extends State<DailyAttendance> {
                               }
                             }
                           }
+
                           setState(() {
                             userID = loginProvider
                                 .loginresponse!.loginDetailsDto.userId;
@@ -1248,24 +943,17 @@ class _DailyAttendance extends State<DailyAttendance> {
                                 .loginresponse!.loginDetailsDto.userName;
                           });
 
-                          checkFilledRequiredFields();
-                          checkFIlledAllFields();
-                          workInButton();
+                          // checkFilledRequiredFields();
+                          // checkFIlledAllFields();
+                          // workInButton();
+                          workInButtonDialogBox(context);
                         },
                         innerText: 'Work-In',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_GREEN,
                         borderColor: ApplicationColors.BUTTON_COLOR_GREEN,
-                        borderRadius: 4,
+                        borderWidth: 0.0,
                         buttonWidth: screenSize.width / 2.0571,
                         buttonHeight: screenSize.height / 19.7841,
-                        textStyles: TextStyle(
-                          fontSize:
-                              ApplicationTextSizes.userInputFieldLabelValue,
-                          fontFamily: 'Poppins',
-                          fontWeight:
-                              ApplicationTextWeights.UserInputsLabelWeight,
-                          color: ApplicationColors.PURE_WHITE,
-                        ),
                       ),
                     ),
                     SizedBox(width: 20),
@@ -1273,6 +961,9 @@ class _DailyAttendance extends State<DailyAttendance> {
                       flex: 1,
                       child: CustomButton(
                         onPress: () {
+                          setState(() {
+                            submitButtonClicked = true;
+                          });
                           print(_vehicleNumberController.text);
                           print('Work-Out Button Pressed!');
                           Provider.of<MileageUnit>(context, listen: false)
@@ -1339,24 +1030,17 @@ class _DailyAttendance extends State<DailyAttendance> {
                             }
                           }
 
-                          checkFilledRequiredFields();
-                          checkFIlledAllFields();
-                          workOutButton();
+                          // checkFilledRequiredFields();
+                          // checkFIlledAllFields();
+                          workOutButtonDialogBox(context);
+                          // workOutButton();
                         },
                         innerText: 'Work-Out',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_BLUE,
                         borderColor: ApplicationColors.MAIN_COLOR_BLUE,
-                        borderRadius: 4,
+                        borderWidth: 0.0,
                         buttonWidth: screenSize.width / 2.0571,
                         buttonHeight: screenSize.height / 19.7841,
-                        textStyles: TextStyle(
-                          fontSize:
-                              ApplicationTextSizes.userInputFieldLabelValue,
-                          fontFamily: 'Poppins',
-                          fontWeight:
-                              ApplicationTextWeights.UserInputsLabelWeight,
-                          color: ApplicationColors.PURE_WHITE,
-                        ),
                       ),
                     ),
                   ],
