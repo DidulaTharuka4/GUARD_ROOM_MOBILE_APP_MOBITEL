@@ -7,7 +7,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class FormPageAppBarWithShadow extends StatelessWidget
     implements PreferredSizeWidget {
-  const FormPageAppBarWithShadow({super.key});
+  final String pageTitle;
+  final VoidCallback pressForClear;
+
+  const FormPageAppBarWithShadow({
+    super.key,
+    required this.pageTitle,
+    required this.pressForClear,
+  });
+  // const FormPageAppBarWithShadow({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +42,8 @@ class FormPageAppBarWithShadow extends StatelessWidget
                 width: screenSize.width / 52.88,
                 height: screenSize.height / 43.94),
           ),
-          title: const Text('Daily Attendance',
-              style: TextStyle(
+          title: Text(pageTitle,
+              style: const TextStyle(
                   fontSize: ApplicationTextSizes.pageTitleTextValue,
                   fontFamily: 'Poppins',
                   fontWeight: ApplicationTextWeights.PageTitleTextWeight)),
@@ -45,7 +53,8 @@ class FormPageAppBarWithShadow extends StatelessWidget
               child: CustomButton(
                 innerText: 'Clear',
                 backgroundColor: ApplicationColors.RED_COLOR,
-                onPress: () {},
+                onPress: pressForClear,
+                // onPress: () {},
                 buttonWidth: 20,
                 buttonHeight: 10,
                 borderColor: ApplicationColors.RED_COLOR,
