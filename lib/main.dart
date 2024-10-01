@@ -1,4 +1,6 @@
-import 'package:Guard_Room_Application/constraints/colors.dart';
+import 'package:Guard_Room_Application/components/VehicleAndDriverSuggestionDropdown/driver_list.dart';
+import 'package:Guard_Room_Application/components/VehicleAndDriverSuggestionDropdown/vehicle_list.dart';
+// import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:Guard_Room_Application/notifiers/mileage_unit.dart';
 import 'package:Guard_Room_Application/providers/end_attendance_provider.dart';
 import 'package:Guard_Room_Application/providers/find_all_drivers_provider.dart';
@@ -65,6 +67,9 @@ void main() async {
           ChangeNotifierProvider(create: (_) => VehicleOutProvider()),
           ChangeNotifierProvider(create: (_) => FindAllVehiclesProvider()),
           ChangeNotifierProvider(create: (_) => FindAllDriversProvider()),
+
+          ChangeNotifierProvider(create: (_) => VehicleListProvider()),
+          ChangeNotifierProvider(create: (_) => LicenseNumberListProvider()),
         ],
         child: MyApp(),
       ),
@@ -86,8 +91,10 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
 
       routes: {
-        '/': (context) => LoadingScreen(),
-        '/home': (context) => SplashScreen(), // Replace with your home screen
+        // '/': (context) => LoadingScreen(),
+        '/': (context) => SplashScreen(),
+        '/home': (context) => SplashScreen(),
+         // Replace with your home screen
       },
 
       // home: LoginPage(),
