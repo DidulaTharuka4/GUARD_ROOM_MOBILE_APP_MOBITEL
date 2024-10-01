@@ -11,7 +11,7 @@ class ApplicationTextSizes {
   static const UserInputFieldLabelValue = 18.0;
   static const RememberMeTextValue = 13.506;
   static const LoginButtonTitleValue = 18.0;
-  static const pageTitleTextValue = 22.51;
+  static const pageTitleTextValue = 20.0;
 
   static const TypeSelectotPageTitle = 23.0;
   static const SelectorButtonTitleValue = 24.0;
