@@ -8,10 +8,10 @@ class AlertDialogBoxSelector extends StatelessWidget {
   final VoidCallback pressForYesButton;
 
   const AlertDialogBoxSelector({
-    Key? key,
+    super.key,
     required this.alertDialogText,
     required this.pressForYesButton,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -29,7 +29,7 @@ class AlertDialogBoxSelector extends StatelessWidget {
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
           child: Text(
             alertDialogText,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: ApplicationTextSizes.customAlertDialogButton,
                 fontWeight: FontWeight.w400,
                 fontFamily: 'Poppins',
@@ -46,19 +46,15 @@ class AlertDialogBoxSelector extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                   innerText: 'No',
+                  textColor: ApplicationColors.BUTTON_COLOR_BLUE,
                   backgroundColor: ApplicationColors.PURE_WHITE,
                   borderColor: ApplicationColors.BUTTON_COLOR_BLUE,
                   borderWidth: 1.0,
-                  // borderRadius: 4,
                   buttonWidth: 150,
                   buttonHeight: 40,
-                  // textStyles: TextStyle(
-                  //     fontSize: 17,
-                  //     fontWeight: FontWeight.bold,
-                  //     color: ApplicationColors.BUTTON_COLOR_BLUE),
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 flex: 4,
                 child: CustomButton(
@@ -67,19 +63,11 @@ class AlertDialogBoxSelector extends StatelessWidget {
                   backgroundColor: ApplicationColors.BUTTON_COLOR_BLUE,
                   borderColor: ApplicationColors.BUTTON_COLOR_BLUE,
                   borderWidth: 0.0,
-                  // borderRadius: 4,
-                  // buttonWidth: 150,
-                  // buttonHeight: 40,
                   buttonWidth: screenSize.width / 2.7432,
                   buttonHeight: screenSize.height / 22.2571,
-                  // textStyles: TextStyle(
-                  //     fontSize: 17,
-                  //     fontWeight: FontWeight.bold,
-                  //     color: ApplicationColors.PURE_WHITE),
                 ),
               ),
-              SizedBox(width: 10),
-              
+              const SizedBox(width: 10),
             ])),
       ]),
     );
