@@ -1,4 +1,4 @@
-import 'package:Guard_Room_Application/components/Buttons/type_selector_button.dart';
+import 'package:Guard_Room_Application/components/buttons/type_selector_button.dart';
 import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:Guard_Room_Application/constraints/marginValues.dart';
 import 'package:Guard_Room_Application/constraints/textSizes.dart';
@@ -8,7 +8,7 @@ import 'package:Guard_Room_Application/providers/find_all_vehicles_provider.dart
 import 'package:Guard_Room_Application/screens/daily_attendance.dart';
 import 'package:Guard_Room_Application/screens/daily_trip.dart';
 import 'package:Guard_Room_Application/screens/login.dart';
-import 'package:Guard_Room_Application/components/AppBars/selector_page_appbr.dart';
+import 'package:Guard_Room_Application/components/app_bars/selector_page_appbr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';

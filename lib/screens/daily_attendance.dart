@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'package:Guard_Room_Application/components/alert_boxes.dart';
-import 'package:Guard_Room_Application/components/AlertBoxes/invalid_input_alert_box.dart';
-import 'package:Guard_Room_Application/components/AlertBoxes/confirmation_alert_box.dart';
-import 'package:Guard_Room_Application/components/Buttons/main_button.dart';
-import 'package:Guard_Room_Application/components/Buttons/custom_selector_button.dart';
-import 'package:Guard_Room_Application/components/VehicleAndDriverSuggestionDropdown/driver_dropdown.dart';
-import 'package:Guard_Room_Application/components/VehicleAndDriverSuggestionDropdown/driver_list.dart';
+import 'package:Guard_Room_Application/components/alert_boxes/invalid_input_alert_box.dart';
+import 'package:Guard_Room_Application/components/alert_boxes/confirmation_alert_box.dart';
+import 'package:Guard_Room_Application/components/buttons/main_button.dart';
+import 'package:Guard_Room_Application/components/buttons/custom_selector_button.dart';
+import 'package:Guard_Room_Application/components/vehicle_and_driver_suggestion_dropdown/driver_dropdown.dart';
+import 'package:Guard_Room_Application/components/vehicle_and_driver_suggestion_dropdown/driver_list.dart';
 import 'package:Guard_Room_Application/components/all_alert_boxes.dart';
 import 'package:Guard_Room_Application/components/main_text_input.dart';
-import 'package:Guard_Room_Application/components/Buttons/toggle_button.dart';
-import 'package:Guard_Room_Application/components/AlertBoxes/success_error_alert_box.dart';
-import 'package:Guard_Room_Application/components/VehicleAndDriverSuggestionDropdown/vehicle_dropdown.dart';
-import 'package:Guard_Room_Application/components/VehicleAndDriverSuggestionDropdown/vehicle_list.dart';
+import 'package:Guard_Room_Application/components/buttons/toggle_button.dart';
+import 'package:Guard_Room_Application/components/alert_boxes/success_error_alert_box.dart';
+import 'package:Guard_Room_Application/components/vehicle_and_driver_suggestion_dropdown/vehicle_dropdown.dart';
+import 'package:Guard_Room_Application/components/vehicle_and_driver_suggestion_dropdown/vehicle_list.dart';
 import 'package:Guard_Room_Application/components/top_banner.dart';
 import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:Guard_Room_Application/constraints/marginValues.dart';
@@ -22,15 +22,13 @@ import 'package:Guard_Room_Application/providers/find_all_drivers_provider.dart'
 import 'package:Guard_Room_Application/providers/find_all_vehicles_provider.dart';
 import 'package:Guard_Room_Application/providers/login_provider.dart';
 import 'package:Guard_Room_Application/providers/start_attendance_provider.dart';
-import 'package:Guard_Room_Application/components/AppBars/form_page_appbar.dart';
-// import 'package:Guard_Room_Application/screens/type_selector.dart';
+import 'package:Guard_Room_Application/components/app_bars/form_page_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
 
 enum ButtonType {
   workIn,
@@ -51,7 +49,7 @@ class DailyAttendance extends StatefulWidget {
 }
 
 class _DailyAttendance extends State<DailyAttendance> {
-  final TextEditingController _currentDateController = TextEditingController();
+  // final TextEditingController _currentDateController = TextEditingController();
   final TextEditingController _vehicleNumberController =
       TextEditingController();
   final TextEditingController _driverLicenseController =
@@ -226,11 +224,18 @@ class _DailyAttendance extends State<DailyAttendance> {
     Navigator.of(context).pop();
   }
 
-  void sampleButton() {
+  void mainButtonPress() {
     final findAllVehiclesProvider =
         Provider.of<FindAllVehiclesProvider>(context, listen: false);
     final findAllDriversProvider =
         Provider.of<FindAllDriversProvider>(context, listen: false);
+    final loginProvider = Provider.of<LoginProvider>(context);
+
+    setState(() {
+      submitButtonClicked = true;
+      userID = loginProvider.loginresponse!.loginDetailsDto.userId;
+      userName = loginProvider.loginresponse!.loginDetailsDto.userName;
+    });
 
     combinedDateTime = '${_dateController.text} ${_timeController.text}';
     logger.i(combinedDateTime);
@@ -478,9 +483,9 @@ class _DailyAttendance extends State<DailyAttendance> {
       statusBarIconBrightness: Brightness.dark,
     ));
     var screenSize = MediaQuery.of(context).size;
-    final findAllVehiclesProvider =
-        Provider.of<FindAllVehiclesProvider>(context);
-    final findAllDriversProvider = Provider.of<FindAllDriversProvider>(context);
+    // final findAllVehiclesProvider =
+    //     Provider.of<FindAllVehiclesProvider>(context);
+    // final findAllDriversProvider = Provider.of<FindAllDriversProvider>(context);
     final loginProvider = Provider.of<LoginProvider>(context);
     final vehicleListProvider = Provider.of<VehicleListProvider>(context);
     final licenseNumberListProvider =
@@ -744,134 +749,18 @@ class _DailyAttendance extends State<DailyAttendance> {
                       flex: 1,
                       child: CustomButton(
                         onPress: () {
-                          setState(() {
-                            submitButtonClicked = true;
-                          });
+                          // setState(() {
+                          //   submitButtonClicked = true;
+                          // });
 
                           // setState(() {
-                          //   combinedDateTime =
-                          //       '${_dateController.text} ${_timeController.text}';
+                          //   userID = loginProvider
+                          //       .loginresponse!.loginDetailsDto.userId;
+                          //   userName = loginProvider
+                          //       .loginresponse!.loginDetailsDto.userName;
                           // });
-                          // combinedDateTime =
-                          //     '${_dateController.text} ${_timeController.text}';
-                          // logger.i(combinedDateTime);
 
-                          // Provider.of<MileageUnit>(context, listen: false)
-                          //     .mileageToggleButton(
-                          //         _currentMileageController.text);
-
-                          sampleButton();
-
-                          // for (int i = 0;
-                          //     i <
-                          //         findAllVehiclesProvider
-                          //             .findAllVehiclesResponse!
-                          //             .appVehicleMobileDtoList!
-                          //             .length;
-                          //     i++) {
-                          //   final vehicle = findAllVehiclesProvider
-                          //       .findAllVehiclesResponse
-                          //       ?.appVehicleMobileDtoList![i];
-                          //   if (_replaceVehicleNumberController.text.isEmpty ==
-                          //       true) {
-                          //     if (vehicle?.vehicleRegNumber ==
-                          //         _vehicleNumberController.text) {
-                          //       vehicleID = vehicle?.id;
-                          //     }
-                          //   } else {
-                          //     if (vehicle?.vehicleRegNumber ==
-                          //         _replaceVehicleNumberController.text) {
-                          //       vehicleID = vehicle?.id;
-                          //     }
-                          //   }
-                          // }
-
-                          // final vehicle = findAllVehiclesProvider
-                          //     .findAllVehiclesResponse?.appVehicleMobileDtoList;
-
-                          // vehicleID = vehicle
-                          //     ?.firstWhere(
-                          //       (vehicle) => _replaceVehicleNumberController
-                          //               .text.isEmpty
-                          //           ? vehicle.vehicleRegNumber ==
-                          //               _vehicleNumberController.text
-                          //           : vehicle.vehicleRegNumber ==
-                          //               _replaceVehicleNumberController.text,
-                          //       // orElse: () => null,
-                          //     )
-                          //     .id;
-
-                          // logger.i('A 2');
-                          // logger.i(vehicleID);
-
-                          //-----------------------------------------
-
-                          // if (_replaceDriverNICController.text.isEmpty) {
-                          //   for (int i = 0;
-                          //       i <
-                          //           findAllVehiclesProvider
-                          //               .findAllVehiclesResponse!
-                          //               .appVehicleMobileDtoList!
-                          //               .length;
-                          //       i++) {
-                          //     final driverDetails = findAllVehiclesProvider
-                          //         .findAllVehiclesResponse
-                          //         ?.appVehicleMobileDtoList![i];
-                          //     if (driverDetails?.vehicleRegNumber ==
-                          //         _vehicleNumberController.text) {
-                          //       driverID = driverDetails!.driverDto!.id;
-                          //     }
-                          //   }
-                          // } else {
-                          //   for (int i = 0;
-                          //       i <
-                          //           findAllDriversProvider
-                          //               .findAllDriversResponse!
-                          //               .appDriverMobileDtoList
-                          //               .length;
-                          //       i++) {
-                          //     final driverDetails = findAllDriversProvider
-                          //         .findAllDriversResponse
-                          //         ?.appDriverMobileDtoList[i];
-                          //     if (driverDetails?.nic ==
-                          //         _replaceDriverNICController.text) {
-                          //       driverID = driverDetails!.id;
-                          //     }
-                          //   }
-                          // }
-
-                          // final driver = findAllDriversProvider
-                          //     .findAllDriversResponse!.appDriverMobileDtoList;
-
-                          // driverID = driver
-                          //     .firstWhere(
-                          //       (driver) =>
-                          //           _replaceDriverNICController.text.isEmpty
-                          //               ? driver.licenseNum ==
-                          //                   _driverLicenseController.text
-                          //               : driver.nic ==
-                          //                   _replaceDriverNICController.text,
-                          //       // orElse: () => null,
-                          //     )
-                          //     .id;
-
-                          // logger.i(driverID);
-
-                          //------------------------------------------------
-
-                          setState(() {
-                            userID = loginProvider
-                                .loginresponse!.loginDetailsDto.userId;
-                            userName = loginProvider
-                                .loginresponse!.loginDetailsDto.userName;
-                          });
-
-                          // checkFilledRequiredFields();
-                          // checkFIlledAllFields();
-                          // workInButton();
-
-                          // workInOutButtonDialogBox(context);
-                          // showLoadingDialog(context);
+                          mainButtonPress();
                         },
                         innerText: 'Work-In',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_GREEN,
@@ -886,123 +775,18 @@ class _DailyAttendance extends State<DailyAttendance> {
                       flex: 1,
                       child: CustomButton(
                         onPress: () {
-                          setState(() {
-                            submitButtonClicked = true;
-                          });
+                          // setState(() {
+                          //   submitButtonClicked = true;
+                          // });
 
-                          // combinedDateTime =
-                          //     '${_dateController.text} ${_timeController.text}';
+                          // setState(() {
+                          //   userID = loginProvider
+                          //       .loginresponse!.loginDetailsDto.userId;
+                          //   userName = loginProvider
+                          //       .loginresponse!.loginDetailsDto.userName;
+                          // });
 
-                          // Provider.of<MileageUnit>(context, listen: false)
-                          //     .mileageToggleButton(
-                          //         _currentMileageController.text);
-
-                          sampleButton();
-
-                          // print(Provider.of<MileageUnit>(context, listen: false)
-                          //     .convertedMileageValue);
-
-                          //---------------------------------------------
-
-                          // for (int i = 0;
-                          //     i <
-                          //         findAllVehiclesProvider
-                          //             .findAllVehiclesResponse!
-                          //             .appVehicleMobileDtoList!
-                          //             .length;
-                          //     i++) {
-                          //   final vehicle = findAllVehiclesProvider
-                          //       .findAllVehiclesResponse
-                          //       ?.appVehicleMobileDtoList![i];
-                          //   if (vehicle?.vehicleRegNumber ==
-                          //       _vehicleNumberController.text) {
-                          //     vehicleID = vehicle?.id;
-                          //   } else if (vehicle?.vehicleRegNumber ==
-                          //       _replaceVehicleNumberController.text) {
-                          //     vehicleID = vehicle?.id;
-                          //   }
-                          // }
-
-                          // final vehicle = findAllVehiclesProvider
-                          //     .findAllVehiclesResponse?.appVehicleMobileDtoList;
-
-                          // vehicleID = vehicle
-                          //     ?.firstWhere(
-                          //       (vehicle) => _replaceVehicleNumberController
-                          //               .text.isEmpty
-                          //           ? vehicle.vehicleRegNumber ==
-                          //               _vehicleNumberController.text
-                          //           : vehicle.vehicleRegNumber ==
-                          //               _replaceVehicleNumberController.text,
-                          //       // orElse: () => null,
-                          //     )
-                          //     .id;
-
-                          // logger.i(vehicleID);
-
-                          //----------------------------------------------
-
-                          // if (_replaceDriverNICController.text.isEmpty) {
-                          //   for (int i = 0;
-                          //       i <
-                          //           findAllVehiclesProvider
-                          //               .findAllVehiclesResponse!
-                          //               .appVehicleMobileDtoList!
-                          //               .length;
-                          //       i++) {
-                          //     final driverDetails = findAllVehiclesProvider
-                          //         .findAllVehiclesResponse
-                          //         ?.appVehicleMobileDtoList![i];
-                          //     if (driverDetails?.vehicleRegNumber ==
-                          //         _vehicleNumberController.text) {
-                          //       driverID = driverDetails!.driverDto!.id;
-                          //     }
-                          //   }
-                          // } else {
-                          //   for (int i = 0;
-                          //       i <
-                          //           findAllDriversProvider
-                          //               .findAllDriversResponse!
-                          //               .appDriverMobileDtoList
-                          //               .length;
-                          //       i++) {
-                          //     final driverDetails = findAllDriversProvider
-                          //         .findAllDriversResponse
-                          //         ?.appDriverMobileDtoList[i];
-                          //     if (driverDetails?.nic ==
-                          //         _replaceDriverNICController.text) {
-                          //       driverID = driverDetails!.id;
-                          //     }
-                          //   }
-                          // }
-
-                          // final driver = findAllDriversProvider
-                          //     .findAllDriversResponse!.appDriverMobileDtoList;
-
-                          // driverID = driver
-                          //     .firstWhere(
-                          //       (driver) =>
-                          //           _replaceDriverNICController.text.isEmpty
-                          //               ? driver.licenseNum ==
-                          //                   _driverLicenseController.text
-                          //               : driver.nic ==
-                          //                   _replaceDriverNICController.text,
-                          //       // orElse: () => null,
-                          //     )
-                          //     .id;
-
-                          // logger.i(driverID);
-
-                          //----------------------------------------------------
-
-                          //-----------------------------------------------------
-
-                          // checkFilledRequiredFields();
-                          // checkFIlledAllFields();
-                          // workOutButton();
-
-                          // workInOutButtonDialogBox(context);
-                          // showLoadingDialog(context);
+                          mainButtonPress();
                         },
                         innerText: 'Work-Out',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_BLUE,
