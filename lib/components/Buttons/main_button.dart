@@ -12,21 +12,22 @@ class CustomButton extends StatelessWidget {
   final double buttonHeight;
   final Color borderColor;
   final double borderWidth;
+  final Color textColor;
   // final double borderRadius;
 
-  const CustomButton(
-      {Key? key,
-      required this.innerText,
-      required this.backgroundColor,
-      required this.onPress,
-      // required this.textStyles,
-      required this.buttonWidth,
-      required this.buttonHeight,
-      required this.borderColor,
-      this.borderWidth = 0.0,
-      // required this.borderRadius
-      })
-      : super(key: key);
+  const CustomButton({
+    Key? key,
+    required this.innerText,
+    required this.backgroundColor,
+    required this.onPress,
+    // required this.textStyles,
+    required this.buttonWidth,
+    required this.buttonHeight,
+    required this.borderColor,
+    this.borderWidth = 0.0,
+    this.textColor = ApplicationColors.PURE_WHITE,
+    // required this.borderRadius
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +45,12 @@ class CustomButton extends StatelessWidget {
         ),
       ),
       child: Text(innerText,
-          style: const TextStyle(
-              fontSize: ApplicationTextSizes.LoginButtonTitleValue,
-              fontWeight: ApplicationTextWeights.LoginButtonTitleWeight,
-              fontFamily: 'Poppins',
-              color: ApplicationColors.PURE_WHITE)),
+          style: TextStyle(
+            color: textColor,
+            fontSize: ApplicationTextSizes.LoginButtonTitleValue,
+            fontWeight: ApplicationTextWeights.LoginButtonTitleWeight,
+            fontFamily: 'Poppins',
+          )),
     );
   }
 }
