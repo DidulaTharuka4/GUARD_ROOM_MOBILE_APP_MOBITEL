@@ -1,9 +1,9 @@
-import 'package:Guard_Room_Application/components/custom_alert_dialog.dart';
-import 'package:Guard_Room_Application/components/custom_alert_dialog_button.dart';
-import 'package:Guard_Room_Application/components/custom_button.dart';
-import 'package:Guard_Room_Application/components/custom_selector_button.dart';
-import 'package:Guard_Room_Application/components/custom_toggle_button.dart';
-import 'package:Guard_Room_Application/components/success_alert_box.dart';
+import 'package:Guard_Room_Application/components/AlertBoxes/invalid_input_alert_box.dart';
+import 'package:Guard_Room_Application/components/AlertBoxes/confirmation_alert_box.dart';
+import 'package:Guard_Room_Application/components/Buttons/main_button.dart';
+import 'package:Guard_Room_Application/components/Buttons/custom_selector_button.dart';
+import 'package:Guard_Room_Application/components/Buttons/toggle_button.dart';
+import 'package:Guard_Room_Application/components/AlertBoxes/success_error_alert_box.dart';
 import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:Guard_Room_Application/constraints/marginValues.dart';
 import 'package:Guard_Room_Application/constraints/textSizes.dart';
@@ -1647,18 +1647,18 @@ class _DailyTrip extends State<DailyTrip> {
                             style: TextStyle(
                                 fontSize: ApplicationTextSizes
                                     .userInputFieldLabelValue,
-                                fontFamily: 'Poppins',
+                                // fontFamily: 'Poppins',
                                 fontWeight: ApplicationTextWeights
                                     .UserInputsLabelWeight),
                           ),
-                          // Text(
-                          //   "*",
-                          //   style: TextStyle(
-                          //       fontSize: ApplicationTextSizes
-                          //           .userInputFieldLabelValue,
-                          //       color: ApplicationColors.RED_COLOR,
-                          //       fontWeight: FontWeight.bold),
-                          // ),
+                          Text(
+                            "*",
+                            style: TextStyle(
+                                fontSize: ApplicationTextSizes
+                                    .userInputFieldLabelValue,
+                                color: ApplicationColors.RED_COLOR,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                     ),
@@ -2187,17 +2187,17 @@ class _DailyTrip extends State<DailyTrip> {
                         backgroundColor: ApplicationColors.BUTTON_COLOR_GREEN,
                         borderColor: ApplicationColors.BUTTON_COLOR_GREEN,
                         borderWidth: 0.0,
-                        borderRadius: 4,
+                        // borderRadius: 4,
                         buttonWidth: 200,
                         buttonHeight: 45,
-                        textStyles: TextStyle(
-                          fontSize:
-                              ApplicationTextSizes.userInputFieldLabelValue,
-                          fontFamily: 'Poppins',
-                          fontWeight:
-                              ApplicationTextWeights.UserInputsLabelWeight,
-                          color: ApplicationColors.PURE_WHITE,
-                        ),
+                        // textStyles: TextStyle(
+                        //   fontSize:
+                        //       ApplicationTextSizes.userInputFieldLabelValue,
+                        //   fontFamily: 'Poppins',
+                        //   fontWeight:
+                        //       ApplicationTextWeights.UserInputsLabelWeight,
+                        //   color: ApplicationColors.PURE_WHITE,
+                        // ),
                       ),
                     ),
                     SizedBox(width: 20),
@@ -2307,18 +2307,17 @@ class _DailyTrip extends State<DailyTrip> {
                         innerText: 'End',
                         backgroundColor: ApplicationColors.BUTTON_COLOR_BLUE,
                         borderColor: ApplicationColors.BUTTON_COLOR_BLUE,
-                        borderWidth: 0.0,
-                        borderRadius: 4,
+                        // borderRadius: 4,
                         buttonWidth: 200,
                         buttonHeight: 45,
-                        textStyles: TextStyle(
-                          fontSize:
-                              ApplicationTextSizes.userInputFieldLabelValue,
-                          fontFamily: 'Poppins',
-                          fontWeight:
-                              ApplicationTextWeights.UserInputsLabelWeight,
-                          color: ApplicationColors.PURE_WHITE,
-                        ),
+                        // textStyles: TextStyle(
+                        //   fontSize:
+                        //       ApplicationTextSizes.userInputFieldLabelValue,
+                        //   fontFamily: 'Poppins',
+                        //   fontWeight:
+                        //       ApplicationTextWeights.UserInputsLabelWeight,
+                        //   color: ApplicationColors.PURE_WHITE,
+                        // ),
                       ),
                     ),
                   ],
