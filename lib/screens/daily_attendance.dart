@@ -229,13 +229,16 @@ class _DailyAttendance extends State<DailyAttendance> {
         Provider.of<FindAllVehiclesProvider>(context, listen: false);
     final findAllDriversProvider =
         Provider.of<FindAllDriversProvider>(context, listen: false);
-    final loginProvider = Provider.of<LoginProvider>(context);
+    // final loginProvider = Provider.of<LoginProvider>(context);
+    // setState(() {
+    //   submitButtonClicked = true;
+    // });
 
-    setState(() {
-      submitButtonClicked = true;
-      userID = loginProvider.loginresponse!.loginDetailsDto.userId;
-      userName = loginProvider.loginresponse!.loginDetailsDto.userName;
-    });
+    // setState(() {
+    //   userID = loginProvider.loginresponse!.loginDetailsDto.userId;
+    //   userName = loginProvider.loginresponse!.loginDetailsDto.userName;
+    // });
+    logger.i('lll');
 
     combinedDateTime = '${_dateController.text} ${_timeController.text}';
     logger.i(combinedDateTime);
@@ -256,8 +259,8 @@ class _DailyAttendance extends State<DailyAttendance> {
         )
         .id;
 
-    // logger.i('A 2');
-    // logger.i(vehicleID);
+    logger.i('A 2');
+    logger.i(vehicleID);
 
     final driver =
         findAllDriversProvider.findAllDriversResponse!.appDriverMobileDtoList;
@@ -270,8 +273,8 @@ class _DailyAttendance extends State<DailyAttendance> {
           // orElse: () => null,
         )
         .id;
-    // logger.i('B2');
-    // logger.i(driverID);
+    logger.i('B2');
+    logger.i(driverID);
 
     workInOutButtonDialogBox(context);
   }
@@ -749,9 +752,14 @@ class _DailyAttendance extends State<DailyAttendance> {
                       flex: 1,
                       child: CustomButton(
                         onPress: () {
-                          // setState(() {
-                          //   submitButtonClicked = true;
-                          // });
+                          setState(() {
+                            submitButtonClicked = true;
+
+                            userID = loginProvider
+                                .loginresponse!.loginDetailsDto.userId;
+                            userName = loginProvider
+                                .loginresponse!.loginDetailsDto.userName;
+                          });
 
                           // setState(() {
                           //   userID = loginProvider
@@ -759,6 +767,7 @@ class _DailyAttendance extends State<DailyAttendance> {
                           //   userName = loginProvider
                           //       .loginresponse!.loginDetailsDto.userName;
                           // });
+                          logger.i('mmmm');
 
                           mainButtonPress();
                         },
@@ -775,9 +784,14 @@ class _DailyAttendance extends State<DailyAttendance> {
                       flex: 1,
                       child: CustomButton(
                         onPress: () {
-                          // setState(() {
-                          //   submitButtonClicked = true;
-                          // });
+                          setState(() {
+                            submitButtonClicked = true;
+                          });
+
+                          userID = loginProvider
+                              .loginresponse!.loginDetailsDto.userId;
+                          userName = loginProvider
+                              .loginresponse!.loginDetailsDto.userName;
 
                           // setState(() {
                           //   userID = loginProvider
