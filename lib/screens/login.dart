@@ -43,25 +43,12 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _loadSavedCredentials();
-    Future.delayed(Duration(seconds: 5));
+    // Future.delayed(Duration(seconds: 5));
     loadSvgAssets();
   }
 
   Future<void> loadSvgAssets() async {
-    // await precacheImage(
-    //   ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, 'assets/images/Footer.svg'),
-    //   context,
-    // );
-    // await precachePicture(
-    //   ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, 'assets/images/SLTMobitel_Logo.svg'),
-    //   context,
-    // );
-
-    // await precacheImage(
-    //   SvgPicture.assetStringDecoderBuilder,
-    //   'assets/splash_image.svg',
-    // );
-
+  
     svgContent = await DefaultAssetBundle.of(context)
         .loadString('assets/images/Footer.svg');
     setState(() {});
@@ -175,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void submitLogin() async {
     showLoadingDialog(context);
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
     try {
       await Provider.of<LoginProvider>(context, listen: false).fetchLogin(
           getLoginRequestBody(
@@ -229,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
         //   statusBarColor: Colors.transparent,
         //   statusBarIconBrightness: Brightness.light,
         // ));
-        return Dialog(
+        return const Dialog(
           backgroundColor: Colors.transparent,
           child: Center(
             // child: CircularProgressIndicator(
