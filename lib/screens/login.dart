@@ -1,4 +1,4 @@
-import 'package:Guard_Room_Application/components/Buttons/main_button.dart';
+import 'package:Guard_Room_Application/components/buttons/main_button.dart';
 import 'package:Guard_Room_Application/components/main_text_input.dart';
 import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:Guard_Room_Application/constraints/marginValues.dart';
@@ -6,7 +6,7 @@ import 'package:Guard_Room_Application/constraints/textSizes.dart';
 import 'package:Guard_Room_Application/constraints/token.dart';
 import 'package:Guard_Room_Application/providers/login_provider.dart';
 // import 'package:Guard_Room_Application/screens/loadingScreen.dart';
-import 'package:Guard_Room_Application/components/AppBars/login_appbar.dart';
+import 'package:Guard_Room_Application/components/app_bars/login_appbar.dart';
 import 'package:Guard_Room_Application/screens/type_selector.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../components/AlertBoxes/invalid_input_alert_box.dart';
+import '../components/alert_boxes/invalid_input_alert_box.dart';
 // import 'dart:io'; // To use exit(0)
 
 // import 'package:flutter_svg/flutter_svg.dart';

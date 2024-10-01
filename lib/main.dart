@@ -1,5 +1,5 @@
-import 'package:Guard_Room_Application/components/VehicleAndDriverSuggestionDropdown/driver_list.dart';
-import 'package:Guard_Room_Application/components/VehicleAndDriverSuggestionDropdown/vehicle_list.dart';
+import 'package:Guard_Room_Application/components/vehicle_and_driver_suggestion_dropdown/driver_list.dart';
+import 'package:Guard_Room_Application/components/vehicle_and_driver_suggestion_dropdown/vehicle_list.dart';
 // import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:Guard_Room_Application/notifiers/mileage_unit.dart';
 import 'package:Guard_Room_Application/providers/end_attendance_provider.dart';

@@ -1,9 +1,9 @@
-import 'package:Guard_Room_Application/components/AlertBoxes/invalid_input_alert_box.dart';
-import 'package:Guard_Room_Application/components/AlertBoxes/confirmation_alert_box.dart';
-import 'package:Guard_Room_Application/components/Buttons/main_button.dart';
-import 'package:Guard_Room_Application/components/Buttons/custom_selector_button.dart';
-import 'package:Guard_Room_Application/components/Buttons/toggle_button.dart';
-import 'package:Guard_Room_Application/components/AlertBoxes/success_error_alert_box.dart';
+import 'package:Guard_Room_Application/components/alert_boxes/invalid_input_alert_box.dart';
+import 'package:Guard_Room_Application/components/alert_boxes/confirmation_alert_box.dart';
+import 'package:Guard_Room_Application/components/buttons/main_button.dart';
+import 'package:Guard_Room_Application/components/buttons/custom_selector_button.dart';
+import 'package:Guard_Room_Application/components/buttons/toggle_button.dart';
+import 'package:Guard_Room_Application/components/alert_boxes/success_error_alert_box.dart';
 import 'package:Guard_Room_Application/constraints/colors.dart';
 import 'package:Guard_Room_Application/constraints/marginValues.dart';
 import 'package:Guard_Room_Application/constraints/textSizes.dart';
