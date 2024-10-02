@@ -51,7 +51,7 @@ class LicenseNumberDropdown extends StatelessWidget {
                         onDriverSelected(
                             licenseListProvider.filteredLicenseNumbers[index]);
 
-                        if (vehicleNumberController.text.isEmpty) {
+                        if (vehicleNumberController.text.isEmpty == true) {
                           driverLicenseController.text =
                               licenseListProvider.filteredLicenseNumbers[index];
 

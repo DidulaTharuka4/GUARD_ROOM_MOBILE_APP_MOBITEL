@@ -45,10 +45,9 @@ class VehicleDropdown extends StatelessWidget {
                         vehicleListProvider.showDropdown = false;
 
                         onVehicleSelected(
-                            vehicleListProvider.filteredVehicles[index]
-                            );
+                            vehicleListProvider.filteredVehicles[index]);
 
-                        if (driverLicenseController.text.isEmpty) {
+                        if (driverLicenseController.text.isEmpty == true) {
                           vehicleNumberController.text =
                               vehicleListProvider.filteredVehicles[index];
 
@@ -92,6 +91,27 @@ class VehicleDropdown extends StatelessWidget {
                             } else {
                               vehicleNumberController.text =
                                   vehicleListProvider.filteredVehicles[index];
+
+                              for (int i = 0;
+                                  i <
+                                      findAllVehiclesProvider
+                                          .findAllVehiclesResponse!
+                                          .appVehicleMobileDtoList!
+                                          .length;
+                                  i++) {
+                                final vehicle = findAllVehiclesProvider
+                                    .findAllVehiclesResponse
+                                    ?.appVehicleMobileDtoList![i];
+
+                                if (vehicle?.vehicleRegNumber ==
+                                    vehicleNumberController.text) {
+                                  // Handle vehicle and driver details
+                                  driverLicenseController.text =
+                                      '${vehicle!.driverDto!.licenseNum}';
+                                  driverNameController.text =
+                                      '${vehicle.driverDto!.cname}';
+                                }
+                              }
                             }
                           }
                         }
