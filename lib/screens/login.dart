@@ -5,21 +5,17 @@ import 'package:Guard_Room_Application/constraints/marginValues.dart';
 import 'package:Guard_Room_Application/constraints/textSizes.dart';
 import 'package:Guard_Room_Application/constraints/token.dart';
 import 'package:Guard_Room_Application/providers/login_provider.dart';
-// import 'package:Guard_Room_Application/screens/loadingScreen.dart';
 import 'package:Guard_Room_Application/components/app_bars/login_appbar.dart';
 import 'package:Guard_Room_Application/screens/type_selector.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/alert_boxes/invalid_input_alert_box.dart';
-// import 'dart:io'; // To use exit(0)
 
-// import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -37,8 +33,6 @@ class _LoginPageState extends State<LoginPage> {
 
   bool submitButtonClicked = false;
 
-  // late Future<void> svgLoading;
-
   @override
   void initState() {
     super.initState();
@@ -48,7 +42,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> loadSvgAssets() async {
-  
     svgContent = await DefaultAssetBundle.of(context)
         .loadString('assets/images/Footer.svg');
     setState(() {});
@@ -124,34 +117,6 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
-
-  String? _usernameError;
-  String? _passwordError;
-
-  // Future<void> checkFilled() async {
-  //   showLoadingDialog(context);
-  //   setState(() {
-  //     _usernameError =
-  //         _usernameController.text.isEmpty ? 'Username cannot be empty' : null;
-  //     _passwordError =
-  //         _passwordController.text.isEmpty ? 'Password cannot be empty' : null;
-  //   });
-
-  //   if (_usernameController.text.isEmpty == false &&
-  //       _passwordController.text.isEmpty == false) {
-  //     // logger.i('password, usename filled');
-  //     submitLogin();
-  //   } else if (_usernameController.text.isEmpty == true &&
-  //       _passwordController.text.isEmpty == true) {
-  //     showCustomDialog(context);
-  //   } else if (_usernameController.text.isEmpty == true &&
-  //       _passwordController.text.isEmpty == false) {
-  //     showCustomDialog(context);
-  //   } else if (_usernameController.text.isEmpty == false &&
-  //       _passwordController.text.isEmpty == true) {
-  //     showCustomDialog(context);
-  //   }
-  // }
 
   Map<String, dynamic> getLoginRequestBody(String? username, String? password) {
     return {
@@ -304,35 +269,7 @@ class _LoginPageState extends State<LoginPage> {
                       ]),
                     ),
 
-                    // UserName Input Field------------------------------------------
-                    // Container(
-                    //   margin: ApplicationMarginValues.loginPageUserNameInputMargin,
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       Text(
-                    //         'Username',
-                    //         style: TextStyle(
-                    //           fontSize:
-                    //               ApplicationTextSizes.UserInputFieldLabelValue,
-                    //           fontFamily: 'Poppins',
-                    //           fontWeight:
-                    //               ApplicationTextWeights.UserInputsLabelWeight,
-                    //         ),
-                    //       ),
-                    //       Padding(
-                    //         padding: const EdgeInsets.only(top: 8.0),
-                    //         child: TextFormField(
-                    //           controller: _usernameController,
-                    //           decoration: InputDecoration(
-                    //             border: OutlineInputBorder(),
-                    //             errorText: _usernameError,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    
 
                     Container(
                         margin: ApplicationMarginValues
@@ -354,36 +291,7 @@ class _LoginPageState extends State<LoginPage> {
                             obscureText: true,
                             buttonClickStatus: submitButtonClicked)),
 
-                    // Password Input Field------------------------------------------
-                    // Container(
-                    //   margin: ApplicationMarginValues.loginPageUserNameInputMargin,
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       Text(
-                    //         'Password',
-                    //         style: TextStyle(
-                    //           fontSize:
-                    //               ApplicationTextSizes.UserInputFieldLabelValue,
-                    //           fontFamily: 'Poppins',
-                    //           fontWeight:
-                    //               ApplicationTextWeights.UserInputsLabelWeight,
-                    //         ),
-                    //       ),
-                    //       Padding(
-                    //         padding: const EdgeInsets.only(top: 8.0),
-                    //         child: TextFormField(
-                    //           controller: _passwordController,
-                    //           decoration: InputDecoration(
-                    //             border: OutlineInputBorder(),
-                    //             errorText: _passwordError,
-                    //           ),
-                    //           obscureText: true,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                   
 
                     // Remember Login-----------------------------------------------
                     Container(
@@ -419,9 +327,13 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             submitButtonClicked = true;
                           });
-                          submitButtonClicked = true;
+                          // submitButtonClicked = true;
                           clearToken();
-                          submitLogin();
+                          if (_passwordController.text.isNotEmpty == true &&
+                              _usernameController.text.isNotEmpty == true) {
+                            submitLogin();
+                          }
+                          // submitLogin();
                           // checkFilled();
                           _saveCredentials();
                           // logger.i(screenSize.height);
