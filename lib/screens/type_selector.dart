@@ -49,7 +49,7 @@ class _TypeSelector extends State<TypeSelector> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
     ));
@@ -74,13 +74,13 @@ class _TypeSelector extends State<TypeSelector> {
                     // Page Main title--------------------------------------------
                     Container(
                       margin: ApplicationMarginValues.typeSelectorPageTitle,
-                      child: const Align(
+                      child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Main Menu',
                           style: TextStyle(
                               fontSize:
-                                  ApplicationTextSizes.TypeSelectotPageTitle,
+                                  ApplicationTextSizes.TypeSelectotPageTitle(context),
                               fontFamily: 'Poppins',
                               fontWeight:
                                   ApplicationTextWeights.PageTitleTextWeight),
@@ -93,13 +93,13 @@ class _TypeSelector extends State<TypeSelector> {
                         margin:
                             ApplicationMarginValues.typeSelectorPageSubTitle,
                         child: Column(children: <Widget>[
-                          const Align(
+                          Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               'Select Action you need',
                               style: TextStyle(
                                 fontSize:
-                                    ApplicationTextSizes.LoginButtonTitleValue,
+                                    ApplicationTextSizes.LoginButtonTitleValue(context),
                                 fontFamily: 'Poppins',
                                 fontWeight: ApplicationTextWeights
                                     .UserInputsLabelWeight,

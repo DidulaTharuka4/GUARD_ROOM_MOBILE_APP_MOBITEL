@@ -14,6 +14,7 @@ class AlertDialogBoxSelector extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     var screenSize = MediaQuery.of(context).size;
     return Container(
       // width: 390,
@@ -29,8 +30,8 @@ class AlertDialogBoxSelector extends StatelessWidget {
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
           child: Text(
             alertDialogText,
-            style: const TextStyle(
-                fontSize: ApplicationTextSizes.customAlertDialogButton,
+            style: TextStyle(
+                fontSize: ApplicationTextSizes.customAlertDialogButton(context),
                 fontWeight: FontWeight.w400,
                 fontFamily: 'Poppins',
                 color: ApplicationColors.PURE_BLACK),

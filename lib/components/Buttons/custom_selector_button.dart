@@ -25,6 +25,7 @@ class _CustomSelectorButtonState extends State<CustomSelectorButton> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return Container(
         child: Row(children: [
       GestureDetector(
@@ -69,7 +70,7 @@ class _CustomSelectorButtonState extends State<CustomSelectorButton> {
       Text(
         'Kilo Meters',
         style: TextStyle(
-            fontSize: ApplicationTextSizes.userInputFieldLabelValue,
+            fontSize: ApplicationTextSizes.userInputFieldLabelValue(context),
             fontFamily: 'Poppins',
             fontWeight: ApplicationTextWeights.UserInputsLabelWeight),
       ),
@@ -119,7 +120,7 @@ class _CustomSelectorButtonState extends State<CustomSelectorButton> {
       Text(
         'Miles',
         style: TextStyle(
-            fontSize: ApplicationTextSizes.userInputFieldLabelValue,
+            fontSize: ApplicationTextSizes.userInputFieldLabelValue(context),
             fontFamily: 'Poppins',
             fontWeight: ApplicationTextWeights.UserInputsLabelWeight),
       )

@@ -15,6 +15,7 @@ class SelectorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     var screenSize = MediaQuery.of(context).size;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -58,7 +59,7 @@ class SelectorButton extends StatelessWidget {
             child: Text(
               innerText,
               style: TextStyle(
-                  fontSize: ApplicationTextSizes.SelectorButtonTitleValue,
+                  fontSize: ApplicationTextSizes.SelectorButtonTitleValue(context),
                   fontFamily: 'Poppins',
                   fontWeight: ApplicationTextWeights.PageTitleTextWeight,
                   color: ApplicationColors.MAIN_COLOR_BLUE),

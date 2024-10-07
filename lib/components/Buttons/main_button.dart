@@ -31,6 +31,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return ElevatedButton(
       onPressed: onPress,
       style: ElevatedButton.styleFrom(
@@ -47,7 +48,7 @@ class CustomButton extends StatelessWidget {
       child: Text(innerText,
           style: TextStyle(
             color: textColor,
-            fontSize: ApplicationTextSizes.LoginButtonTitleValue,
+            fontSize: ApplicationTextSizes.LoginButtonTitleValue(context),
             fontWeight: ApplicationTextWeights.LoginButtonTitleWeight,
             fontFamily: 'Poppins',
           )),

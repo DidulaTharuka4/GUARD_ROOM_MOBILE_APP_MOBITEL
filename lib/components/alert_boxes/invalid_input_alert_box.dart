@@ -12,6 +12,7 @@ class AlertDialogBox extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     var screenSize = MediaQuery.of(context).size;
     return Container(
       width: screenSize.width / 1.0549,
@@ -38,11 +39,11 @@ class AlertDialogBox extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-          child: const Text(
+          child: Text(
             'Error',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: ApplicationTextSizes.FInalResponseAlertTextTitle,
+              fontSize: ApplicationTextSizes.FInalResponseAlertTextTitle(context),
               fontWeight: ApplicationTextWeights.PageTitleTextWeight,
               fontFamily: 'Poppins',
               color: ApplicationColors.RED_COLOR,
@@ -51,12 +52,12 @@ class AlertDialogBox extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-          child: const Text(
+          child: Text(
             // 'Unable to continue due to invalid inputs.',
             'Unable to continue !',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: ApplicationTextSizes.FInalResponseAlertText,
+              fontSize: ApplicationTextSizes.FInalResponseAlertText(context),
               fontWeight: ApplicationTextWeights.UserInputsLabelWeight,
               fontFamily: 'Poppins',
               color: ApplicationColors.ALERT_BOX_TEXT_COLOR,

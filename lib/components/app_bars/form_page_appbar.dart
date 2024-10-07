@@ -20,6 +20,7 @@ class FormPageAppBarWithShadow extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    SizeConfig.init(context);
     return Container(
       decoration:
           const BoxDecoration(color: ApplicationColors.PURE_WHITE, boxShadow: [
@@ -43,21 +44,22 @@ class FormPageAppBarWithShadow extends StatelessWidget
                 height: screenSize.height / 43.94),
           ),
           title: Text(pageTitle,
-              style: const TextStyle(
-                  fontSize: ApplicationTextSizes.pageTitleTextValue,
-                  fontFamily: 'Poppins',
+              style: TextStyle(
+                  fontSize: ApplicationTextSizes.pageTitleTextValue(context),
+                  fontFamily: 'Poppins', 
                   fontWeight: ApplicationTextWeights.PageTitleTextWeight)),
           actions: [
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: CustomButton(
                 innerText: 'Clear',
-                backgroundColor: ApplicationColors.RED_COLOR,
+                backgroundColor: ApplicationColors.PURE_WHITE,
                 onPress: pressForClear,
                 // onPress: () {},
+                textColor: ApplicationColors.RED_COLOR,
                 buttonWidth: 20,
                 buttonHeight: 10,
-                borderColor: ApplicationColors.RED_COLOR,
+                borderColor: ApplicationColors.PURE_WHITE,
               ),
             )
           ]),

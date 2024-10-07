@@ -12,6 +12,7 @@ class SuccessStatusAlertBox extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     var screenSize = MediaQuery.of(context).size;
     return Container(
       width: screenSize.width / 1.0549,
@@ -49,7 +50,7 @@ class SuccessStatusAlertBox extends StatelessWidget {
             successStatus ? 'Saved Successfully' : 'Failed to Save',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: ApplicationTextSizes.FInalResponseAlertTextTitle,
+              fontSize: ApplicationTextSizes.FInalResponseAlertTextTitle(context),
               fontWeight: ApplicationTextWeights.PageTitleTextWeight,
               fontFamily: 'Poppins',
               color: successStatus
@@ -67,7 +68,7 @@ class SuccessStatusAlertBox extends StatelessWidget {
                 : 'Failed to submit. Please try again.',
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: ApplicationTextSizes.FInalResponseAlertText,
+                fontSize: ApplicationTextSizes.FInalResponseAlertText(context),
                 fontWeight: ApplicationTextWeights.UserInputsLabelWeight,
                 fontFamily: 'Poppins',
                 color: ApplicationColors.ALERT_BOX_TEXT_COLOR,),
