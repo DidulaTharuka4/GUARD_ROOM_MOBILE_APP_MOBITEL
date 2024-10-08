@@ -38,6 +38,7 @@ class CustomTextInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return Container(
       margin: ApplicationMarginValues.pageInputFieldsMargin,
       child: Column(
@@ -46,15 +47,15 @@ class CustomTextInput extends StatelessWidget {
             children: [
               Text(
                 titleText,
-                style: const TextStyle(
-                    fontSize: ApplicationTextSizes.userInputFieldLabelValue,
+                style: TextStyle(
+                    fontSize: ApplicationTextSizes.userInputFieldLabelValue(context),
                     // fontFamily: 'Poppins',
                     fontWeight: ApplicationTextWeights.UserInputsLabelWeight),
               ),
               Text(
                 isRequired ? "*" : '',
-                style: const TextStyle(
-                    fontSize: ApplicationTextSizes.userInputFieldLabelValue,
+                style: TextStyle(
+                    fontSize: ApplicationTextSizes.userInputFieldLabelValue(context),
                     // color: ApplicationColors.RED_COLOR,
                     color: ApplicationColors.RED_COLOR,
                     fontWeight: FontWeight.bold),

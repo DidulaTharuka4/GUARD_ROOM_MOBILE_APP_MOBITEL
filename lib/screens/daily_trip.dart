@@ -491,20 +491,17 @@ class _DailyTrip extends State<DailyTrip> {
     // final endAttendanceProvider =
     //     Provider.of<EndAttendanceProvider>(context, listen: false);
 
-        final vehicleInProvider =
+    final vehicleInProvider =
         Provider.of<VehicleInProvider>(context, listen: false);
 
-        final vehicleOutProvider =
+    final vehicleOutProvider =
         Provider.of<VehicleOutProvider>(context, listen: false);
 
     logger.i('1 ');
 
-    if (vehicleInProvider.vehicleInWithTempResponse?.success ==
-            true ||
-        vehicleInProvider.vehicleInWithoutTempResponse?.success ==
-            true ||
-        vehicleOutProvider.vehicleOutWithTempResponse?.success ==
-            true ||
+    if (vehicleInProvider.vehicleInWithTempResponse?.success == true ||
+        vehicleInProvider.vehicleInWithoutTempResponse?.success == true ||
+        vehicleOutProvider.vehicleOutWithTempResponse?.success == true ||
         vehicleOutProvider.vehicleOutWithoutTempResponse?.success == true) {
       successStatus = true;
     } else {
@@ -560,6 +557,7 @@ class _DailyTrip extends State<DailyTrip> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: ApplicationColors.PURE_WHITE,
       statusBarIconBrightness: Brightness.dark,
@@ -713,11 +711,12 @@ class _DailyTrip extends State<DailyTrip> {
                   backgroundColor: ApplicationColors.BG_LIGHT_BLUE,
                   title: GestureDetector(
                     onTap: () {},
-                    child: const Text(
+                    child: Text(
                       'Replace Vehicle / Driver Details',
                       style: TextStyle(
                           fontSize:
-                              ApplicationTextSizes.userInputFieldLabelValue,
+                              ApplicationTextSizes.userInputFieldLabelValue(
+                                  context),
                           fontFamily: 'Poppins',
                           fontWeight:
                               ApplicationTextWeights.UserInputsLabelWeight),
@@ -739,6 +738,11 @@ class _DailyTrip extends State<DailyTrip> {
                     onTap: () {},
                     child: CustomToggleButton(
                       changeToggleAction: toggleExpansion,
+                      toggleForAnimate:
+                          _vehicleNumberController.text.isEmpty == true &&
+                                  _driverLicenseController.text.isEmpty == true
+                              ? false
+                              : true,
                     ),
                   ),
 
@@ -756,14 +760,15 @@ class _DailyTrip extends State<DailyTrip> {
                   // trailing: null,
 
                   children: <Widget>[
-                    const ListTile(
+                    ListTile(
                       title: Text(
                           'If a replacement driver or vehicle arrives, please fill in the following fields.',
                           style: TextStyle(
                             fontWeight:
                                 ApplicationTextWeights.UserInputsLabelWeight,
                             fontFamily: 'Poppins',
-                            fontSize: ApplicationTextSizes.RememberMeTextValue,
+                            fontSize: ApplicationTextSizes.RememberMeTextValue(
+                                context),
                           )),
                     ),
                     CustomTextInput(

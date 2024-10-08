@@ -446,33 +446,24 @@ class _DailyAttendance extends State<DailyAttendance> {
 
   void toggleExpansion() {
     isToggled = !isToggled;
-    // setState(() {
-    //   if (isToggled == false) {
-    //     controller.collapse();
-    //   } else {
-    //     controller.expand();
-    //   }
-    // });
 
     if (isToggled == false) {
-      // controller.collapse();
       if (_vehicleNumberController.text.isEmpty == false &&
           _driverLicenseController.text.isEmpty == false) {
         controller.collapse();
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('This is a Snackbar!'),
-          duration: Duration(seconds: 2),
-        ));
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //   content: Text('This is a Snackbar!'),
+        //   duration: Duration(seconds: 2),
+        // ));
       }
     } else {
-      // controller.expand();
       if (_vehicleNumberController.text.isEmpty == false &&
           _driverLicenseController.text.isEmpty == false) {
         controller.expand();
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('This is a Snackbar!'),
-          duration: Duration(seconds: 2),
-        ));
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //   content: Text('This is a Snackbar!'),
+        //   duration: Duration(seconds: 2),
+        // ));
       }
     }
   }
@@ -481,6 +472,7 @@ class _DailyAttendance extends State<DailyAttendance> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: ApplicationColors.PURE_WHITE,
       statusBarIconBrightness: Brightness.dark,
@@ -622,11 +614,12 @@ class _DailyAttendance extends State<DailyAttendance> {
                   backgroundColor: ApplicationColors.BG_LIGHT_BLUE,
                   title: GestureDetector(
                     onTap: () {},
-                    child: const Text(
+                    child: Text(
                       'Replace Vehicle / Driver Details',
                       style: TextStyle(
                           fontSize:
-                              ApplicationTextSizes.userInputFieldLabelValue,
+                              ApplicationTextSizes.userInputFieldLabelValue(
+                                  context),
                           fontFamily: 'Poppins',
                           fontWeight:
                               ApplicationTextWeights.UserInputsLabelWeight),
@@ -648,6 +641,13 @@ class _DailyAttendance extends State<DailyAttendance> {
                     onTap: () {},
                     child: CustomToggleButton(
                       changeToggleAction: toggleExpansion,
+                      toggleForAnimate:
+                          _vehicleNumberController.text.isEmpty == true &&
+                                  _driverLicenseController.text.isEmpty == true
+                              ? true
+                              : false,
+
+                      
                     ),
                   ),
 
@@ -665,14 +665,15 @@ class _DailyAttendance extends State<DailyAttendance> {
                   // trailing: null,
 
                   children: <Widget>[
-                    const ListTile(
+                    ListTile(
                       title: Text(
                           'If a replacement driver or vehicle arrives, please fill in the following fields.',
                           style: TextStyle(
                             fontWeight:
                                 ApplicationTextWeights.UserInputsLabelWeight,
                             fontFamily: 'Poppins',
-                            fontSize: ApplicationTextSizes.RememberMeTextValue,
+                            fontSize: ApplicationTextSizes.RememberMeTextValue(
+                                context),
                           )),
                     ),
                     CustomTextInput(
