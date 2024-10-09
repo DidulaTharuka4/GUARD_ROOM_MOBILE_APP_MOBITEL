@@ -16,7 +16,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/alert_boxes/invalid_input_alert_box.dart';
 
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -216,12 +215,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
     ));
     var screenSize = MediaQuery.of(context).size;
-    Future.delayed(Duration(seconds: 3));
+    Future.delayed(const Duration(seconds: 3));
     return WillPopScope(
         onWillPop: () async {
           // Exit the app when the back button is pressed
@@ -232,7 +232,7 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: ApplicationColors.PURE_WHITE,
           appBar: const LoginPageAppBar(),
           body: SingleChildScrollView(
-            padding: EdgeInsets.all(0.0),
+            padding: const EdgeInsets.all(0.0),
             child: Stack(
               // padding: EdgeInsets.all(0.0),
               children: [
@@ -242,13 +242,14 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       margin: ApplicationMarginValues.loginPageTitleMargin,
                       child: Column(children: <Widget>[
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'Login Account',
                             style: TextStyle(
                                 fontSize:
-                                    ApplicationTextSizes.LoginPageTitleText,
+                                    ApplicationTextSizes.LoginPageTitleText(
+                                        context),
                                 fontWeight:
                                     ApplicationTextWeights.PageTitleTextWeight,
                                 fontFamily: 'Poppins',
@@ -268,8 +269,6 @@ class _LoginPageState extends State<LoginPage> {
                             ))
                       ]),
                     ),
-
-                    
 
                     Container(
                         margin: ApplicationMarginValues
@@ -291,8 +290,6 @@ class _LoginPageState extends State<LoginPage> {
                             obscureText: true,
                             buttonClickStatus: submitButtonClicked)),
 
-                   
-
                     // Remember Login-----------------------------------------------
                     Container(
                       margin: ApplicationMarginValues.rememberMeFieldMargin,
@@ -310,7 +307,7 @@ class _LoginPageState extends State<LoginPage> {
                             'Remember me',
                             style: TextStyle(
                                 fontSize:
-                                    ApplicationTextSizes.RememberMeTextValue,
+                                    ApplicationTextSizes.RememberMeTextValue(context),
                                 fontFamily: 'Poppins',
                                 fontWeight: ApplicationTextWeights
                                     .UserInputsLabelWeight),
